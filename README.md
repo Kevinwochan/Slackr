@@ -1,41 +1,45 @@
 # COMP1531 Major Project
 
+A video describing this project and the background here can be found here.
+
 ## Aims:
 
 * To provide students with hands on experience testing, developing, and maintaining a backend server in python.
 * To develop students' problem solving skills in relation to the software development lifecycle.
-* Learn to work effectively as part of a team by managing your project, planning, and allocation of responsibilities among the members of your team<
+* Learn to work effectively as part of a team by managing your project, planning, and allocation of responsibilities among the members of your team.
 * Gain experience in collaborating through the use of a source control and other associated modern team-based tools.
 * Apply appropriate design practices and methodologies in the development of their solution
 * Develop an appreciation for product design and an intuition of how a typical customer will use a product.
 
 ## Changelog
 
-Nothing here yet
+* Coming soon (hopefully not)
 
-## Background
+## Overview
 
-To manage the transition from trimesters to hexamesters in 2020, UNSW has established a new focus on building an in-house digital collaboration and communication tool for groups and teams.
+An overview of this background and this project can be found in a short video found [HERE](https://youtu.be/Mzg3UGv3TSw).
 
-Rather than re-invent the wheel, UNSW has decided that it finds the functionality of **<a href="https://slack.com/intl/en-au/">Slack</a>** to be nearly exactly what it needs. For this reason, UNSW has contracted out Rayden Pty Ltd (a small software business run by Rob and Hayden) to build the new product. In UNSW's attempt to connect with the younger and more "hip" generation that fell in love with flickr, Tumblr, etc, they would like to call the new UNSW-based product **slackr**.
+To manage the transition from trimesters to hexamesters in 2020, UNSW has established a new focus on building an in-house digital collaboration and communication tool for groups and teams to support the high intensity learning environment.
 
-Rayden Pty Ltd has sub-contracted two software firms:
+Rather than re-invent the wheel, UNSW has decided that it finds the functionality of **<a href="https://slack.com/intl/en-au/">Slack</a>** to be nearly exactly what it needs. For this reason, UNSW has contracted out Lit Pty Ltd (a small software business run by Hayden) to build the new product. In UNSW's attempt to connect with the younger and more "hip" generation that fell in love with flickr, Tumblr, etc, they would like to call the new UNSW-based product **slackr**.
 
-* BananaPie Pty Ltd (two software developers, Sally and Bob, who will build the initial web-based GUI)
-* YourTeam Pty Ltd (a team of talented misfits completing COMP1531 in 19T3), who will build the backend python server and possibly assist in the GUI later in the project
+Lit Pty Ltd has sub-contracted two software firms:
 
-In summary, UNSW contracts Rayden Pty Ltd, who sub contracts:
+* Catdog Pty Ltd (two software developers, Sally and Bob, who will build the initial web-based GUI)
+* YourTeam Pty Ltd (a team of talented misfits completing COMP1531 in 20T1), who will build the backend python server and possibly assist in the GUI later in the project
 
-* BananaPie (Sally and Bob) for front end work
+In summary, UNSW contracts Lit Pty Ltd, who sub contracts:
+
+* Catdog (Sally and Bob) for front end work
 * YourTeam (you and others) for backend work
 
-Rayden Pty Ltd met with Sally and Bob (the front end development team) 2 weeks ago to brief them on this project. While you are still trying to get up to speed on the requirements of this project, Sally and Bob understand the requirements of the project very well.
+Lit Pty Ltd met with Sally and Bob (the front end development team) 2 weeks ago to brief them on this project. While you are still trying to get up to speed on the requirements of this project, Sally and Bob understand the requirements of the project very well.
 
 Because of this they have already specified a **common interface** for the front end and backend to operate on. This allows both parties to go off and do their own development and testing under the assumption that both parties comply will comply with the common interface. This is the interface **you are required to use**
 
 Beside the information available in the interface that Sally and Bob provided, you have been told (so far) that the features of slackr that UNSW would like to see implemented include:
 
-1. Ability to login, register if not logged in, and log out
+1. Ability to login, register if not registered, and log out
 2. Ability to reset password if forgotten it
 3. Ability to see a list of channels
 4. Ability to create a channel, join a channel, invite someone else to a channel, and leave a channel
@@ -44,26 +48,16 @@ Beside the information available in the interface that Sally and Bob provided, y
 7. Within a channel, ability to edit, remove, pin, unpin, react, or unreact to a message
 8. Ability to view user anyone's user profile, and modify a user's own profile (name, email, handle, and profile photo)
 9. Ability to search for messages based on a search string
-10. Ability to modify a user's admin privileges: (MEMBER, ADMIN, OWNER)
-11. Ability to begin a "standup", which is a 15 minute period where users can send messages that at the end of the period will automatically be collated and summarised to all users
+10. Ability to modify a user's admin privileges: (MEMBER, OWNER)
+11. Ability to begin a "standup", which is an X minute period where users can send messages that at the end of the period will automatically be collated and summarised to all users
 
-To get further information about the requirements, Rayden Pty Ltd will provide a pre-recorded video briefing (with verbal and visual descriptions) of what they'd like to see in the Slackr product. This will be released on September 23rd.
-
-## Setup
-
-After your week 2 tutorial, you should know who your team members are. Follow the instructions on the tutorial sheet to ensure your team is registered. You need to do this by **Thursday 9PM in week 2**.
-
-If you registered your team on time, then on Sunday of week 2, you should have access to an individual repository at this URL:
-
-https://gitlab.cse.unsw.edu.au/COMP1531/19T3/team_name
-
-where *team-name* is the name of your group as registered on the course website.
+To get further information about the requirements, Lit Pty Ltd has provided a pre-recorded video briefing (with verbal and visual descriptions) of what UNSW would like to see in the Slackr product. This can be found [HERE](https://youtu.be/0_jaxpOSoj4). Hint: **This video should be the main source of information from which you derive your user stories**
 
 ## Progress check-in
 
 During your lab class, in weeks without demonstrations (see below), you and your team will conduct a short stand-up in the presence of your tutor. Each member of the team will briefly state what they have done in the past week, what they intend to do over the next week, and what issues they faced or are currently facing. This is so your tutor, who is acting as a representative of the client, is kept informed of your progress. They will make note of your presence and may ask you to elaborate on the work you've done.
 
-## Iteration 1: Tests and Stories
+## Iteration 1: Test Driven Development
 
 ### Task
 
@@ -73,87 +67,61 @@ In this iteration, you are expected to:
 
     These should all be in files of the formn `*_test.py`. See below for more information.
 
-2. Create user stories for your current understanding of the product based on your previous understanding of a slack-like app.
+    Your tests will be automarked to assist in determining your performance mark.
 
-    Each individual story should form its own card on the project task board.
-
-3. Write assumptions that you feel you are making in your interpretation of the specification and of the functions provided.
+2. Write assumptions that you feel you are making in your interpretation of the specification and of the functions provided.
 
     Write these in markdown in `assumptions.md`.
 
-4. Write a brief 1-page plan highlighting how you will approach the following iteration (the development stage).
-
-    Write these in markdown in `plan.md`. You may include diagrams, tables or whatever other information you believe conveys your plan.
-
-5. Write a brief 1-page reflection on how this iteration has gone and how you successfully operated as a well-functioning team.
-
-    Write these in markdown in `reflection.md`.
-
 You are **not** expected to begin developing or completing the actual functions themselves.
+
+The first iteration does not include all capabilities. Further capabilities will be introduced in subsequent iterations.
+
+You will be heavily marked for your use of thoughtful project management and use of git effectively. The degree to which your team works effectively will also be assessed.
 
 The files described above should all be in the root of your repository. If you've not written markdown before (which we assume most of you haven't), it's not necessary to research the format. Markdown is essentially plain text with a few extra features for basic formatting. You can just stick with plain text if you find that easier.
 
+Do NOT attempt to try and write or start a web server. Don't overthink how these functions are meant to connect to a frontend yet. This is for the next iteration. In this iteration you are just focusing on the high level functions that will eventually be used for a web server.
 ### Tests
-
-It is up to you how you structure your tests, but we do require that you write all of your stubs and tests in the /server/ folder.
 
 Our recommendation is to break all of the functions to test up into 1 or many files (this is a decision for you and your team), and then create test files in the same directory as the files the tests are testing. An example of this has been done with:
 
-* `/server/echo.py`
-* `/server/echo_test.py`
+* `/src/echo.py`
+* `/src/echo_test.py`
 
-Remember that we encourage you to write stub functions for all of the functions we provide. Stub functions are dummy implementations of functions that allow them to be trivially tested. E.G. A stub function for a user to login may always return a dummy auth token "123456". This will allow your tests to successfully compile. It is expected that *some* errors may appear in your tests as you write them that you won't discover until you develop the backend in iteration 2.
+It is up to you how you structure your tests, but we have placed a series of stub functions inside the /src/ folder for you to use with your pytests. If you're trying to implement/finish these stubs in order to complete your tests, you're approaching testing wrong.
+
+Stub functions are dummy implementations of functions that allow them to be trivially tested. E.G. A stub function for a user to login may always return a dummy auth token "123456". This will allow your tests to successfully compile. Of course, because these functions aren't implemented it means that your pytests will fail, but that's OK.
 
 You may also wish to create some helper files with extra helper functions if that would assist you writing your tests.
 
-### (More info) User Stories
-
-The scaffold for user stories will be provided in the lecture on Monday 23rd September. Please refer to that lecture for information about the structure of the user stories.
-
 ### Submission
 
-This iteration is due to be submitted at 5pm Sunday 6th October (**week 3**). You will then be demonstrating this in your week 4 lab. All team members **must** attend this lab session.
+This iteration is due to be submitted at 8pm Sunday 9th March (**week 4**). You will then be demonstrating this in your week 4 lab. All team members **must** attend this lab session, or they will not receive a mark.
 
-To submit, run this command in the CSE environment:
+To submit, one team member must run this command in the CSE environment:
 
 ```sh
 1531 submit iteration1
 ```
 
-This will submit the contents of your repo on GitLab and perform a check to make sure that the files above are present. **Make sure that everything you intend to submit is included in your repo**. User stories should be entered into GitLab on the task board for your project.
+This will submit the contents of your repo on GitLab and perform a check to make sure that the files above are present. **Make sure that everything you intend to submit is included in your repo on the master branch**. 
 
 ### Marking Criteria
 
 |Section|Weighting|Criteria|
 |---|---|---|
-|Pytests|40%| <ul><li>Demonstrated an understanding of good test **coverage**</li><li>Demonstrated an understanding of the importance of **clarity** on the communication of test purposes</li><li>Demonstrated an understanding of good test **design**</li><li>Tests not under or over engineered</li></ul>|
-|Stories PDF|25%|<ul><li>Demonstration of an understanding of a user's needs when using a product</li><li>Clear sense of the coverage needed for requirements (i.e. all reasonable possibilities explored)</li><li>Strong understanding of the granularity in which to express requirements (not too specific, not too broad)</li><li>Demonstration of an understanding of the language typically used when writing user stories</li><li>Demonstration of an understanding of the difference between high-level/epic user stories and their subsequent user story components</li></ul>|
-|Assumptions PDF|10%|<ul><li>Clear and obvious effort and time gone into thinking about possible assumptions that are being made when interpreting the specification</li></ul>|
-|Reflection & Plan PDF|10%|<ul><li>Communication of plan for development in a written format</li><li>Communication of plan for development in a diagramatic format</li><li>Demonstration of understanding of how to draw and anticipate a timeline</li><li>Demonstration of thoughtfullness regarding software tools to assist the team in meeting the development iteration</li></ul>|
-|Teamwork PDF|15%|<ul><li>Highlighting the timing and outcome of team meetings</li><li>Demonstration that responsibilities were allocated across team members</li><li>Clear reflection on areas for improvement</li><li>Impression that team has worked together collaboratively</li><li>Impression that team had processes in place to work through disagreements or tension</li><li>Impression that team had a thought out methodology for completing this iteration</li></ul>|
-
-### Advice
-
-* Do NOT attempt to try and write or start a web server. Don't overthink how these functions are meant to connect to a frontend yet. This is for the next iteration. In this iteration you are just focusing on the high level functions that will eventually be used for a web server.
-* While we don't encourage you to implement the functions (because the specification may change, and there are no marks for implementation), we do encourage you to sufficiently "stub" out the functions to ensure they're testable and that your python tests can actually compile and run</li>
+|Pytests|40%| <ul><li>Demonstrated an understanding of good test **coverage**</li><li>Demonstrated an understanding of the importance of **clarity** on the communication of test purposes</li><li>Demonstrated an understanding of thoughtful test **design**</li><li>Performance against an automatic marking system with both functional and dysfunctional implementations</li></ul>|
+|Git Practices|20%|<ul><li>Meaningful and informative git commit names being used</li><li>Effective use of merge requests (from branches being made) across the team (minimum 12 MRs)</li></ul>|
+|Project Management|20%|<ul><li>Effective use of course-provided slack, demonstrating an ability to communicate and manage effectivelly digitally</li><li>Use of task board on Gitlab to track and manage tasks</li><li>Effective use of agile methods such as standups</li></ul>|
+|Teamwork|10%|<ul><li>A generally equal contribution between team members</li><li>Clear evidence of reflection on group's performance and state of the team, with initiative to improve in future iterations</li></ul>|
+|Assumptions markdown file|10%|<ul><li>Clear and obvious effort and time gone into thinking about possible assumptions that are being made when interpreting the specification</li></ul>|
 
 ### Demonstration
 
-When you demonstrate this iteration in your week 4 lab, the breakdown will go approximately like this:
+When you demonstrate this iteration in your week 4 lab (week 5 for monday tutes), it will consist of a 15 minute Q&A in front of your tutorial class.
 
-* 5 minutes of demonstration of the code you produced
-* 5 minutes of demonstration of your stories, assumptions, and plan
-* 10 minutes of Q&A from the tutor(s)
-
-## Iteration 2: Servers and Products
-
-Details will be released in week 4
-
-## Iteration 3: Improvements from customer feedback
-
-Details will be released in week 7
-
-## Interface pecifications from Sally and Bob
+## Interface specifications from Sally and Bob
 
 ### Data types
 
@@ -161,67 +129,93 @@ Details will be released in week 7
 |-------------|----|
 |named exactly **email**|string|
 |named exactly **id**|integer|
+|named exactly **length**|integer|
 |named exactly **password**|string|
 |named exactly **token**|string|
 |named exactly **message**|string|
 |contains substring **name**|string|
 |contains substring **code**|string|
 |has prefix **is_**|boolean|
-|has prefix **time_**|datetime|
+|has prefix **time_**|integer (unix timestamp), [check this out](https://www.tutorialspoint.com/How-to-convert-Python-date-to-Unix-timestamp)|
 |has suffix **_id**|integer|
 |has suffix **_url**|string|
 |has suffix **_str**|string|
 |has suffix **end**|integer|
 |has suffix **start**|integer|
-|named exactly **messages**|List of dictionaries, where each dictionary contains types { u_id, message, time_created, is_unread }|
-|named exactly **channels**|List of dictionaries, where each dictionary contains types { id, name }|
-|named exactly **members**|List of dictionaries, where each dictionary contains types { u_id, name_first, name_last }|
+|(outputs only) named exactly **user**|Dictionary containing u_id, email, name_first, name_last, handle_str|
+|(outputs only) named exactly **users**|List of dictionaries, where each dictionary contains types u_id, email, name_first, name_last, handle_str|
+|(outputs only) named exactly **messages**|List of dictionaries, where each dictionary contains types { message_id, u_id, message, time_created  }|
+|(outputs only) named exactly **channels**|List of dictionaries, where each dictionary contains types { channel_id, name }|
+|(outputs only) name ends in **members**|List of dictionaries, where each dictionary contains types { u_id, name_first, name_last }|
 
-### Functions
+### Token
+Many of these functions (nearly all of them) need to be called from the perspective of a user who is logged in already. When calling these "authorised" functions, we need to know:
+1) Which user is calling it
+2) That the person who claims they are that user, is actually that user
 
-|Function name|Parameters|Return type|
-|-------------|----------|-----------|
-|auth_login|(email, password)|{ token }|
-|auth_logout|(token)|{}|
-|auth_register|(email, password, name_first, name_last)|{ token }|
-|auth_passwordreset_request|(email)|{}|
-|auth_passwordreset_reset|(reset_code)|{}|
-|channel_invite|(token, channel_id, u_id)|{}|
-|channel_details|(token, channel_id)|{ name, owner_members, all_members }|
-|channel_messages|(token, channel_id, start)|{ messages, start, end }|
-|channel_leave|(token, channel_id)|{}|
-|channel_join|(token, channel_id)|{}|
-|channel_addowner|(token, channel_id, u_id)|{}|
-|channel_removeowner|(token, channel_id, u_id)|{}|
-|channels_list|(token)|{ channels }|
-|channels_listall|(token)|{ channels }|
-|channels_create|(token, name, is_public)|{ channel_id }|
-|message_sendlater|(token, message, time_sent)|{}|
-|message_send|(token, message)|{}|
-|message_remove|(token, message_id)|{}|
-|message_edit|(token, message, message_id)|{}|
-|message_react|(token, message_id, react_id)|{}|
-|message_unreact|(token, message_id)|{}|
-|message_pin|(token, message_id)|{}|
-|message_unpin|(token, message_id)|{}|
-|user_profile|(token)|{ email, name_first, name_last, handle_str }|
-|user_profile_setname|(token, name_first, name_last)|{}|
-|user_profile_setemail|(token, email)|{}|
-|user_profile_sethandle|(token, handle_str)|{}|
-|user_profiles_uploadphoto|(token, img_url, x_start, y_start, x_end, y_end)|{}|
-|standup_start|(token)|{ time_finish }|
-|standup_send|(token, message)|{}|
-|search|(token, query_str)|{ messages }|
-|admin_userpermission_add|(token, u_id, permission_id)|{}|
-|admin_userpermission_remove|(token, u_id, permission_id)|{}|
+We could solve this trivially by storing the user ID of the logged in user on the front end, and every time the front end (from Sally and Bob) calls your background, they just sent a user ID. This solves our first problem (1), but doesn't solve our second problem! Because someone could just "hack" the front end and change their user id and then log themselves in as someone else.
+
+To solve this when a user logs in or registers the backend should return a "token" (an authorisation hash) that the front end will store and pass into most of your functions in future. When these "authorised" functions are called, you can check if a token is valid, and determine the user ID.
+
+### Permissions:
+ * Members in a channel have one of two channel permissions.
+   1) Owner of the channel (the person who created it, and whoever else that creator adds)
+   2) Members of the channel
+ * Slackr user's have two global permissions
+   1) Owners, who can also modify other owners' permissions.
+   2) Members, who do not have any special permissions (permission_id 3)
+ * All slackr users are by default members, except for the very first user who signs up, who is an owner
+
+A user's primary permissions are their global permissions. Then the channel permissions are layered on top. For example:
+* An owner of slackr has owner privileges in every channel they've joined
+* A member of slackr is a member in channels they are not owners of
+* A member of slackr is an owner in channels they are owners of
+
+### Errors for all functions
+
+### Pagination
+The behaviour in which channel_messages returns data is called **pagination**. It's a commonly used method when it comes to getting theoretially unbounded amounts of data from a server to display on a page in chunks. Most of the timelines you know and love - Facebook, Instagram, LinkedIn - do this.
+
+For example, if we imagine a user with token "12345" is trying to read messages from channel with ID 6, and this channel has 124 messages in it, 3 calls from the client to the server would be made. These calls, and their corresponding return values would be:
+ * channel_messages("12345", 6, 0) => { [messages], 0, 50 }
+ * channel_messages("12345", 6, 50) => { [messages], 50, 100 }
+ * channel_messages("12345", 6, 100) => { [messages], 100, -1 }
+
+### Interface
+
+|Function Name|Parameters|Return type|Exceptions|Description|
+|------------|-------------|----------|-----------|----------|
+|auth_login|(email, password)|{ u_id, token }|**InputError** when any of:<ul><li>Email entered is not a valid email using the method provided [here](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) (unless you feel you have a better method)</li><li>Email entered does not belong to a user</li><li>Password is not correct</li></ul> | Given a registered users' email and password and generates a valid token for the user to remain authenticated |
+|auth_logout|(token)|{ is_success }|N/A|Given an active token, invalidates the taken to log the user out. If a valid token is given, and the user is successfully logged out, it returns true, otherwise false. |
+|auth_register|(email, password, name_first, name_last)|{ u_id, token }|**InputError** when any of:<ul><li>Email entered is not a valid email using the method provided [here](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) (unless you feel you have a better method).</li><li>Email address is already being used by another user</li><li>Password entered is less than 6 characters long</li><li>name_first not is between 1 and 50 characters in length</li><li>name_last is not between 1 and 50 characters in length</ul>|Given a user's first and last name, email address, and password, create a new account for them and return a new token for authentication in their session. A handle is generated that is the concatentation of a lowercase-only first name and last name. If the concatenation is longer than 20 characters, it is cutoff at 20 characters. If the handle is already taken, you may modify the handle in any way you see fit to make it unique. |
+|channel_invite|(token, channel_id, u_id)|{}|**InputError** when any of:<ul><li>channel_id does not refer to a valid channel that the authorised user is part of.</li><li>u_id does not refer to a valid user</li></ul>**AccessError** when<ul><li>the authorised user is not already a member of the channel</li>|Invites a user (with user id u_id) to join a channel with ID channel_id. Once invited the user is added to the channel immediately|
+|channel_details|(token, channel_id)|{ name, owner_members, all_members }|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li></ul>**AccessError** when<ul><li>Authorised user is not a member of channel with channel_id</li></ul>|Given a Channel with ID channel_id that the authorised user is part of, provide basic details about the channel|
+|channel_messages|(token, channel_id, start)|{ messages, start, end }|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li><li>start is greater than the total number of messages in the channel</li></ul>**AccessError** when<ul><li>Authorised user is not a member of channel with channel_id</li></ul>|Given a Channel with ID channel_id that the authorised user is part of, return up to 50 messages between index "start" and "start + 50". Message with index 0 is the most recent message in the channel. This function returns a new index "end" which is the value of "start + 50", or, if this function has returned the least recent messages in the channel, returns -1 in "end" to indicate there are no more messages to load after this return.|
+|channel_leave|(token, channel_id)|{}|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li></ul>**AccessError** when<ul><li>Authorised user is not a member of channel with channel_id</li></ul>|Given a channel ID, the user removed as a member of this channel|
+|channel_join|(token, channel_id)|{}|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li></ul>**AccessError** when<ul><li>channel_id refers to a channel that is private (when the authorised user is not an admin)</li></ul>|Given a channel_id of a channel that the authorised user can join, adds them to that channel|
+|channel_addowner|(token, channel_id, u_id)|{}|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li><li>When user with user id u_id is already an owner of the channel</li></ul>**AccessError** when the authorised user is not an owner of the slackr, or an owner of this channel</li></ul>|Make user with user id u_id an owner of this channel|
+|channel_removeowner|(token, channel_id, u_id)|{}|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li><li>When user with user id u_id is not an owner of the channel</li></ul>**AccessError** when the authorised user is not an owner of the slackr, or an owner of this channel</li></ul>|Remove user with user id u_id an owner of this channel|
+|channels_list|(token)|{ channels }|N/A|Provide a list of all channels (and their associated details) that the authorised user is part of|
+|channels_listall|(token)|{ channels }|N/A|Provide a list of all channels (and their associated details)|
+|channels_create|(token, name, is_public)|{ channel_id }|**InputError** when any of:<ul><li>Name is more than 20 characters long</li></ul>|Creates a new channel with that name that is either a public or private channel|
+|message_send|(token, channel_id, message)|{ message_id }|**InputError** when any of:<ul><li>Message is more than 1000 characters</li></ul>**AccessError** when: <li> the authorised user has not joined the channel they are trying to post to</li></ul>|Send a message from authorised_user to the channel specified by channel_id|
+|message_remove|(token, message_id)|{}|**InputError** when any of:<ul><li>Message (based on ID) no longer exists</li></ul>**AccessError** when none of the following are true:<ul><li>Message with message_id was sent by the authorised user making this request</li><li>The authorised user is an admin or owner of this channel or the slackr</li></ul>|Given a message_id for a message, this message is removed from the channel|
+|message_edit|(token, message_id, message)|{}|**AccessError** when none of the following are true:<ul><li>Message with message_id was sent by the authorised user making this request</li><li>The authorised user is an admin or owner of this channel or the slackr</li></ul>|Given a message, update it's text with new text. If the new message is an empty string, the message is deleted.|
+|user_profile|(token, u_id)|{ user }|**InputError** when any of:<ul><li>User with u_id is not a valid user</li></ul>|For a valid user, returns information about their email, first name, last name, and handle|
+|user_profile_setname|(token, name_first, name_last)|{}|**InputError** when any of:<ul><li>name_first is not between 1 and 50 characters in length</li><li>name_last is not between 1 and 50 characters in length</ul></ul>|Update the authorised user's first and last name|
+|user_profile_setemail|(token, email)|{}|**InputError** when any of:<ul><li>Email entered is not a valid email using the method provided [here](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) (unless you feel you have a better method).</li><li>Email address is already being used by another user</li>|Update the authorised user's email address|
+|user_profile_sethandle|(token, handle_str)|{}|**InputError** when any of:<ul><li>handle_str must be between 3 and 20 characters</li><li>handle is already used by another user</li></ul>|Update the authorised user's handle (i.e. display name)|
+|users_all|(token)|{ users}||
+|search|(token, query_str)|{ messages }|N/A|Given a query string, return a collection of messages in all of the channels that the user has joined that match the query|
+
 
 ## Due Dates and Weightings
 
 |Iteration|Code and report due                  |Demonstration to tutor(s)      |Assessment weighting of project (%)|
 |---------|-------------------------------------|-------------------------------|-----------------------------------|
-|   1     |8pm Sunday 6th October (**week 3**)  |In YOUR **week 4** laboratory  |30%                                |
-|   2     |8pm Sunday 27th October (**week 6**) |In YOUR **week 7** laboratory  |40%                                |
-|   3     |8pm Sunday 17th November (**week 9**)|In YOUR **week 10** laboratory |30%                                |
+|   1     |8pm Monday 9th March (**week 4**)    |In YOUR **week 4** laboratory  |30%                                |
+|   2     |8pm Sunday 29th March (**week 6**)   |In YOUR **week 7** laboratory  |40%                                |
+|   3     |8pm Sunday 19th April (**week 9**)   |In YOUR **week 10** laboratory |30%                                |
 
 ## Expectations
 
