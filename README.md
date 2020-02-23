@@ -97,7 +97,7 @@ You may also wish to create some helper files with extra helper functions if tha
 
 ### Submission
 
-This iteration is due to be submitted at 8pm Sunday 9th March (**week 4**). You will then be demonstrating this in your week 4 lab. All team members **must** attend this lab session, or they will not receive a mark.
+This iteration is due to be submitted at 8pm Monday 9th March (**week 4**). You will then be demonstrating this in your week 4 lab. All team members **must** attend this lab session, or they will not receive a mark.
 
 To submit, one team member must run this command in the CSE environment:
 
