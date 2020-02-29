@@ -1,4 +1,4 @@
-def list(token):
+def channels_list(token):
     return {
         'channels': [
         	{
@@ -8,7 +8,7 @@ def list(token):
         ],
     }
 
-def listall(token):
+def channels_listall(token):
     return {
         'channels': [
         	{
@@ -18,7 +18,7 @@ def listall(token):
         ],
     }
 
-def create(token, name, is_public):
+def channels_create(token, name, is_public):
     return {
         'channel_id': 1,
     }

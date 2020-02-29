@@ -1,4 +1,4 @@
-def profile(token, u_id):
+def user_profile(token, u_id):
     return {
         'user': {
         	'u_id': 1,
@@ -9,14 +9,14 @@ def profile(token, u_id):
         },
     }
 
-def profile_setname(token, name_first, name_last):
+def user_profile_setname(token, name_first, name_last):
     return {
     }
 
-def profile_setemail(token, email):
+def user_profile_setemail(token, email):
     return {
     }
 
-def profile_sethandle(token, handle_str):
+def user_profile_sethandle(token, handle_str):
     return {
     }
