@@ -17,7 +17,7 @@ A video describing this project and the background here can be found here.
 
 ## Overview
 
-An overview of this background and this project can be found in a short video found [HERE](https://youtu.be/Mzg3UGv3TSw).
+An overview of this background and this project can be found in a short video found [HERE](https://youtu.be/Mzg3UGv3TSw). **Please note that this video is from 19T3, so the marking breakdown has changed slightly. This video should be used to supplement explanations in the lecture, which can be found in lecture 2 of week 2.**
 
 To manage the transition from trimesters to hexamesters in 2020, UNSW has established a new focus on building an in-house digital collaboration and communication tool for groups and teams to support the high intensity learning environment.
 
