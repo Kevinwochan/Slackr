@@ -79,7 +79,7 @@ The first iteration does not include all capabilities. Further capabilities will
 
 You will be heavily marked for your use of thoughtful project management and use of git effectively. The degree to which your team works effectively will also be assessed.
 
-The files described above should all be in the root of your repository. If you've not written markdown before (which we assume most of you haven't), it's not necessary to research the format. Markdown is essentially plain text with a few extra features for basic formatting. You can just stick with plain text if you find that easier.
+The `assumptions.md` file described above should be in the root of your repository. If you've not written markdown before (which we assume most of you haven't), it's not necessary to research the format. Markdown is essentially plain text with a few extra features for basic formatting. You can just stick with plain text if you find that easier.
 
 Do NOT attempt to try and write or start a web server. Don't overthink how these functions are meant to connect to a frontend yet. This is for the next iteration. In this iteration you are just focusing on the high level functions that will eventually be used for a web server.
 ### Tests
@@ -172,6 +172,10 @@ A user's primary permissions are their global permissions. Then the channel perm
 * A member of slackr is an owner in channels they are owners of
 
 ### Errors for all functions
+
+**AccessError**
+ * For all functions except auth_register, auth_login
+ * Error thrown when token passed in is not a valid token
 
 ### Pagination
 The behaviour in which channel_messages returns data is called **pagination**. It's a commonly used method when it comes to getting theoretially unbounded amounts of data from a server to display on a page in chunks. Most of the timelines you know and love - Facebook, Instagram, LinkedIn - do this.
