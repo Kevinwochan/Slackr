@@ -91,13 +91,12 @@ def test_login_return_object():
     assert login['token'] in dict
     assert type(login['token']) is str
     assert login['u_id'] = new_user['u_id']
-    #same as reg
 
 # logout
 def test_logout():
     new_user = auth_register('z5555555@unsw.edu.au', 'password')
     #i think this is a mistake -will throw exception
-    login = auth_login('z555555@unsw.edu.au', 'incorrect password')
+    login = auth_login('z5555555@unsw.edu.au', 'password')
     #double check this
     assert 'token' in login
     assert auth_logout(login['token']) == {'is_success' : True}
