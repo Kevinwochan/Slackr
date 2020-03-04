@@ -3,9 +3,11 @@ import pytest
 from error import InputError
 from error import AccessError
 
+
 def test_channel_join():
 	pass
 
+# Assumption that first person to join a channel is Owner of that channel
 def test_channel_addowner():
 	pass
 
