@@ -2,7 +2,7 @@ import pytest
 from error import InputError
 import auth
 
-#make multiple users + check that their tokes are different
+
 # Registration
 def test_register_email_invalid():
     with pytest.raises(InputError) as e:
@@ -40,7 +40,6 @@ def test_register_name_length():
 
     with pytest.raises(InputError) as e:
         auth_register('z55555555@unsw.edu.au', 'password', 'fname', '1'*51)
-    #empty names
 
 def test_registration_return_object():
     new_user = auth_register('z55555555@unsw.edu.au', 'password', 'fname', 'lname')
@@ -49,14 +48,23 @@ def test_registration_return_object():
     assert type(new_user['u_id']) is str
     assert new_user['token'] in dict
     assert type(new_user['token']) is str
-    # check u_id <=20 characters
-    #check u_id is lowercase
-    # make second user with same name, check u_id is different
+
+    # Checking length of u_id is always  <= 20
+    long_user = auth_register('z55555551@unsw.edu.au', 'password', 'L'*50, 'N'*50)
+    long_id = long_user['u_id']
+    assert len(long_id) <= 20
+    # Checking u_id is lowercase
+    assert long_id.islower() == True
+
+def test_registration_return_unique():
+    user1 = auth_register('z55555555@unsw.edu.au', 'password', 'fname', 'lname')
+    user2 = auth_register('z44444444@unsw.edu.au', 'password', 'fname', 'lname')
+    assert user1['token'] != user2['token']
+    assert user1['u_id'] != user2['u_id']
 
 # Login
 def test_login_email_invalid():
     with pytest.raises(InputError) as e:
-        #changed this test to pass a string as email rather than int
         assert auth_login('1234', 'password')
     with pytest.raises(InputError) as e:
         assert auth_login('@unsw.edu.au', 'password')
