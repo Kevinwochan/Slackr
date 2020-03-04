@@ -70,7 +70,8 @@ def test_login_email_invalid():
         assert auth_login('@unsw.edu.au', 'password')
     with pytest.raises(InputError) as e:
         assert auth_login('username', 'password')
-    #same email errors as register
+    with pytest.raises(InputError) as e:
+        assert auth_login('', 'password')
 
 def test_login_no_user_found():
     with pytest.raises(InputError) as e:
@@ -79,7 +80,7 @@ def test_login_no_user_found():
 def test_login_password_incorrect(get_new_user):
     new_user = auth_register('z5555555@unsw.edu.au', 'password')
     with pytest.raises(InputError) as e:
-        auth_login('z555555@unsw.edu.au', 'incorrect password')
+        auth_login('z5555555@unsw.edu.au', 'incorrect password')
 
 def test_login_return_object():
     new_user = auth_register('z55555555@unsw.edu.au', 'password', 'fname', 'lname')
