@@ -40,14 +40,6 @@ def test_register_name_length():
     with pytest.raises(InputError) as e:
         auth_register('z55555555@unsw.edu.au', 'password', 'fname', '1'*51)
 
-def test_register_return_object():
-    new_user = auth_register('z55555555@unsw.edu.au', 'password', 'fname', 'lname')
-    assert type(new_user) is dict
-    assert 'u_id' in new_user
-    assert type(new_user['u_id']) is str
-    assert 'token' in new_user
-    assert type(new_user['token']) is str
-
 def test_register_return_unique():
     user1 = auth_register('z55555555@unsw.edu.au', 'password', 'fname', 'lname')
     user2 = auth_register('z44444444@unsw.edu.au', 'password', 'fname', 'lname')
@@ -95,6 +87,9 @@ def test_login_return_object():
 
 
 # logout
+def test_logout_no_account():
+    assert auth_logout('not a valid token') == {'is_success' : False}
+
 def test_logout():
     new_user = auth_register('z5555555@unsw.edu.au', 'password', 'fname', 'lname')
     assert auth_logout(new_user['token']) == {'is_success' : True}
