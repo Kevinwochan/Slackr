@@ -7,8 +7,9 @@ import auth
 # Registration
 def test_register_email_invalid():
     with pytest.raises(InputError) as e:
-        #will this work?
-        assert auth_register(1234, 'password', 'fname', 'lname')
+        #Assumption: functions will always be given the correct type
+        #changed this test to pass a string as email rather than int
+        assert auth_register('1234', 'password', 'fname', 'lname')
     with pytest.raises(InputError) as e:
         assert auth_register('@unsw.edu.au', 'password', 'fname', 'lname')
     with pytest.raises(InputError) as e:
@@ -55,7 +56,8 @@ def test_registration_return_object():
 # Login
 def test_login_email_invalid():
     with pytest.raises(InputError) as e:
-        assert auth_login(1234, 'password')
+        #changed this test to pass a string as email rather than int
+        assert auth_login('1234', 'password')
     with pytest.raises(InputError) as e:
         assert auth_login('@unsw.edu.au', 'password')
     with pytest.raises(InputError) as e:
