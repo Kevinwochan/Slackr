@@ -2,41 +2,41 @@ import pytest
 from error import InputError
 import auth
 
-# note, what happens if you dont give it a string?
 #make multiple users + check that their tokes are different
 # Registration
 def test_register_email_invalid():
     with pytest.raises(InputError) as e:
         #Assumption: functions will always be given the correct type
-        #changed this test to pass a string as email rather than int
         assert auth_register('1234', 'password', 'fname', 'lname')
     with pytest.raises(InputError) as e:
         assert auth_register('@unsw.edu.au', 'password', 'fname', 'lname')
     with pytest.raises(InputError) as e:
         assert auth_register('username', 'password', 'fname', 'lname')
-    #empty email
+    with pytest.raises(InputError) as e:
+        assert auth_register('', 'password', 'fname', 'lname')
 
 def test_register_email_in_use():
     new_user = auth_register('z55555555@unsw.edu.au', 'password', 'fname', 'lname')
     with pytest.raises(InputError) as e:
         auth_register('z55555555@unsw.edu.au', 'password', 'fname', 'lname')
-    #with new names and such
+    with pytest.raises(InputError) as e:
+        auth_register('z55555555@unsw.edu.au', 'password1', 'fname1', 'lname1')
+
 def test_register_password_too_short():
     with pytest.raises(InputError) as e:
         auth_register('z55555555@unsw.edu.au', '12345', 'fname', 'lname')
     with pytest.raises(InputError) as e:
         auth_register('z55555555@unsw.edu.au', '', 'fname', 'lname')
-    #password too long?
 
 def test_register_name_length():
     with pytest.raises(InputError) as e:
-        auth_register('z55555555@unsw.edu.au', 'password', '1', 'lname')
+        auth_register('z55555555@unsw.edu.au', 'password', '', 'lname')
 
     with pytest.raises(InputError) as e:
         auth_register('z55555555@unsw.edu.au', 'password', '1'*51, 'lname')
 
     with pytest.raises(InputError) as e:
-        auth_register('z55555555@unsw.edu.au', 'password', 'fname', '1')
+        auth_register('z55555555@unsw.edu.au', 'password', 'fname', '')
 
     with pytest.raises(InputError) as e:
         auth_register('z55555555@unsw.edu.au', 'password', 'fname', '1'*51)
