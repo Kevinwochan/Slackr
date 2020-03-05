@@ -13,7 +13,8 @@ A video describing this project and the background here can be found here.
 
 ## Changelog
 
-* Coming soon (hopefully not)
+* 03/03: Added description for users_all
+* 05/03: Reiterated not to modify/move stub files as per week 2 lecture; submission open comment
 
 ## Overview
 
@@ -82,6 +83,8 @@ You will be heavily marked for your use of thoughtful project management and use
 The `assumptions.md` file described above should be in the root of your repository. If you've not written markdown before (which we assume most of you haven't), it's not necessary to research the format. Markdown is essentially plain text with a few extra features for basic formatting. You can just stick with plain text if you find that easier.
 
 Do NOT attempt to try and write or start a web server. Don't overthink how these functions are meant to connect to a frontend yet. This is for the next iteration. In this iteration you are just focusing on the high level functions that will eventually be used for a web server.
+
+
 ### Tests
 
 Our recommendation is to break all of the functions to test up into 1 or many files (this is a decision for you and your team), and then create test files in the same directory as the files the tests are testing. An example of this has been done with:
@@ -89,11 +92,19 @@ Our recommendation is to break all of the functions to test up into 1 or many fi
 * `/src/echo.py`
 * `/src/echo_test.py`
 
-It is up to you how you structure your tests, but we have placed a series of stub functions inside the /src/ folder for you to use with your pytests. If you're trying to implement/finish these stubs in order to complete your tests, you're approaching testing wrong.
+A number of stub files have been added to your /src/ folder in your repository. These files are:
+ * `auth.py`
+ * `channel.py`
+ * `channels.py`
+ * `user.py`
+ * `message.py`
+ * `other.py`
+
+**Do not modify these files**, otherwise you will be unable to get your 40% performance marking. When automarking your tests, we will replace these stub functions with actual functions. If you're trying to implement/finish these stubs in order to complete your tests, you're approaching testing wrong.
+
+Besides those files, you have complete control over how you structure your tests and any other helper functions. You can put all your tests in one file, or many files, or in sub-directories. That is up to you.
 
 Stub functions are dummy implementations of functions that allow them to be trivially tested. E.G. A stub function for a user to login may always return a dummy auth token "123456". This will allow your tests to successfully compile. Of course, because these functions aren't implemented it means that your pytests will fail, but that's OK.
-
-You may also wish to create some helper files with extra helper functions if that would assist you writing your tests.
 
 ### Submission
 
@@ -104,6 +115,8 @@ To submit, one team member must run this command in the CSE environment:
 ```sh
 1531 submit iteration1
 ```
+
+Submissions will be open from 10am on Saturday week 3. A very basic dryrun/sanity check will be provided at this time as well.
 
 This will submit the contents of your repo on GitLab and perform a check to make sure that the files above are present. **Make sure that everything you intend to submit is included in your repo on the master branch**. 
 
