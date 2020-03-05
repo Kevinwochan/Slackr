@@ -17,6 +17,7 @@ def test_channel_addowner():
 	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
 	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
 	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	channel.channel_join(test_normal_user["token"],test_channel["channel_id"])
 	channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 
 # Assumption that first person to join/create a channel is Owner of that channel
@@ -24,6 +25,7 @@ def test_channel_removeowner():
 	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
 	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
 	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	channel.channel_join(test_normal_user["token"],test_channel["channel_id"])
 	channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 	channel.channel_removeowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 	
@@ -43,6 +45,7 @@ def test_channel_addowner_InputError():
 		channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 
 	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	channel.channel_join(test_normal_user["token"],test_channel["channel_id"])
 	channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 	with pytest.raises(InputError) as e:
 		channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
@@ -56,6 +59,7 @@ def test_channel_removeowner_InputError():
 		channel.channel_removeowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 
 	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	channel.channel_join(test_normal_user["token"],test_channel["channel_id"])
 	with pytest.raises(InputError) as e:
 		channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 	
@@ -73,6 +77,8 @@ def test_channel_addowner_AccessError():
 	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
 	test_normal_user2 = auth_register("z9999999@unsw.edu.au","password", "Sam", "Smith") 
 	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	channel.channel_join(test_normal_user["token"],test_channel["channel_id"])
+	channel.channel_join(test_normal_user2["token"],test_channel["channel_id"])
 	with pytest.raises(AccessError) as e:
 		channel.channel_addowner(test_normal_user["token"], test_channel["channel_id"], test_normal_user2["u_id"])
 
@@ -82,6 +88,8 @@ def test_channel_removeowner_AccessError():
 	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
 	test_normal_user2 = auth_register("z9999999@unsw.edu.au","password", "Sam", "Smith") 
 	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	channel.channel_join(test_normal_user["token"],test_channel["channel_id"])
+	channel.channel_join(test_normal_user2["token"],test_channel["channel_id"])
 	with pytest.raises(AccessError) as e:
 		channel.channel_removeowner(test_normal_user["token"], test_channel["channel_id"], test_normal_user2["u_id"])
 
