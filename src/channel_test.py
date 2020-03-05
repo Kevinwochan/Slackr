@@ -5,21 +5,28 @@ from channels import channels_create
 from error import InputError
 from error import AccessError
 
-# Keeping passes until all tests are done and working
-
+# Keeping passes until all test function is done
 def test_channel_join():
 	test_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
 	test_channel = channels_create(test_user["token"], "test_channel", True)
 	channel.channel_join(test_user["token"],test_channel["channel_id"])
 
-	pass
 
 # Assumption that first person to join a channel is Owner of that channel
 def test_channel_addowner():
-	pass
+	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
+	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
+
 
 def test_channel_removeowner():
-	pass
+	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
+	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
+	channel.channel_removeowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
+	
 
 # Didn't create channel so channel token wouldn't exist
 def test_channel_join_InputError():
@@ -27,13 +34,29 @@ def test_channel_join_InputError():
 	with pytest.raises(InputError) as e:
 		channel.channel_join(test_user["token"],non_existent_channel["channel_id"])
 
-	pass
 
-def test_channel_addowner_InputError():
-	pass
+def test_channel_addowner_InputError(): # Two input errors. Not valid channel id  & already owner
+	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
+	with pytest.raises(InputError) as e:
+		channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 
-def test_channel_remove_InputError():
-	pass
+	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
+	with pytest.raises(InputError) as e:
+		channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
+
+
+def test_channel_removeowner_InputError(): # Two input errors. Not valid channel id & not owner
+	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
+	with pytest.raises(InputError) as e:
+		channel.channel_removeowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
+
+	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	with pytest.raises(InputError) as e:
+		channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
+	
 
 def test_channel_join_AccessError():
 	test_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
@@ -41,11 +64,22 @@ def test_channel_join_AccessError():
 	test_channel = channels_create(test_user2["token"], "test_channel", False)
 	with pytest.raises(AccessError) as e:
 		channel.channel_join(test_user["token"],test_channel["channel_id"])
-		
-	pass
 
+# Assuming there isn't a Slackr owner
 def test_channel_addowner_AccessError():
-	pass
+	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
+	test_normal_user2 = auth_register("z9999999@unsw.edu.au","password", "Sam", "Smith") 
+	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	with pytest.raises(AccessError) as e:
+		channel.channel_addowner(test_normal_user["token"], test_channel["channel_id"], test_normal_user2["u_id"])
 
+# Assuming there isn't a Slaer owner
 def test_channel_removeowner_AccessError():
-	pass
+	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
+	test_normal_user2 = auth_register("z9999999@unsw.edu.au","password", "Sam", "Smith") 
+	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	with pytest.raises(AccessError) as e:
+		channel.channel_removeowner(test_normal_user["token"], test_channel["channel_id"], test_normal_user2["u_id"])
+
