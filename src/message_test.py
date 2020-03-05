@@ -76,6 +76,12 @@ def test_sending_empty_message(new_channel_and_user):
                      new_channel_and_user['channel_id'], '')
 
 
+def test_sending_with_invalid_token(new_channel_and_user):
+    """ Tests that an access error is thrown when an an invalid token is used """
+    with pytest.raises(AccessError):
+        message_send('invalid token', new_channel_and_user['channel_id'], 'a')
+
+
 # Removing
 def test_removing_invalid_messages(new_channel_and_user):
     """ Tests that removing a message with an invalid message id throws an input error"""
@@ -127,6 +133,14 @@ def test_removing_authored_message(new_channel_and_user):
     message = message_send(author['token'], new_channel_and_user['channel_id'],
                            'a')
     message_remove(author['token'], message['message_id'])
+
+
+def test_removing_with_invalid_token(new_channel_and_user):
+    """ Tests that an access error is thrown when an an invalid token is used """
+    message = message_send(new_channel_and_user['token'], new_channel_and_user['channel_id'],
+                           'a')
+    with pytest.raises(AccessError):
+        message_remove('invalid token', message['message_id'])
 
 
 # Editing
@@ -196,3 +210,12 @@ def test_editing_authored_message_with_empty_message(new_channel_and_user):
                            'a')
     with pytest.raises(InputError):
         message_edit(author['token'], message['message_id'], '')
+
+
+def test_editing_with_invalid_token(new_channel_and_user):
+    """ Tests that an access error is thrown when an an invalid token is used """
+    message = message_send(new_channel_and_user['token'], new_channel_and_user['channel_id'],
+                           'a')
+    with pytest.raises(AccessError):
+        message_edit(
+            'invalid token', message['message_id'], 'new message to replace existing message')
