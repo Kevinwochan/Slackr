@@ -1,13 +1,15 @@
 from auth import auth_register
 import channel
 import pytest
+from channels import channels_create
 from error import InputError
 from error import AccessError
 
 
 def test_channel_join():
 	test_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
-	channel.channel_join(test_user["token"],)
+	test_channel = channels_create(test_user["token"], "test_channel", true)
+	channel.channel_join(test_user["token"],test_channel["channel_id"])
 	pass
 
 # Assumption that first person to join a channel is Owner of that channel
