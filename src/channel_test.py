@@ -5,21 +5,21 @@ from channels import channels_create
 from error import InputError
 from error import AccessError
 
-# Keeping passes until all test function is done
+
 def test_channel_join():
 	test_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
 	test_channel = channels_create(test_user["token"], "test_channel", True)
 	channel.channel_join(test_user["token"],test_channel["channel_id"])
 
 
-# Assumption that first person to join a channel is Owner of that channel
+# Assumption that first person to join/create a channel is Owner of that channel
 def test_channel_addowner():
 	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
 	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
 	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
 	channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 
-
+# Assumption that first person to join/create a channel is Owner of that channel
 def test_channel_removeowner():
 	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
 	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
@@ -35,7 +35,8 @@ def test_channel_join_InputError():
 		channel.channel_join(test_user["token"],non_existent_channel["channel_id"])
 
 
-def test_channel_addowner_InputError(): # Two input errors. Not valid channel id  & already owner
+# Two input errors. Not valid channel id  & already owner
+def test_channel_addowner_InputError(): 
 	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
 	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
 	with pytest.raises(InputError) as e:
@@ -47,7 +48,8 @@ def test_channel_addowner_InputError(): # Two input errors. Not valid channel id
 		channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 
 
-def test_channel_removeowner_InputError(): # Two input errors. Not valid channel id & not owner
+# Two input errors. Not valid channel id & not owner
+def test_channel_removeowner_InputError(): 
 	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
 	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
 	with pytest.raises(InputError) as e:
@@ -57,7 +59,7 @@ def test_channel_removeowner_InputError(): # Two input errors. Not valid channel
 	with pytest.raises(InputError) as e:
 		channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 	
-
+# Trying to join a private channel
 def test_channel_join_AccessError():
 	test_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
 	test_user2 = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
