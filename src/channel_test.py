@@ -10,6 +10,8 @@ from error import AccessError
 # Assuming that there isn't a Slackr Owner in these tests
 # Assumes there are no existing channels or users when each test is run
 # Assumes channel ids begin with id 0
+# Assumes channels_details is implemented to verify members have been added/removed
+# Assumes user ids begin with id 0
 
 ##############################
 #channel_leave test functions#
@@ -151,12 +153,15 @@ def test_channel_removeowner():
 	
 
 # Two input errors. Not valid channel id & not owner
-def test_channel_removeowner_InputError(): 
+def test_channel_removeowner_InputError_invalid_user(): 
 	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
 	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
 	with pytest.raises(InputError) as e:
 		channel.channel_removeowner(test_Owner_user["token"], 0, test_normal_user["u_id"])
 
+def test_channel_removeowner_InputError_invalid_channel():
+	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
 	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
 	channel.channel_join(test_normal_user["token"],test_channel["channel_id"])
 	with pytest.raises(InputError) as e:
