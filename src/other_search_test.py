@@ -5,8 +5,17 @@ from channel import channel_messages
 from other import search
 from auth import auth_register
 from channels import channels_create
+from message import message_send
 
+"""
+To test the search function, A user with name "Andrew" is created. Then Two
+channels are created named "channel_1" and "channel_2" respectively. Afterwards,
+Three messages are sent with one in chanenl_1 and two in channel_2. And a query_str
+which is "love" is set and only two messages are qualified. Here the assumption 
+of time is that the created time are all the same since the channel_messages function
+isn't implemented so the created time can not be gotten.
 
+"""
 
 def test_search():
     # Set up a user
@@ -43,6 +52,11 @@ def test_search():
     list_expected['messages'][1]['time_created'] = 12345
     
     assert search(andrew['token'], query_str) == list_expected
+         
+        
+    
+    
+    
          
         
     
