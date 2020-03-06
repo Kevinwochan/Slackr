@@ -27,6 +27,8 @@ def new_channel_and_user(new_user):
 def test_sending_long_message(new_channel_and_user):
     """ Test sending a message that is just below the size limit
         uses channel_messages to verify that the message has been recorded
+        assuming message ids start with 0, the first message ever will 
+        have an id of 0
     """
     message = message_send(new_channel_and_user['token'],
                            new_channel_and_user['channel_id'], 'a' * 1000)
