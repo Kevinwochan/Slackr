@@ -101,17 +101,26 @@ def test_channel_addowner():
 
 
 # Two input errors. Not valid channel id  & already owner
-def test_channel_addowner_InputError(): 
+def test_channel_addowner_InputError_invalid_channel(): 
 	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
 	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith")
 	with pytest.raises(InputError) as e:
 		channel.channel_addowner(test_Owner_user["token"], 0, test_normal_user["u_id"])
 
+def test_channel_addowner_InputError_user_already_owner(): 
+	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith")
 	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
 	channel.channel_join(test_normal_user["token"],test_channel["channel_id"])
 	channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 	with pytest.raises(InputError) as e:
 		channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
+
+def test_channel_addowner_InputError_invalid_user(): 
+	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	with pytest.raises(InputError) as e:
+		channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], 1)
 
 
 # Assuming there isn't a Slackr owner
