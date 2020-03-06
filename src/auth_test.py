@@ -142,4 +142,5 @@ def test_logout_twice():
     new_user = auth_register('z5555555@unsw.edu.au', 'password',
                              'placeholder_first_name', 'placeholder_last_name')
     assert auth_logout(new_user['token']) == {'is_success': True}
-    assert auth_logout(new_user['token']) == {'is_success': False}
+    with pytest.raises(AccessError):
+        assert auth_logout(new_user['token']) == {'is_success': False}
