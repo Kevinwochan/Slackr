@@ -20,8 +20,8 @@ def user_chas():
     
 # Set up a channel created by dav
 @pytest.fixture
-def channel_dav():
-    return channels_create(user_dav['token'], channel_dav, False)
+def channel_dav(user_dav):
+    return channels_create(user_dav['token'], "channel_dav", False)
     
 # Test for invite a new member by an old member
 def test_invite(user_dav, user_jas, channel_dav):
