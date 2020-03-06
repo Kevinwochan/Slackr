@@ -4,11 +4,6 @@ from auth import auth_register
 from error import InputError, AccessError
 
 '''
-user_profile_setname:
-    create user, change name to be invalid, test that error is raised
-    create user, change their name, see if the changed name is returned in user_profile_setname
-    check that handle + email are unnaffected
-    test return type (why???)
 User_profile_setemail:
     create user, change email to be invalid, check if error is raised
     change email, check
@@ -22,15 +17,40 @@ user_profile_sethandle:
 
 user_profile general tests
     test that the right users details are adjusted - THIS SEEMS IMPORTANT
-
+    change evberything to same and check its unchanged
+    test return type
 '''
+
+# Creates a user and returns their details
 @pytest.fixture
 def user1():
-    return auth_register("testemail@gmail.com", "1234567", "John", "Smith")
+    email = "testemail@gmail.com"
+    name_first = "John"
+    name_last = "Smith"
+
+    user = auth_register(email, "1234567", name_first, name_last)
+    return {
+        'token': user['token'],
+        'u_id': user['u_id'],
+        'email': email,
+        'name_first': name_first,
+        'name_last': name_last,
+    }
 
 @pytest.fixture
 def user2():
-    return auth_register("testdiff@gmail.com", "1234567", "Jane", "Doe")
+    email = "testdiff@gmail.com"
+    name_first =  "Jane"
+    name_last = "Doe"
+
+    user = auth_register(email, "1234567", name_first, name_last)
+    return {
+        'token': user['token'],
+        'u_id': user['u_id'],
+        'email': email,
+        'name_first': name_first,
+        'name_last': name_last,
+    }
 
 ################################################################################
 ##                          ||Tests: user_profile||                           ##
@@ -97,15 +117,82 @@ def test_profile_return_diff_user(user1, user2):
 ################################################################################
 ##                      ||Tests: user_profile_setname||                       ##
 ################################################################################
-
 def test_setname_invalid_token(inv_token):
     with pytest.raises(AccessError) as e:
         user_profile_setname(inv_token, "John", "Smith")
 
+def test_setname_invalid_name(user1):
+    with pytest.raises(InputError) as e:
+        user_profile_setname(user1['token'], '', 'name')
+    with pytest.raises(InputError) as e:
+        user_profile_setname(user1['token'], 'name', '')
+    with pytest.raises(InputError) as e:
+        user_profile_setname(user1['token'], 'name', 'n'*51)
+    with pytest.raises(InputError) as e:
+        user_profile_setname(user1['token'], 'n'*51, 'name')
+    with pytest.raises(InputError) as e:
+        user_profile_setname(user1['token'], 'n'*51, 'n'*51)
+    with pytest.raises(InputError) as e:
+        user_profile_setname(user1['token'], '', '')
+
+    #checking that user1's names have not been altered
+    #Assumtion: functions that result in errors perform no actions
+    user1_prof = user_profile(user1['token'], user1['u_id'])['user']
+    assert user1_prof['name_first'] == user1['name_first']
+    assert user1_prof['name_last'] == user1['name_last']
+
+# Runs edge case names to ensure no errors are raised
+def test_setname_edge_cases(user1):
+    user_profile_setname(user1['token'], 'n'*50, 'name')
+    user_profile_setname(user1['token'], 'name', 'n'*50)
+    user_profile_setname(user1['token'], 'n'*50, 'l'*50)
+    user_profile_setname(user1['token'], 'name', 'n')
+    user_profile_setname(user1['token'], 'n', 'name')
+    user_profile_setname(user1['token'], 'n', 'n')
+
+def test_setname_valid(user1):
+    user1_prof = user_profile(user1['token'], user1['u_id'])['user']
+    new_name_first = 'Different'
+    new_name_last = 'Name'
+
+    user_profile_setname(user1['token'], new_name_first, new_name_last)
+    new_user1_prof = user_profile(user1['token'], user1['u_id'])['user']
+    assert new_user1_prof['name_first'] == new_name_first
+    assert new_user1_prof['name_last'] == new_name_last
+    # Check that no other field has been changed
+    assert user1_prof['u_id'] == new_user1_prof['u_id']
+    assert user1_prof['email'] == new_user1_prof['email']
+    assert user1_prof['handle_str'] == new_user1_prof['handle_str']
+
+################################################################################
+##                      ||Tests: user_profile_setemail||                      ##
+################################################################################
 def test_setemail_invalid_token(inv_token):
     with pytest.raises(AccessError) as e:
-        user_profile_setemail(inv_token, "testemail@gmail.com")
+        user_profile_setemail(inv_token, "newemail@gmail.com")
 
+
+
+################################################################################
+##                     ||Tests: user_profile_sethandle||                      ##
+################################################################################
 def test_sethandle_invalid_token(inv_token):
     with pytest.raises(AccessError) as e:
-        user_profile_sethandle(inv_token, 'hjacob')
+        user_profile_sethandle(inv_token, 'newhandle')
+
+################################################################################
+##                    ||General Tests: user_profile_set*||                    ##
+################################################################################
+# Checks that the set functions return the right type (empty dictionary)
+# This is probably unimportant
+def test_set_return_type(user1):
+    setname_return = user_profile_setname(user1['token'], 'new', 'name')
+    setemail_return = user_profile_setemail(user1['token'], 'newemail@gmail.com')
+    sethandle_return = user_profile_sethandle(user1['token'],'newhandle')
+    assert type(setname_return) == dict
+    assert type(setemail_return) == dict
+    assert type(sethandle_return) == dict
+
+    assert len(setname_return) == 0
+    assert len(setemail_return) == 0
+    assert len(sethandle_return) == 0
