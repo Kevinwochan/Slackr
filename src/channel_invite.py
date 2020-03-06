@@ -100,4 +100,22 @@ def test_invite_itself(user_dav, channel_dav):
     
     assert member_jas in channel_dav_detail['all_members']
     
+# If a user invite itself to a channel where he is not a member
+def invite_itself(user_jas, channel_dav):
+
+    # jas invite himself again
+    channel_invite(user_jas['token'], channel_dav['channel_id'], user_jas['u_id'])
+    
+    # create member jas
+    member_jas = {}
+    member_jas['u_id'] = user_jas['u_id']
+    member_jas['name_first'] = "jas"
+    member_jas['name_last'] = "zhu"
+    
+    # set up channel details
+    channel_dav_detail = channel_details(user_dav['token'], channel_dav['channel_id'])
+    
+    assert member_jas not in channel_dav_detail['all_members']    
+
+    
     
