@@ -8,3 +8,9 @@ Functions Assumptions(search)
     2. Assuming the time created of each message is 12345
     3. Assuming the search function only search for the latest fifty messages in every channel
 
+Functions Assumptions(channel_invite)
+    1. Functions AccessError, InputError, auth_register, channel_details, channels_create works well
+    2. If the user is invited twice or more through a valid invitation, the user is still in that channel
+    3. If the user invite itself to the channel where he/she is already a member, nothing will happens
+    
+
