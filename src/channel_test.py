@@ -1,10 +1,44 @@
-from auth import auth_register
+from auth import auth_register, auth_logout
 import channel
 import pytest
 from channels import channels_create
 from error import InputError
 from error import AccessError
 
+# Assumptions #
+# Assuming that when you create a channel, you automatically join it as Owner
+# Assuming that there isn't a Slackr Owner in these tests
+
+##############################
+#channel_leave test functions#
+##############################
+
+
+def test_channel_leave():
+	test_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_channel = channels_create(test_user["token"], "test_channel", True)
+	channel.channel_leave(test_user["token"],test_channel["channel_id"])
+
+
+# Trying to leave a channel with invalid channel ID
+def test_channel_leave_InputError():
+	test_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_channel = channels_create(test_user["token"], "test_channel", True)
+	with pytest.raises(InputError) as e:
+		channel.channel_leave(test_user["token"],nonexistant_channel["channel_id"])
+
+
+# Trying to leave a channel that the user isn't in
+def test_channel_leave_AccessError():
+	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
+	test_channel = channels_create(test_Owner_user["token"], "test_channel", True)
+	with pytest.raises(AccessError) as e:
+		channel.channel_leave(test_normal_user["token"],test_channel["channel_id"])
+
+
+def test_channel_leave_InvalidToken():
+	pass
 
 #############################
 #channel_join test functions#
@@ -13,8 +47,9 @@ from error import AccessError
 
 def test_channel_join():
 	test_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
+	test_user2 = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
 	test_channel = channels_create(test_user["token"], "test_channel", True)
-	channel.channel_join(test_user["token"],test_channel["channel_id"])
+	channel.channel_join(test_user2["token"],test_channel["channel_id"])
 
 
 # Didn't create channel so channel token wouldn't exist
@@ -31,6 +66,10 @@ def test_channel_join_AccessError():
 	test_channel = channels_create(test_user2["token"], "test_channel", False)
 	with pytest.raises(AccessError) as e:
 		channel.channel_join(test_user["token"],test_channel["channel_id"])
+
+
+def test_channel_join_InvalidToken():
+	pass
 
 
 #################################
@@ -73,6 +112,10 @@ def test_channel_addowner_AccessError():
 		channel.channel_addowner(test_normal_user["token"], test_channel["channel_id"], test_normal_user2["u_id"])
 
 
+def test_channel_addowner_InvalidToken():
+	pass
+
+
 ####################################
 #channel_removeowner test functions#
 ####################################
@@ -101,7 +144,7 @@ def test_channel_removeowner_InputError():
 		channel.channel_addowner(test_Owner_user["token"], test_channel["channel_id"], test_normal_user["u_id"])
 
 
-# Assuming there isn't a Slaer owner
+# Assuming there isn't a Slackr owner
 def test_channel_removeowner_AccessError():
 	test_Owner_user = auth_register("z5555555@unsw.edu.au","password", "John", "Smith") 
 	test_normal_user = auth_register("z8888888@unsw.edu.au","password", "Bob", "Smith") 
@@ -112,3 +155,6 @@ def test_channel_removeowner_AccessError():
 	with pytest.raises(AccessError) as e:
 		channel.channel_removeowner(test_normal_user["token"], test_channel["channel_id"], test_normal_user2["u_id"])
 
+
+def test_channel_removeowner_InvalidToken():
+	pass
