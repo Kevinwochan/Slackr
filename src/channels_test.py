@@ -4,16 +4,6 @@ from error import InputError, AccessError
 import pytest
 #Assumption: channels_test.py assumes that auth_register, auth_logout have been tested
 
-'''
-channels_listall
-    invalid token
-    create channel as one user
-    create 2nd channel as other user
-        check list is not the same
-    check listall is the same (is this an assumption)
-    create private channel- check listall doesnt change
-'''
-
 ################################################################################
 ##                         ||Tests: channels_create||                         ##
 ################################################################################
