@@ -1,20 +1,29 @@
 import pytest
-from other import users_all, search
+from other import users_all
 from auth import auth_register
 from user import user_profile
 
-# Set up the user for further test
+"""
+
+Initially two users are set up with name of "andrew tylor" and "chris chen" respectively.
+Then use andrew's token to get all the users' profile.
+Afterwards, setting up the expected output and comparing the function tested
+
+"""
+
 def setup_other():
+    # set up the user
     andrew = auth_register("andrewt@gmail.com", "password", "andrew", "taylor")
     chris = auth_register("chrisc@gmail.com", "pilot", "chris", "chen")
 
-    # Test for uid
     # Access the users info by andrew's token
     users = users_all(andrew['token'])
+    
+    # set up the expected value
     andrew_profile = user_profile(andrew['token'], andrew['u_id'])
     chris_profile = user_profile(chris['token'], andrew['u_id'])
     
-    # set up the expected value
+    # andrew's expected info
     expected_out = []
     expected_out.append({})
     expected_out[0]['u_id'] = andrew_profile['u_id']
@@ -23,6 +32,7 @@ def setup_other():
     expected_out[0]['name_last'] = andrew_profile['name_last']
     expected_out[0]['handle_str'] = andrew_profile['handle_str']
     
+    # chris's expected info
     expected_out.append({})
     expected_out[1]['u_id'] = chris_profile['u_id']
     expected_out[1]['email'] = chris_profile['email']
