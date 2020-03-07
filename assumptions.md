@@ -1,52 +1,36 @@
-# Assumptions
+# **Assumptions**
+## General assumptions
 
-### **Authenication**
+- user ids begin with id 0
+- channel ids begin with id 0
+- Before each test function is run, there is no existing slackr data
+- After each test function is run, slackr data is deleted
 
-**Type defintions**
- 
-| variable   | type   |
-| ---------- | ------ |
-| email      | string |
-| password   | string |
-| token      | string |
-| name_first | string |
-| name_last  | string |
+## Authenication
+- there is a method of deleting/de-registering users
+- Registration has been implemented
+- logging in has been implemented
 
-Functions should be implemented in this order:
-1. Registration
-2. Login
-3. Logout
-
-Before the authentication tests are run, the user database should be empty and is cleaned after each test is run
-
-#### Functions
-
- **def test_register_email_invalid**
-- user z5555555@unsw.edu.au does not already exist
-
- **def test_register_email_in_use**
-- user z5555555@unsw.edu.au does not already exist
-
- **def test_register_password_too_short**
-- user z5555555@unsw.edu.au does not already exist
-
- **def test_register_name_length**
-- user z5555555@unsw.edu.au does not already exist
-
- **def test_login_email_invalid**
-- user z5555555@unsw.edu.au does not exist
-
- **def test_login_no_user_found**
-- user z5555555@unsw.edu.au does not exist
-
- **def test_login_password_incorrect**
-- register is implemetned
-- new_user is deleted after testing
+## Channel
+- there isn't a Slackr Owner in these tests
+- when you create a channel, you automatically join it as Owner
+- there are no existing channels or users when each test is run
+- channels_details is implemented to verify members have been added/removed
+- the first person to join/create a channel is Owner of that channel there isn't a Slackr owner
 
 
- **def test_logout**
-- register and login are already correctly implemented
-- user is deleted after creation
+## Channels
+- channels_test.py assumes that auth_register, auth_logout have been tested
 
- **def test_valid_credentials**
-- all functions have been implemented
+**channels_create**
+- channels_create raises an InputError if given empty name
+- 2 or more channels can be created with the same name - they will have to be differentiated by channel_id alone
+  
+**channels_list**
+- channels_list will return an empty list (in a dictionary) if there are no existing channels
+- channels_list lists channels in the order that the the user became a member of them
+
+**channels_listall**
+- channels_listall() will return an empty list (in a dictionary) if there are no existing channels
+- channels_listall lists channels in the order that they are created
+- All channels are listed by channels_listall, regardless of if they are private or not
