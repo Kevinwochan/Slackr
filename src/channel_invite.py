@@ -22,7 +22,6 @@ def user_chas():
 @pytest.fixture
 def channel_dav(user_dav):
     return channels_create(user_dav['token'], "channel_dav", False)
-
     
 # Test for invite a new member by an old member
 def test_invite(user_dav, user_jas, channel_dav):
@@ -116,7 +115,4 @@ def invite_itself(user_jas, channel_dav, user_dav):
     # set up channel details
     channel_dav_detail = channel_details(user_dav['token'], channel_dav['channel_id'])
     
-    assert member_jas not in channel_dav_detail['all_members']    
-
-    
-    
+    assert member_jas not in channel_dav_detail['all_members']
