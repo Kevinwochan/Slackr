@@ -98,7 +98,7 @@ def test_profile_return_diff_user(user1, user2):
     assert user2_prof['email'] == user2['email']
     assert user2_prof['name_first'] == user2['name_first']
     assert user2_prof['name_last'] == user2['name_last']
-    assert len(user1_prof['handle_str']) <= 20
+    assert len(user2_prof['handle_str']) <= 20
 
 ################################################################################
 ##                      ||Tests: user_profile_setname||                       ##
