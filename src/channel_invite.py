@@ -22,6 +22,7 @@ def user_chas():
 @pytest.fixture
 def channel_dav(user_dav):
     return channels_create(user_dav['token'], "channel_dav", False)
+
     
 # Test for invite a new member by an old member
 def test_invite(user_dav, user_jas, channel_dav):
@@ -81,7 +82,7 @@ def test_double_invite(user_dav, user_jas, channel_dav):
     assert member_jas in channel_dav_detail['all_members']
     
 # If the user in the channel invite himself
-def test_invite_itself(user_dav, channel_dav):
+def test_invite_itself(user_dav, channel_dav, user_jas):
     
     # invite jas to the channel
     channel_invite(user_dav['token'], channel_dav['channel_id'], user_jas['u_id'])
@@ -101,7 +102,7 @@ def test_invite_itself(user_dav, channel_dav):
     assert member_jas in channel_dav_detail['all_members']
     
 # If a user invite itself to a channel where he is not a member
-def invite_itself(user_jas, channel_dav):
+def invite_itself(user_jas, channel_dav, user_dav):
 
     # jas invite himself again
     channel_invite(user_jas['token'], channel_dav['channel_id'], user_jas['u_id'])
