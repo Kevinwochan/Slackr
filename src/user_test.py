@@ -3,7 +3,7 @@ from user import user_profile, user_profile_setname, user_profile_setemail, \
 user_profile_sethandle
 from auth import auth_register
 from error import InputError, AccessError
-
+# Note: fixture inv_token is imported by pytest from conftest.py automatically.
 
 
 # Creates a user and returns their details
@@ -40,7 +40,9 @@ def user2():
 ################################################################################
 ##                          ||Tests: user_profile||                           ##
 ################################################################################
-
+# invalid_token functions call the fixture inv_token. this fixture is located in
+# the file conftest.py and is automatically imported by pytest. This fixture
+# generates an invalid token using the register and logout functions
 def test_profile_invalid_token(inv_token):
     test_user = auth_register("testemail@gmail.com", "1234567", "John", "Smith")
     with pytest.raises(AccessError) as e:
