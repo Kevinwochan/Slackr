@@ -67,6 +67,3 @@ def test_invalid_channel(user_dav):
 def test_invalid_member(user_chas, channel_dav):
     with pytest.raises(AccessError):
         assert channel_details(user_chas['token'], channel_dav['channel_id'])
-        
-
-        
