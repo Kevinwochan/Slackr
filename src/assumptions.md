@@ -1,0 +1,8 @@
+- channels_test.py assumes that auth_register, auth_logout have been tested
+- channels_create raises an InputError if given empty name
+- 2 or more channels can be created with the same name - they will have to be differentiated by channel_id alone
+- channels_list will return an empty list (in a dictionary) if there are no existing channels
+- channels_list lists channels in the order that the the user became a member of them
+- channels_listall() will return an empty list (in a dictionary) if there are no existing channels
+- channels_listall lists channels in the order that they are created
+- All channels are listed by channels_listall, regardless of if they are private or not
