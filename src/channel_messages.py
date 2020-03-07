@@ -31,7 +31,7 @@ def test_invalid_channel_id(user_dav, channel_dav):
     msg_1 = message_send(user_dav['token'], channel_dav['channel_id'], "message")
     
     with pytest.raises(InputError):
-        assert channel_messages(user_dav['token'], "!Invalid", 0)
+        assert channel_messages(user_dav['token'], 000000, 0)
     
 # Test for the input error when the start is greater than the total number of 
 # messages
