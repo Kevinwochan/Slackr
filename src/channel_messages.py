@@ -100,7 +100,7 @@ def test_channel_messages(channel_dav, user_dav):
     
     # Test 1
     # When the start index is 1
-    test_1 = channel_messages(user_chas['token'], channel_dav['channel_id'], 1)
+    test_1 = channel_messages(user_dav['token'], channel_dav['channel_id'], 1)
     
     assert test_1['start'] == 1
     assert test_1['end'] == 51
@@ -108,7 +108,3 @@ def test_channel_messages(channel_dav, user_dav):
     assert msg_2_card in test_1['messages']
     assert msg_3_card in test_1['messages']
     assert msg_4_card in test_1['messages']
-    
-    
-    
-    
