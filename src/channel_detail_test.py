@@ -61,7 +61,7 @@ def test_channel_details(user_chas, user_dav, user_jas, channel_dav):
 # Test for the InputError
 def test_invalid_channel(user_dav):
     with pytest.raises(InputError):
-        assert channel_details(user_dav['token'], "!Invalid")
+        assert channel_details(user_dav['token'], 000000)
         
 # Test for the AccessError
 def test_invalid_member(user_chas, channel_dav):
