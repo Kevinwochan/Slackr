@@ -11,33 +11,33 @@ Afterwards, setting up the expected output and comparing the function tested
 
 """
 
-def setup_other():
+def test_other():
     # set up the user
-    andrew = auth_register("andrewt@gmail.com", "password", "andrew", "taylor")
-    chris = auth_register("chrisc@gmail.com", "pilot", "chris", "chen")
+    user_andrew = auth_register("andrewt@gmail.com", "password", "andrew", "taylor")
+    user_chris = auth_register("chrisc@gmail.com", "pilot", "chris", "chen")
 
     # Access the users info by andrew's token
-    users = users_all(andrew['token'])
+    users_card = users_all(user_andrew['token'])
     
-    # set up the expected value
-    andrew_profile = user_profile(andrew['token'], andrew['u_id'])
-    chris_profile = user_profile(chris['token'], andrew['u_id'])
+    # To get the handle_str of each user
+    andrew_profile = user_profile(user_andrew['token'], user_andrew['u_id'])
+    chris_profile = user_profile(user_chris['token'], user_chris['u_id'])
     
     # andrew's expected info
-    expected_out = []
-    expected_out.append({})
-    expected_out[0]['u_id'] = andrew_profile['u_id']
-    expected_out[0]['email'] = andrew_profile['email']
-    expected_out[0]['name_first'] = andrew_profile['name_first']
-    expected_out[0]['name_last'] = andrew_profile['name_last']
-    expected_out[0]['handle_str'] = andrew_profile['handle_str']
+    andrew_card = {}
+    andrew_card['u_id'] = user_andrew['u_id']
+    andrew_card['email'] = "andrewt@gmail.com"
+    andrew_card['name_first'] = "andrew"
+    andrew_card['name_last'] = "zhu"
+    andrew_card['handle_str'] = andrew_profile['user']['handle_str']
     
     # chris's expected info
-    expected_out.append({})
-    expected_out[1]['u_id'] = chris_profile['u_id']
-    expected_out[1]['email'] = chris_profile['email']
-    expected_out[1]['name_first'] = chris_profile['name_first']
-    expected_out[1]['name_last'] = chris_profile['name_last']
-    expected_out[1]['handle_str'] = chris_profile['handle_str']
+    chris_card = {}
+    chris_card['u_id'] = user_chris['u_id']
+    chris_card['email'] = "chrisc@gmail.com"
+    chris_card['name_first'] = "chris"
+    chris_card['name_last'] = "zhu"
+    chris_card['handle_str'] = chris_profile['user']['handle_str']
      
-    assert users == expected_out
+    assert andrew_card in users_card['users']
+    assert chris_card in users_card['users']
