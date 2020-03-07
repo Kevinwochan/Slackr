@@ -41,10 +41,11 @@ def user2():
 ##                          ||Tests: user_profile||                           ##
 ################################################################################
 
-def test_profile_invalid_token(inv_token):
+
+def test_profile_invalid_token():
     test_user = auth_register("testemail@gmail.com", "1234567", "John", "Smith")
     with pytest.raises(AccessError) as e:
-        user_profile(inv_token, test_user['u_id'])
+        user_profile("inv_token", test_user['u_id'])
 
 # Need to double check this logic.
 # Subracting 1 from the only valid id to ENSURE that i am using an invalid,
@@ -100,13 +101,15 @@ def test_profile_return_diff_user(user1, user2):
     assert user2_prof['name_last'] == user2['name_last']
     assert len(user1_prof['handle_str']) <= 20
 
+
 ################################################################################
 ##                      ||Tests: user_profile_setname||                       ##
 ################################################################################
 
-def test_setname_invalid_token(inv_token):
+
+def test_setname_invalid_token():
     with pytest.raises(AccessError) as e:
-        user_profile_setname(inv_token, "John", "Smith")
+        user_profile_setname("inv_token", "John", "Smith")
 
 def test_setname_invalid_name(user1):
     with pytest.raises(InputError) as e:
@@ -154,9 +157,10 @@ def test_setname_valid(user1):
 ################################################################################
 ##                      ||Tests: user_profile_setemail||                      ##
 ################################################################################
-def test_setemail_invalid_token(inv_token):
+
+def test_setemail_invalid_token():
     with pytest.raises(AccessError) as e:
-        user_profile_setemail(inv_token, "newemail@gmail.com")
+        user_profile_setemail("inv_token", "newemail@gmail.com")
 
 def test_setemail_invalid(user1):
     with pytest.raises(InputError) as e:
@@ -200,9 +204,9 @@ def test_setemail_valid(user1):
 ################################################################################
 ##                     ||Tests: user_profile_sethandle||                      ##
 ################################################################################
-def test_sethandle_invalid_token(inv_token):
+def test_sethandle_invalid_token():
     with pytest.raises(AccessError) as e:
-        user_profile_sethandle(inv_token, 'newhandle')
+        user_profile_sethandle("inv_token", 'newhandle')
 
 def test_sethandle_invalid(user1):
     with pytest.raises(InputError) as e:
