@@ -1,12 +1,7 @@
-import echo
-import pytest
-from error import InputError
+import json
+import urllib2
 
 def test_echo():
-    assert echo.echo("1") == "1", "1 == 1"
-    assert echo.echo("abc") == "abc", "abc == abc"
-    assert echo.echo("trump") == "trump", "trump == trump"
-
-def test_echo_except():
-    with pytest.raises(InputError) as e:
-        assert echo.echo("echo")
+	response = urllib2.urlopen('http://127.0.0.1:8080/echo?data=echo')
+	data = json.load(response)
+	print(data)
