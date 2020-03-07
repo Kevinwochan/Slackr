@@ -52,7 +52,7 @@ def test_valid_channel_invite(user_chas, user_jas, channel_dav):
 # Test for u_id does not refer to a valid user
 def test_valid_u_id(user_dav, channel_dav):
     with pytest.raises(InputError):
-        assert channel_invite(user_dav['token'], channel_dav['channel_id'], "!invalid")
+        assert channel_invite(user_dav['token'], channel_dav['channel_id'], 00000)
         
 # Test for the authorised user is not part of channel.
 def test_invite_right(user_jas, user_chas, channel_dav):
