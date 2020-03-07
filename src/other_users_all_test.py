@@ -2,16 +2,16 @@ import pytest
 from other import users_all
 from auth import auth_register
 from user import user_profile
+from error import InputError, AccessError
 
-"""
 
-Initially two users are set up with name of "andrew tylor" and "chris chen" respectively.
-Then use andrew's token to get all the users' profile.
-Afterwards, setting up the expected output and comparing the function tested
+def test_users_all_with_invalid_token():
+    ''''Get the users info by an unathorised user (invalid token) throws an access error'''
+    with pytest.raises(AccessError):
+        users_all("invalid token")
 
-"""
-
-def test_other():
+# Normal 
+def normal_test():
     # set up the user
     user_andrew = auth_register("andrewt@gmail.com", "password", "andrew", "taylor")
     user_chris = auth_register("chrisc@gmail.com", "pilot", "chris", "chen")
@@ -41,3 +41,5 @@ def test_other():
      
     assert andrew_card in users_card['users']
     assert chris_card in users_card['users']
+
+
