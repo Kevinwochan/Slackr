@@ -27,38 +27,47 @@ def test_search():
 
     # Send the message
     msg_1 = message_send(andrew['token'], channel_1['channel_id'], "I love cs1531")
-    msg_2 = message_send(andrew['token'], channel_2['channel_id'], "Happy bd")
+    msg_2 = message_send(andrew['token'], channel_2['channel_id'], "Happy bd I")
     msg_3 = message_send(andrew['token'], channel_2['channel_id'], "I love SAMYANG")
     
-    # A simple query_str for test
-    query_str = "love"
-    
     # Set up the expected dictionary
-    list_expected = {}
-    
     # First message
-    list_expected['messages'] = []
-    list_expected['messages'].append({})
-    list_expected['messages'][0]['message_id'] = msg_1['message_id']
-    list_expected['messages'][0]['u_id'] = andrew['u_id']
-    list_expected['messages'][0]['message'] = "I love cs1531"
-    list_expected['messages'][0]['time_created'] = 12345
-    
-    # Second message matched the query_str
-    list_expected['messages'].append({})
-    list_expected['messages'][1]['message_id'] = msg_3['message_id']
-    list_expected['messages'][1]['u_id'] = andrew['u_id']
-    list_expected['messages'][1]['message'] = "I love SAMYANG"
-    list_expected['messages'][1]['time_created'] = 12345
-    
-    assert search(andrew['token'], query_str) == list_expected
-         
-        
-    
-    
-    
-         
-        
-    
-    
-    
+    msg_1_card = {}
+    msg_1_card['message_id'] = msg_1['message_id']
+    msg_1_card['u_id'] = andrew['u_id']
+    msg_1_card['message'] = "I love cs1531"
+    msg_1_card['time_created'] = 12345
+
+    # Second message
+    msg_2_card = {}
+    msg_2_card['message_id'] = msg_2['message_id']
+    msg_2_card['u_id'] = andrew['u_id']
+    msg_2_card['message'] = "Happy bd I"
+    msg_2_card['time_created'] = 12345
+
+    # Third message
+    msg_3_card = {}
+    msg_3_card['message_id'] = msg_3['message_id']
+    msg_3_card['u_id'] = andrew['u_id']
+    msg_3_card['message'] = "I love SAMYANG"
+    msg_3_card['time_created'] = 12345
+
+    # Test 1 when only two message matched
+    query_str_1 = "love"
+    test_1 = search(andrew['token'], query_str_1)
+    assert msg_1_card in test_1['messages']
+    assert msg_3_card in test_1['messages']
+
+    # Test 2 when all of messages matched
+    query_str_2 = "I"
+    test_2 = search(andrew['token'], query_str_2)
+    assert msg_1_card in test_2['messages']
+    assert msg_2_card in test_2['messages']
+    assert msg_3_card in test_2['messages']
+
+    # Test 3 when none of message matched
+    query_str_3 = "no_matched"
+    test_3 = search(andrew['token'], query_str_3)
+    assert msg_1_card not in test_3['messages']
+    assert msg_2_card not in test_3['messages']
+    assert msg_3_card not in test_3['messages']
