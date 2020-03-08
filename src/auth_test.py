@@ -5,7 +5,7 @@ from auth import auth_login, auth_logout, auth_register
 
 # Registration
 def test_register_email_invalid():
-    """Tests that registration throws an input error for invalid emails, invalid emails are defined by 
+    """Tests that registration throws an input error for invalid emails, invalid emails are defined by
     https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
     """
     with pytest.raises(InputError):
@@ -20,7 +20,9 @@ def test_register_email_invalid():
     with pytest.raises(InputError):
         assert auth_register('', 'password', 'placeholder_first_name',
                              'placeholder_last_name')
-
+    with pytest.raises(InputError):
+        assert auth_register('z55555555.unsw.edu.au', 'password',
+                             'placeholder_first_name', 'placeholder_last_name')
 
 def test_register_email_in_use():
     """Tests that registration throws an input error when an email is used to create two accounts"""
@@ -140,4 +142,5 @@ def test_logout_twice():
     new_user = auth_register('z5555555@unsw.edu.au', 'password',
                              'placeholder_first_name', 'placeholder_last_name')
     assert auth_logout(new_user['token']) == {'is_success': True}
-    assert auth_logout(new_user['token']) == {'is_success': False}
+    with pytest.raises(AccessError):
+        assert auth_logout(new_user['token']) == {'is_success': False}
