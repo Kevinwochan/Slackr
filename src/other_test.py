@@ -2,12 +2,12 @@ import pytest
 from channel import channel_messages
 from channels import channels_list
 from channel import channel_messages
-from other import search
+from other import search, users_all
 from auth import auth_register
 from channels import channels_create
 from message import message_send
 from error import AccessError, InputError
-
+from user import user_profile
 """
 To test the search function, A user with name "Andrew" is created. Then Two
 channels are created named "channel_1" and "channel_2" respectively. Afterwards,
@@ -17,11 +17,13 @@ of time is that the created time are all the same since the channel_messages fun
 isn't implemented so the created time can not be gotten.
 
 """
-      
+
+
 def test_search_with_invalid_token():
     ''''searching as an unathorised user (invalid token) throws an access error'''
     with pytest.raises(AccessError):
         search('invalid token', 'love')
+
 
 def test_search_with_empty_query_string():
     '''searching with an empty query string throws an input error'''
@@ -29,11 +31,13 @@ def test_search_with_empty_query_string():
     with pytest.raises(InputError):
         search(andrew['token'], '')
 
+
 def test_search_for_one_message():
     '''searching with valid paramters and checking the returned object is correct'''
     andrew = auth_register("andrewt@gmail.com", "password", "andrew", "taylor")
     new_channel = channels_create(andrew['token'], "channel_1", True)
-    new_message = message_send(andrew['token'], new_channel['channel_id'], f'this is a test message')
+    new_message = message_send(andrew['token'], new_channel['channel_id'],
+                               f'this is a test message')
 
     search_results = search(andrew['token'], 'test message')
     assert isinstance(search_results, dict)
@@ -41,12 +45,12 @@ def test_search_for_one_message():
     message = search_results['messages'][0]
     assert isinstance(message, dict)
     assert 'mesage_id' in message
-    assert isinstance(message['message_id'], int) 
+    assert isinstance(message['message_id'], int)
     assert message['message_id'] == new_message['message_id']
     assert 'u_id' in message
-    assert isinstance(message['u_id'], int) 
+    assert isinstance(message['u_id'], int)
     assert 'message' in message
-    assert isinstance(message['message'], int) 
+    assert isinstance(message['message'], int)
     assert 'time_created' in message
     assert isinstance(message['time_created'], str)
 
@@ -63,7 +67,9 @@ def test_search_for_multiple_messages():
     messages_sent = {}
     for message_number in range(1, 10):
         message_content = f'this is message number {message_number}'
-        new_message_id = message_send(andrew['token'], new_channel['channel_id'], message_content)['message_id']
+        new_message_id = message_send(andrew['token'],
+                                      new_channel['channel_id'],
+                                      message_content)['message_id']
         messages_sent[new_message_id] = message_content
 
     search_results = search(andrew['token'], 'this is message number')
@@ -72,22 +78,25 @@ def test_search_for_multiple_messages():
     for message in search_results['messages']:
         assert isinstance(message, dict)
         assert 'mesage_id' in message
-        assert isinstance(message['message_id'], int) 
+        assert isinstance(message['message_id'], int)
         assert 'u_id' in message
-        assert isinstance(message['u_id'], int) 
+        assert isinstance(message['u_id'], int)
         assert 'message' in message
-        assert isinstance(message['message'], int) 
+        assert isinstance(message['message'], int)
         assert messages_sent[message['message_id']] == message
         assert 'time_created' in message
-        assert isinstance(message['time_created'], str) 
+        assert isinstance(message['time_created'], str)
+
 
 def test_searching_multiple_channels():
     '''search should find all messages containing the query string regardless of channel'''
     andrew = auth_register("andrewt@gmail.com", "password", "andrew", "taylor")
     new_channel_a = channels_create(andrew['token'], "channel_a", True)
     new_channel_b = channels_create(andrew['token'], "channel_b", True)
-    message_send(andrew['token'], new_channel_a['channel_id'], f'this is a test message in channel a')
-    message_send(andrew['token'], new_channel_b['channel_id'], f'this is a test message in channel b')
+    message_send(andrew['token'], new_channel_a['channel_id'],
+                 f'this is a test message in channel a')
+    message_send(andrew['token'], new_channel_b['channel_id'],
+                 f'this is a test message in channel b')
     search_results = search(andrew['token'], 'this is a test message')
     assert isinstance(search_results, dict)
     assert len(search_results['messages']) == 2
@@ -96,12 +105,15 @@ def test_searching_multiple_channels():
 def test_searching_multiple_channels_with_no_access():
     '''search should find all messages containing the query string THAT THE USER HAS ACCESS TO'''
     andrew = auth_register("andrewt@gmail.com", "password", "andrew", "taylor")
-    andrews_channel = channels_create(andrew['token'], "andrews channel", False)
-    message_send(andrew['token'], andrews_channel['channel_id'], 'this is a test message in andrews channel')
+    andrews_channel = channels_create(andrew['token'], "andrews channel",
+                                      False)
+    message_send(andrew['token'], andrews_channel['channel_id'],
+                 'this is a test message in andrews channel')
 
     john = auth_register("john@gmail.com", "password", "john", "smith")
     johns_channel = channels_create(john['token'], "channel_b", False)
-    message_send(andrew['token'], johns_channel['channel_id'], 'this is a test message in johns channel')
+    message_send(andrew['token'], johns_channel['channel_id'],
+                 'this is a test message in johns channel')
 
     andrews_search_results = search(andrew['token'], 'this is a test message')
     assert isinstance(andrews_search_results, dict)
@@ -110,21 +122,24 @@ def test_searching_multiple_channels_with_no_access():
     johns_search_results = search(john['token'], 'this is a test message')
     assert isinstance(johns_search_results, dict)
     assert len(johns_search_results['messages']) == 1
-    
+
 
 def test_search_normal_use_case():
     # Set up a user
     andrew = auth_register("andrewt@gmail.com", "password", "andrew", "taylor")
-    
+
     # Create a new channel
     channel_1 = channels_create(andrew['token'], "channel_1", False)
     channel_2 = channels_create(andrew['token'], "channel_2", False)
 
     # Send the message
-    msg_1 = message_send(andrew['token'], channel_1['channel_id'], "I love cs1531")
-    msg_2 = message_send(andrew['token'], channel_2['channel_id'], "Happy bd I")
-    msg_3 = message_send(andrew['token'], channel_2['channel_id'], "I love SAMYANG")
-    
+    msg_1 = message_send(andrew['token'], channel_1['channel_id'],
+                         "I love cs1531")
+    msg_2 = message_send(andrew['token'], channel_2['channel_id'],
+                         "Happy bd I")
+    msg_3 = message_send(andrew['token'], channel_2['channel_id'],
+                         "I love SAMYANG")
+
     # Set up the expected dictionary
     # First message
     msg_1_card = {}
@@ -167,10 +182,42 @@ def test_search_normal_use_case():
     assert msg_2_card not in test_3['messages']
     assert msg_3_card not in test_3['messages']
 
-    
-    
-         
-        
-    
-    
-    
+
+def test_users_all_with_invalid_token():
+    ''''Get the users info by an unathorised user (invalid token) throws an access error'''
+    with pytest.raises(AccessError):
+        users_all("invalid token")
+
+
+# Normal
+def normal_test():
+    # set up the user
+    user_andrew = auth_register("andrewt@gmail.com", "password", "andrew",
+                                "taylor")
+    user_chris = auth_register("chrisc@gmail.com", "pilot", "chris", "chen")
+
+    # Access the users info by andrew's token
+    users_card = users_all(user_andrew['token'])
+
+    # To get the handle_str of each user
+    andrew_profile = user_profile(user_andrew['token'], user_andrew['u_id'])
+    chris_profile = user_profile(user_chris['token'], user_chris['u_id'])
+
+    # andrew's expected info
+    andrew_card = {}
+    andrew_card['u_id'] = user_andrew['u_id']
+    andrew_card['email'] = "andrewt@gmail.com"
+    andrew_card['name_first'] = "andrew"
+    andrew_card['name_last'] = "zhu"
+    andrew_card['handle_str'] = andrew_profile['user']['handle_str']
+
+    # chris's expected info
+    chris_card = {}
+    chris_card['u_id'] = user_chris['u_id']
+    chris_card['email'] = "chrisc@gmail.com"
+    chris_card['name_first'] = "chris"
+    chris_card['name_last'] = "zhu"
+    chris_card['handle_str'] = chris_profile['user']['handle_str']
+
+    assert andrew_card in users_card['users']
+    assert chris_card in users_card['users']
