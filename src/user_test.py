@@ -51,7 +51,6 @@ def test_profile_invalid_token(inv_token):
         user_profile(inv_token, test_user['u_id'])
 
 
-# Need to double check this logic.
 # Subracting 1 from the only valid id to ENSURE that i am using an invalid,
 # unused id. The logic being that there is only 1 user registered, so there is
 # only one valid id. id -1 is therefor != id, and so must be invalid
