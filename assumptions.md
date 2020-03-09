@@ -2,7 +2,7 @@
 ## General assumptions
 
 - Parameters are given as the correct type
-- Assumption: functions that result in errors perform no actions
+- Functions that result in errors perform no actions
 
 Functions should be implemented in this order:
 1. Registration
