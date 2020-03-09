@@ -72,63 +72,51 @@ During your lab class, in weeks without demonstrations (see below), you and your
 
 ### Task
 
+In this iteration, more features were added to the specification, and the focus has been changed to HTTP endpoints. Many of the theory surrounding iteration 2 will be covered in week 4-6 lectures. Note that there will still be 1 or 2 features of the frontend that will not work because the routes will not appear until iteration 3.
+
 In this iteration, you are expected to:
 
-1. Test extensively at different levels of abstraction
-  Also, a number of other features are added
+1. Complete (if not completed) your integration tests from iteration 1, and complete full system tests at the HTTP level using python urllib (and pytest).
 
-2. Implement the web server completely
+    Part of this section may be automarked.
+
+    You can structure your tests however you choose, as long as they are appended with `_test.py` and are within the `src` folder or any subdirectories. It's important you consider how to separate (or combine) your integration tests from iteration 1 with your system tets (HTTP with urllib) in iteration 2. You will be marked on both tests being present/used in this iteration.
+
+2. Implement the web server to satisfy the specification. This should result in a fully functioning web server that reflects the interface.
+
+    Part of this section may be automarked.
+
+    You can structure your files however you choose, as long as the `server.py` file in the `src` folder remains where it is. That file is the one we will always use to start your web server. Please do not remove anything from this file except the stub route.
 
 3. Continue demonstrating effective project management and effective git usage
 
-==
+    Part of this section may be automarked.
 
-Also, frontend instructions
-Also, errors
+    You will be heavily marked for your use of thoughtful project management and use of git effectively. The degree to which your team works effectively will also be assessed.
 
+### Using pip3
 
+pip3 will be covered in more detail in week 5, but in the meantime you are able to install the relevant packages you need to run the flask server by navigating to your project directory and running:
 
-1. Create extensive tests (using pytest) for all of the functions in the agreed upon interface.
+```bash
+pip3 install -r requirements.txt
+```
 
-    These should all be in files of the formn `*_test.py`. See below for more information.
+### Running the server
 
-    Your tests will be automarked to assist in determining your performance mark.
+To run the server you should always use the command
 
-2. Write assumptions that you feel you are making in your interpretation of the specification and of the functions provided.
+```bash
+python3 src/server.py [PORT]
+```
 
-    Write these in markdown in `assumptions.md`.
+For example
 
-You are **not** expected to begin developing or completing the actual functions themselves.
+```bash
+python3 src/server.py 5000
+```
 
-The first iteration does not include all capabilities. Further capabilities will be introduced in subsequent iterations.
-
-You will be heavily marked for your use of thoughtful project management and use of git effectively. The degree to which your team works effectively will also be assessed.
-
-The `assumptions.md` file described above should be in the root of your repository. If you've not written markdown before (which we assume most of you haven't), it's not necessary to research the format. Markdown is essentially plain text with a few extra features for basic formatting. You can just stick with plain text if you find that easier.
-
-Do NOT attempt to try and write or start a web server. Don't overthink how these functions are meant to connect to a frontend yet. This is for the next iteration. In this iteration you are just focusing on the high level functions that will eventually be used for a web server.
-
-
-### Tests
-
-Our recommendation is to break all of the functions to test up into 1 or many files (this is a decision for you and your team), and then create test files in the same directory as the files the tests are testing. An example of this has been done with:
-
-* `/src/echo.py`
-* `/src/echo_test.py`
-
-A number of stub files have been added to your /src/ folder in your repository. These files are:
- * `auth.py`
- * `channel.py`
- * `channels.py`
- * `user.py`
- * `message.py`
- * `other.py`
-
-**Do not modify these files**, otherwise you will be unable to get your 40% performance marking. When automarking your tests, we will replace these stub functions with actual functions. If you're trying to implement/finish these stubs in order to complete your tests, you're approaching testing wrong.
-
-Besides those files, you have complete control over how you structure your tests and any other helper functions. You can put all your tests in one file, or many files, or in sub-directories. That is up to you.
-
-Stub functions are dummy implementations of functions that allow them to be trivially tested. E.G. A stub function for a user to login may always return a dummy auth token "123456". This will allow your tests to successfully compile. Of course, because these functions aren't implemented it means that your pytests will fail, but that's OK.
+On a particular CSE server, a port can only be used once. When you run the server, you must pick a port > 3000 to run it on. When using a CSE lab machine you will not run into many conflicts since each machine has its full list of ports. If you are using VLAB then you will be sharing resources with many other students, so you may have to use more trial and error to find a port you like.
 
 ### Submission
 
@@ -146,8 +134,8 @@ This will submit the contents of your repo on GitLab and perform a check to make
 
 |Section|Weighting|Criteria|
 |---|---|---|
-|Testing|30%|<ul><li>Distinct use of unit, integration, and system tests</li><li>Tests provide excellent test **coverage**</li><li>Demonstrated an understanding of the importance of **clarity** on the communication of test purposes</li><li>Demonstrated an understanding of thoughtful test **design**</li><li>Performance against an automatic marking syste<m/li></ul>|
-|Implementation|40%|<ul><li>Correctly implemented backend server</li></ul>|
+|Testing|30%|<ul><li>Distinct use of unit, integration, and system tests</li><li>Tests provide excellent test **coverage**</li><li>Demonstrated an understanding of the importance of **clarity** on the communication of test purposes</li><li>Demonstrated an understanding of thoughtful test **design**</li><li>Performance against an automatic marking syste<m/li><li>Compliance with standard pylint requirements</li></ul>|
+|Implementation|40%|<ul><li>Correctly implemented backend server that satisfies requirements</li><li>Pythonic programming approach (where possible)</li><li>Thought out code design</li><li>Compliance with standard pylint requirements</li></ul>|
 |Git practices & Project Management|20%|<ul><li>Meaningful and informative git commit names being used</li><li>Effective use of merge requests (from branches being made) across the team (minimum 12 MRs)</li><li>Effective use of course-provided slack, demonstrating an ability to communicate and manage effectivelly digitally</li><li>Use of task board on Gitlab to track and manage tasks</li><li>Effective use of agile methods such as standups</li></ul>|
 |Teamwork|10%|<ul><li>A generally equal contribution between team members</li><li>Clear evidence of reflection on group's performance and state of the team, with initiative to improve in future iterations</li></ul>|
 
@@ -184,6 +172,9 @@ When you demonstrate this iteration in your week 4 lab (week 5 for monday tutes)
 
 
 ### profile_img_url & image uploads
+
+(Not relevant until iteration 3)
+
 For outputs with data pertaining to a user, a profile_img_url is present. When images are uploaded for a user profile, after processing them you should store them on the server such that your server now locally has a copy of the cropped image of the original file linked. Then, the profile_img_url should be a URL to the server, such as http://localhost:5001/imgurl/adfnajnerkn23k4234.jpg (a unique url you generate).
 
 Note: This is most likely the most challenging part of the project. Don't get lost in this, we would strongly recommend most teams complete this capability *last*.
@@ -272,13 +263,11 @@ For example, if we imagine a user with token "12345" is trying to read messages 
 
 ### Interface
 
-|Function Name|Parameters|Return type|Exceptions|Description|
-|------------|-------------|----------|-----------|----------|
+|HTTP Route|HTTP Method|Parameters|Return type|Exceptions|Description|
+|------------|-------------|-------------|----------|-----------|----------|
 |auth/login|POST|(email, password)|{ u_id, token }|**InputError** when any of:<ul><li>Email entered is not a valid email using the method provided [here](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) (unless you feel you have a better method)</li><li>Email entered does not belong to a user</li><li>Password is not correct</li></ul> | Given a registered users' email and password and generates a valid token for the user to remain authenticated |
 |auth/logout|POST|(token)|{ is_success }|N/A|Given an active token, invalidates the taken to log the user out. If a valid token is given, and the user is successfully logged out, it returns true, otherwise false. |
 |auth/register|POST|(email, password, name_first, name_last)|{ u_id, token }|**InputError** when any of:<ul><li>Email entered is not a valid email using the method provided [here](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) (unless you feel you have a better method).</li><li>Email address is already being used by another user</li><li>Password entered is less than 6 characters long</li><li>name_first not is between 1 and 50 characters inclusive in length</li><li>name_last is not between 1 and 50 characters inclusive in length</ul>|Given a user's first and last name, email address, and password, create a new account for them and return a new token for authentication in their session. A handle is generated that is the concatentation of a lowercase-only first name and last name. If the concatenation is longer than 20 characters, it is cutoff at 20 characters. If the handle is already taken, you may modify the handle in any way you see fit to make it unique. |
-|auth/passwordreset/request|POST|(email)|{}|N/A|Given an email address, if the user is a registered user, send's them a an email containing a specific secret code, that when entered in auth_passwordreset_reset, shows that the user trying to reset the password is the one who got sent this email.|
-|auth/passwordreset/reset|POST|(reset_code, new_password)|{}|**InputError** when any of:<ul><li>reset_code is not a valid reset code</li><li>Password entered is not a valid password</li>|Given a reset code for a user, set that user's new password to the password provided|
 |channel/invite|POST|(token, channel_id, u_id)|{}|**InputError** when any of:<ul><li>channel_id does not refer to a valid channel that the authorised user is part of.</li><li>u_id does not refer to a valid user</li></ul>**AccessError** when<ul><li>the authorised user is not already a member of the channel</li>|Invites a user (with user id u_id) to join a channel with ID channel_id. Once invited the user is added to the channel immediately|
 |channel/details|GET|(token, channel_id)|{ name, owner_members, all_members }|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li></ul>**AccessError** when<ul><li>Authorised user is not a member of channel with channel_id</li></ul>|Given a Channel with ID channel_id that the authorised user is part of, provide basic details about the channel|
 |channel/messages|GET|(token, channel_id, start)|{ messages, start, end }|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li><li>start is greater than or equal to the total number of messages in the channel</li></ul>**AccessError** when<ul><li>Authorised user is not a member of channel with channel_id</li></ul>|Given a Channel with ID channel_id that the authorised user is part of, return up to 50 messages between index "start" and "start + 50" inclusive. Message with index 0 is the most recent message in the channel. This function returns a new index "end" which is the value of "start + 50", or, if this function has returned the least recent messages in the channel, returns -1 in "end" to indicate there are no more messages to load after this return.|
@@ -301,7 +290,6 @@ For example, if we imagine a user with token "12345" is trying to read messages 
 |user/profile/setname|PUT|(token, name_first, name_last)|{}|**InputError** when any of:<ul><li>name_first is not between 1 and 50 characters inclusive in length</li><li>name_last is not between 1 and 50 characters inclusive in length</ul></ul>|Update the authorised user's first and last name|
 |/user/profile/setemail|PUT|(token, email)|{}|**InputError** when any of:<ul><li>Email entered is not a valid email using the method provided [here](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) (unless you feel you have a better method).</li><li>Email address is already being used by another user</li>|Update the authorised user's email address|
 |/user/profile/sethandle|PUT|(token, handle_str)|{}|**InputError** when any of:<ul><li>handle_str must be between 2 and 20 characters inclusive</li><li>handle is already used by another user</li></ul>|Update the authorised user's handle (i.e. display name)|
-|POST|user/profile/uploadphoto|(token, img_url, x_start, y_start, x_end, y_end)|{}|**InputError** when any of:<ul><li>img_url is returns an HTTP status other than 200.</li><li>any of x_start, y_start, x_end, y_end are not within the dimensions of the image at the URL.</li><li>Image uploaded is not a JPG</li></ul>|Given a URL of an image on the internet, crops the image within bounds (x_start, y_start) and (x_end, y_end). Position (0,0) is the top left.|
 |users/all|GET|(token)|{ users}|N/A|Returns a list of all users and their associated details|
 |/search|GET|(token, query_str)|{ messages }|N/A|Given a query string, return a collection of messages in all of the channels that the user has joined that match the query. Results are sorted from most recent message to least recent message|
 |standup/start|POST|(token, channel_id, length)|{ time_finish }|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li><li>An active standup is currently running in this channel</li></ul>|For a given channel, start the standup period whereby for the next "length" seconds if someone calls "standup_send" with a message, it is buffered during the X second window then at the end of the X second window a message will be added to the message queue in the channel from the user who started the standup. X is an integer that denotes the number of seconds that the standup occurs for|
@@ -317,6 +305,18 @@ For example, if we imagine a user with token "12345" is trying to read messages 
 |   1     |8pm Monday 9th March (**week 4**)    |In YOUR **week 4** laboratory  |30%                                |
 |   2     |8pm Sunday 29th March (**week 6**)   |In YOUR **week 7** laboratory  |40%                                |
 |   3     |8pm Sunday 19th April (**week 9**)   |In YOUR **week 10** laboratory |30%                                |
+
+## Working with the frontend
+
+Every group has had a new repository created for them since iteration 2. It's URL is *https://gitlab.cse.unsw.edu.au/COMP1531/20T1/[yourgroupname]*. Instructions of how to have your frontend use your backend are there.
+
+If you run the frontend at the same time as your flask server is running on the backend, then you can power the frontend via your backend.
+
+### Frontend Demo
+
+A **working example of the frontend** can be used at [https://www.slackr.com.au](https://www.slackr.com.au)
+
+The data is reset daily, but you can use this link to play around and get a feel for how the application should behave.
 
 ## Expectations
 
