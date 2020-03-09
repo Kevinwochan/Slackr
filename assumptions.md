@@ -50,9 +50,6 @@ Functions should be implemented in this order:
 
 - channels_test.py assumes that auth_register, auth_logout have been tested
 
-## User
-
-
 ## **Other**
 **users_all**
 1. Assuming the dictionaries in the ouput list with the chronological order
