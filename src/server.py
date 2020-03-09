@@ -28,7 +28,7 @@ def echo():
     if data == 'echo':
    	    raise InputError(description='Cannot echo "echo"')
     return dumps({
-        'echo': data
+        'data': data
     })
 
 if __name__ == "__main__":
