@@ -1,16 +1,14 @@
-
 # **Assumptions**
 ## General assumptions
 
--  the correct type is given as a paramter.
--  Before tests are run, the user database is empty 
--  after each test function is run, the database is cleaned 
+- Parameters are given as the correct type
+- Assumption: functions that result in errors perform no actions
 
 Functions should be implemented in this order:
 1. Registration
 2. Login
 3. Logout
-4. 
+
 - user ids begin with id 0
 - channel ids begin with id 0
 - Before each test function is run, there is no existing slackr data
@@ -52,6 +50,7 @@ Functions should be implemented in this order:
 
 - channels_test.py assumes that auth_register, auth_logout have been tested
 
+## User
 
 
 ## **Other**
