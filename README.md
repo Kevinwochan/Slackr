@@ -76,7 +76,7 @@ In this iteration, more features were added to the specification, and the focus 
 
 In this iteration, you are expected to:
 
-1. Complete (if not completed) your integration tests from iteration 1, and complete full system tests at the HTTP level using python urllib (and pytest).
+1. Complete (if not completed) your integration tests from iteration 1, and complete full system tests at the HTTP level using python urllib (and pytest). Your HTTP/system level tests should ensure they have the entire application and have as high a code coverage as possible.
 
     Part of this section may be automarked.
 
