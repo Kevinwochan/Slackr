@@ -1,5 +1,5 @@
 import pytest
-from auth import auth_register, auth_logout
+from src.auth import auth_register, auth_logout
 
  # Generates an invalid token for testing AcessErrors. uses auth_register and auth_logout
  # Assumes that 'invalidtokenemail@gmail.com' is a valid unused email

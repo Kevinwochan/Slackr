@@ -1,8 +1,8 @@
 import pytest
-from error import AccessError, InputError
-from auth import auth_register
-from channel import channel_details, channel_invite
-from channels import channels_create
+from src.error import AccessError, InputError
+from src.auth import auth_register
+from src.channel import channel_details, channel_invite
+from src.channels import channels_create
 """
     Assume the owner of a channel can only be one person
 """

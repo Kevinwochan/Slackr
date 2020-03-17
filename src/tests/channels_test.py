@@ -1,6 +1,6 @@
-from auth import auth_register, auth_logout
-from channels import channels_list, channels_listall, channels_create
-from error import InputError, AccessError
+from src.auth import auth_register, auth_logout
+from src.channels import channels_list, channels_listall, channels_create
+from src.error import InputError, AccessError
 import pytest
 
 #Assumption: channels_test.py assumes that auth_register, auth_logout have been tested
@@ -221,3 +221,4 @@ def test_listall_private():
     # Checking that channels_listall returns the same list for user2,
     assert len(chan_lst1) == len(chan_lst2) == 1
     assert chan_lst1 == chan_lst2
+

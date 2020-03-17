@@ -1,6 +1,6 @@
 import pytest
-from error import InputError, AccessError
-from auth import auth_login, auth_logout, auth_register
+from src.error import InputError, AccessError
+from src.auth import auth_login, auth_logout, auth_register
 
 
 # Registration

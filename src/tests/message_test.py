@@ -1,11 +1,11 @@
 #!/usr/bin/python3.7
 
 import pytest
-from error import AccessError, InputError
-from channels import channels_create
-from channel import channel_join
-from auth import auth_register
-from message import message_edit, message_remove, message_send
+from src.error import AccessError, InputError
+from src.channels import channels_create
+from src.channel import channel_join
+from src.auth import auth_register
+from src.message import message_edit, message_remove, message_send
 
 
 @pytest.fixture

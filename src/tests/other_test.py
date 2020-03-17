@@ -1,13 +1,12 @@
 import pytest
-from channel import channel_messages
-from channels import channels_list
-from channel import channel_messages
-from other import search, users_all
-from auth import auth_register
-from channels import channels_create
-from message import message_send
-from error import AccessError, InputError
-from user import user_profile
+
+from src.error import AccessError, InputError
+from src.auth import auth_register
+from src.channel import channel_messages
+from src.channels import channels_list, channels_create
+from src.other import search, users_all
+from src.message import message_send
+from src.user import user_profile
 """
 To test the search function, A user with name "Andrew" is created. Then Two
 channels are created named "channel_1" and "channel_2" respectively. Afterwards,
