@@ -3,7 +3,7 @@ from src.error import AccessError, InputError
 from src.auth import auth_register, auth_logout
 from src.channels import channel_invite, channel_details, channel_messages, channel_leave, channel_addowner, channel_join
 from src.channels import channels_create
-from message import message_send
+from src.message import message_send
 
 '''
     Tests for adding an owner to a channel
