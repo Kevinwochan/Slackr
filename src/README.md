@@ -8,9 +8,8 @@ pip install flask pytest pylint yapf
 
 ## Running
 run the command below
-
 ```
-flask run
+python3.7 app.py
 ```
 e.g
 

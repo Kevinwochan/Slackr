@@ -1,5 +1,5 @@
 from flask import Flask
-from src.auth import auth_login
+from src.auth import auth_login, JWTS
 import json
 
 app = Flask(__name__)
@@ -23,7 +23,6 @@ CHANNELS = []
 '''
 a list of jwts generated from a user successffully logging in
 '''
-JWTS = []
 
 
 @app.route('/')
@@ -32,6 +31,9 @@ def hello_world():
 
 @app.route('/auth/login', methods=['POST'])
 def login():
-    global JWTS
     JWTS.append(auth_login('', ''))
     return
+
+if __name__ == '__main__':
+    app.debug = True #TODO: remove this for production
+    app.run()
