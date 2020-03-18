@@ -1,4 +1,5 @@
 from src.channels import CHANNELS
+from src.error import InputError, AccessError
 
 ''' 
     use CHANNELS to store your info
@@ -49,17 +50,22 @@ def channel_details(token, channel_id):
     }
 
 def channel_messages(token, channel_id, start):
+    # TODO: verify token
+    if not channel_id in CHANNELS:
+        raise InputError
+
+    if start > len(CHANNELS[channel_id]['messages']):
+        raise InputError
+   
+    channel = CHANNELS[channel_id]
+    end = start+50
+    if end > len(channel['messages']):
+        end = -1
+
     return {
-        'messages': [
-            {
-                'message_id': 1,
-                'u_id': 1,
-                'message': 'Hello world',
-                'time_created': 1582426789,
-            }
-        ],
-        'start': 0,
-        'end': 50,
+        'messages': channel['messages'][start:start+50],
+        'start': start,
+        'end': end,
     }
 
 def channel_leave(token, channel_id):
