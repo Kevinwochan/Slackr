@@ -1,7 +1,7 @@
-JWTS = []
+TOKENS = []
 '''
-JWTS[u_id] = 'a valid token for u_id'
-a list of jwts generated from a user successffully logging in
+TOKENS[u_id] = 'a valid token for u_id'
+a list of TOKENS generated from a user successffully logging in
 '''
 
 
