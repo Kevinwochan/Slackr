@@ -3,7 +3,7 @@
 In order for everything to run you need to have the following installed:
 
 ```
-pip install flask pytest pylint yapf
+pip install flask pytest pylint yapf python-dotenv
 ```
 
 ## Running
