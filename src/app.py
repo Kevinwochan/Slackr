@@ -1,38 +1,26 @@
+''' python imports '''
 from flask import Flask
-from src.auth import auth_login, JWTS
 import json
 
-app = Flask(__name__)
+''' assignment code imports '''
+from src.auth import auth_login
+from src.utils import workspace_reset
 
-'''
-a list of users.
-each user is a dictionary like:
-    user = {
-        'u_id': 2,
-        etc...
-        'email',
-        name_first, 
-        name_last, 
-        handle_str,
-        password,
-        username
-    }
-'''
-USERS = []
-CHANNELS = []
-'''
-a list of jwts generated from a user successffully logging in
-'''
+app = Flask(__name__)
 
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return json.dumps(JWTS)
 
 @app.route('/auth/login', methods=['POST'])
 def login():
-    JWTS.append(auth_login('', ''))
     return
+
+@app.route('workspace/reset', methods=['POST']
+def reset():
+    workspace_reset()
+    return 
 
 if __name__ == '__main__':
     app.debug = True #TODO: remove this for production
