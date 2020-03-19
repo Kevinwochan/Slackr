@@ -1,10 +1,51 @@
-from src.auth import JWTS, USERS
+'''
+Contains miscellaneous helper functions. These may be seperated into different files eventually
+'''
+
+#needs pip3 install pyjwt
+# Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
+from jwt import encode, decode
+from error import AccessError
+from src.auth import USERS
 from src.channel import CHANNELS
 
+
+SECRET = 'F FOR HAYDEN'
+
+curr_users = [] # pylint: disable=invalid-name
+
+def generate_token(user_id):
+    '''
+    Returns a JWT token based on the users id and a secret message.
+    '''
+    token = encode({'id' : user_id}, SECRET, algorithm='HS256').decode('utf-8')
+    curr_users.append(token)
+    return token
+
+def check_token(token):
+    '''
+    Checks if the token matches a logged in user (is containted in curr_users),
+    and then returns that users id. raises AccessError if token does not match logged in user.
+    '''
+    if not token in curr_users:
+        raise AccessError(description="You do not have a valid token")
+    return decode(token.encode('utf-8'), SECRET, algorithm='HS256')['id']
+
+def invalidate_token(token):
+    '''
+    Invalidates token by removing it from curr_users. raises AccessError if token is not in
+    curr_users.
+    Returns true if token is successfully invalidated.
+    '''
+    try:
+        curr_users.remove(token)
+    except ValueError:
+        raise AccessError(description="Token is already invalid")
+    return True
 
 def workspace_reset():
     ''' Deletes all Slackr information as if the website was just launched '''
     # TODO: verify user is an owner of the slackr
-    JWTS.clear()
+    curr_users.clear()
     USERS.clear()
     CHANNELS.clear()
