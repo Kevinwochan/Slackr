@@ -32,10 +32,10 @@ def invalidate_token(token):
     '''
     Invalidates token by removing it from curr_users. raises AccessError if token is not in
     curr_users.
-    Currently returns 'SUCCESS' if token is invalidated.
+    Returns true if token is successfully invalidated.
     '''
     try:
         curr_users.remove(token)
     except ValueError:
         raise AccessError(description="Token is already invalid")
-    return 'SUCCESS'
+    return True
