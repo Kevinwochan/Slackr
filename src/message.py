@@ -1,3 +1,5 @@
+from src.channels import CHANNELS
+
 def message_send(token, channel_id, message):
     return {
         'message_id': 1,
