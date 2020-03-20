@@ -39,13 +39,14 @@ def get_channel_members(channel_id):
 
 def channel_invite(token, channel_id, user_id):
     '''
-    invites a user (with user id u_id) to join a channel with ID channel_id. Once invited the user is added to the channel immediately
+    invites a user (with user id u_id) to join a channel with ID channel_id.
+    Once invited the user is added to the channel immediately
     An input error is thrown when the user_id/channel_id  is invalid
     Access error when the user is not a member of the channel
     '''
     try:
         host_user_id = check_token(token)
-    except AccessError: #TODO:  find cleaner solution to this
+    except AccessError:  #TODO:  find cleaner solution to this
         raise InputError
 
     if not is_valid_channel(channel_id):
@@ -85,11 +86,11 @@ def channel_details(token, channel_id):
         })
 
     for user_id in get_channel_members(channel_id):
-       all_members.append({
+        all_members.append({
             'user_id': user_id,
             'name_first': USERS[user_id]['name_first'],
             'name_last': USERS[user_id]['name_last']
-        }) 
+        })
     return {
         'name': CHANNELS[channel_id]['name'],
         'owner_members': owner_members,
