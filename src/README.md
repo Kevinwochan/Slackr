@@ -8,8 +8,7 @@ There are 3 global variables:
     - Currently declared in scr.auth
 
 ## CHANNELS
-use CHANNELS to store your info
-
+Channels is a dictionary
 ``` 
     if you want channnel information you can access it using it's channel id like
     channel = CHANNELS[channel_id]
@@ -34,7 +33,8 @@ use CHANNELS to store your info
     }
 
 ```
-
+## Messages
+is a dictionary
 ```
     each message in CHANNELS[channel_id]['messges'] a dictionary with a unix timestamp
     {
@@ -67,18 +67,6 @@ each user in USERS is also a dictionary
     }
 ```
 
-## TOKENS
-__THIS IS MAYBE REDUNDANT NOW__ 
-__use generate_token(user_id), check_token(token) invalidate_token(token)__
-
-TOKENS is a dictionary, the keys are u_ids with the value is a validated token for that user
-Each TOKENS[user_id] is a user's token for logging in
-```
-TOKENS[u_id] = 'a valid token for u_id'
-```
-
-
-
 # Backend
 ## Installation
 In order for everything to run you need to have the following installed:
@@ -90,25 +78,24 @@ pip install flask pytest pylint yapf python-dotenv
 ## Running
 run the command below
 ```
-python3.7 app.py
+python3.7 src/server.py
 ```
 e.g
 
 ```
-$ ls
-assumptions.md	Pipfile  README.md  src
-$ cd src
-$ ls       
-app.py	auth.py  auth_test.py  channel.py  channels.py	conftest.py  echo.py  error.py	__init__.py  message.py  other.py  Pipfile  Pipfile.lock  __pycache__  README.md  tests  user.py  utils.py
-$ flask run
+$ python3 src/server.py 
+ * Serving Flask app "server" (lazy loading)
  * Environment: production
    WARNING: This is a development server. Do not use it in a production deployment.
    Use a production WSGI server instead.
- * Debug mode: off
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Debug mode: on
+ * Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 358-897-093
 ```
 
-You can now open firefox/google chrome at http://127.0.0.1:5000/ to view the api
+You can now open firefox/google chrome at http://127.0.0.1:8080/ to view the api
 
 
 ## Testing TODO
