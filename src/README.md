@@ -20,6 +20,7 @@ use CHANNELS to store your info
         'owners': [user_id1, user_id2],
         'members': [user_id2, user_id3]
         'messages' : [message1, message2] 
+        'is_public' : True
     }
 
     each message is a dictionary with a unix timestamp
