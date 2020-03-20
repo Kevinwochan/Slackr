@@ -37,12 +37,12 @@ def channels_list(token):
 
 def channels_listall(token):
     '''
-    loops through CHANNELS and generates a list of all channel_ids and 
+    loops through CHANNELS and generates a list of all channel_ids and
     their associated names.
     '''
     check_token(token)
     glob_channels = get_channels()
-    
+
     return {
         'channels': [
             {
