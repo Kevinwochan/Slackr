@@ -4,7 +4,6 @@ from json import dumps
 from flask import Flask, request
 from flask_cors import CORS
 from error import InputError
-
 ''' Custom Imports '''
 from auth import auth_register
 
