@@ -16,10 +16,10 @@ use CHANNELS to store your info
 
     each channel is a dictionary 
     { 
-        'name': 'channel_name'
+        'name': 'channel_name',
         'owners': [user_id1, user_id2],
-        'members': [user_id2, user_id3]
-        'messages' : [message1, message2] 
+        'members': [user_id2, user_id3],
+        'messages' : [message1, message2],
         'is_public' : True
     }
 
