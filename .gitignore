@@ -125,3 +125,5 @@ dmypy.json
 
 # Other
 *.py~
+node_modules
+*.json
