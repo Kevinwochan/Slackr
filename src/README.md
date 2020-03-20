@@ -4,8 +4,8 @@ There are 3 global variables:
     - Currently declared in scr.channels
 - USERS
     - Currently declared in scr.auth
-- TOKENS
-    - Currently declared in scr.auth
+- curr_user
+    - declared in src.utils
 
 ## CHANNELS
 Channels is a dictionary
@@ -16,28 +16,19 @@ Channels is a dictionary
     each channel is a dictionary 
     { 
         'name': 'channel_name',
-        'owners': [user_id1, user_id2],
-        'members': [user_id2, user_id3],
-        'messages' : [message1, message2],
+        'owners': [0, 1],  # a list of user_ids
+        'members': [2, 3],
+        'messages' : [message1, message2], # a lsit of messages sorted by most recent first, see below for type def
         'is_public' : True
     }
-
-    each message is a dictionary with a unix timestamp
-    {
-        'timestamp': 1584538791 ,
-        'content' : 'this is the message content',
-        'reacts' : [ 
-                    'user_id': user_id1,
-                     'emoji' : U+1F600  # this is a s mily face in unicode
-                   ]
-    }
-
 ```
+
 ## Messages
 is a dictionary
 ```
     each message in CHANNELS[channel_id]['messges'] a dictionary with a unix timestamp
     {
+        'message_id': 1
         'timestamp': 1584538791 ,
         'message' : 'this is the message content',
         'reacts' : [ 
@@ -67,14 +58,20 @@ each user in USERS is also a dictionary
     }
 ```
 
+## curr_users
+curr_users is a list of active JWTs, access this by using functions in utils.py
+
+
 # Backend
 ## Installation
 In order for everything to run you need to have the following installed:
-
 ```
-pip install flask pytest pylint yapf python-dotenv
+pip install -r requirements.txt
 ```
-
+Or if youre comfortable with pipenv run
+```
+pipenv install --dev
+```
 ## Running
 run the command below
 ```
