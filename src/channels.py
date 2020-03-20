@@ -43,12 +43,20 @@ def channels_listall(token):
     u_id = check_token(token)
     glob_channels = get_channels()
 
+    '''
     chan_lst = []
     for channel_id in glob_channels:
         chan_lst.append({
             'channel_id': channel_id,
             'name': glob_channels[channel_id]['name']
         })
+    '''
+    chan_lst = [
+        {
+            'channel_id': channel_id,
+            'name': glob_channels[channel_id]['name']
+        } for channel_id in glob_channels
+    ]
 
 
     return {
