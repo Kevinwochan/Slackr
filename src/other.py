@@ -1,6 +1,7 @@
 from src.auth import USERS, JTWS
 from src.channels import CHANNELS
 
+
 def users_all(token):
     return {
         'users': [
@@ -14,14 +15,13 @@ def users_all(token):
         ],
     }
 
+
 def search(token, query_str):
     return {
-        'messages': [
-            {
-                'message_id': 1,
-                'u_id': 1,
-                'message': 'Hello world',
-                'time_created': 1582426789,
-            }
-        ],
+        'messages': [{
+            'message_id': 1,
+            'u_id': 1,
+            'message': 'Hello world',
+            'time_created': 1582426789,
+        }],
     }
