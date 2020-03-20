@@ -1,26 +1,5 @@
-TOKENS = []
-'''
-TOKENS[u_id] = 'a valid token for u_id'
-a list of TOKENS generated from a user successffully logging in
-'''
-
-
+TOKENS = {}
 USERS = {}
-'''
-a list of users.
-each user is a dictionary like:
-    user = USERS[u_id]
-    user = {
-        'u_id': 2,
-        'email' : 'z5555555@unsw.edu.au',
-        'name_first': 'Hayden', 
-        'name_last' : 'Smith', 
-         etc...
-        handle_str,
-        password,
-        username
-    }
-'''
 
 def auth_login(email, password):
     return {
