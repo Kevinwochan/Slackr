@@ -1,8 +1,11 @@
 # Type Defintions
 There are 3 global variables:
 - CHANNELS
+    - Currently declared in scr.channels
 - USERS
+    - Currently declared in scr.auth
 - TOKENS
+    - Currently declared in scr.auth
 
 ## CHANNELS
 use CHANNELS to store your info
@@ -13,6 +16,7 @@ use CHANNELS to store your info
 
     each channel is a dictionary 
     { 
+        'name': 'channel_name'
         'owners': [user_id1, user_id2],
         'members': [user_id2, user_id3]
         'messages' : [message1, message2] 
@@ -63,6 +67,9 @@ each user in USERS is also a dictionary
 ```
 
 ## TOKENS
+__THIS IS MAYBE REDUNDANT NOW__ 
+__use generate_token(user_id), check_token(token) invalidate_token(token)__
+
 TOKENS is a dictionary, the keys are u_ids with the value is a validated token for that user
 Each TOKENS[user_id] is a user's token for logging in
 ```
