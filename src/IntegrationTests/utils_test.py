@@ -14,7 +14,8 @@ def test_symmetric():
     '''
     for user_id in range(100):
         new_token = generate_token(user_id)
-        assert check_token(new_token) == new_token
+        decrypted_token = check_token(new_token)
+        assert decrypted_token == new_token
 
 
 def test_invalidation():
@@ -25,7 +26,7 @@ def test_invalidation():
         new_token = generate_token(user_id)
         invalidate_token(new_token)
         with pytest.raises(AccessError):
-            assert check_token(new_token) == new_token
+            assert check_token(new_token)
     assert len(curr_users) == 0
 
 
@@ -39,6 +40,6 @@ def test_application_clean():
                              "f for hayden rip", "hydaen", "smith")
         channels_create(user['token'], "test channel" + str(new_user), True)
     workspace_reset()
-    assert len(CHANNELS.keys() == 0)
-    assert len(USERS.keys() == 0)
-    assert len(curr_users == 0)
+    assert len(CHANNELS.keys()) == 0
+    assert len(USERS.keys()) == 0
+    assert len(curr_users) == 0
