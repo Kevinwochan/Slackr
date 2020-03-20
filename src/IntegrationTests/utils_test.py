@@ -8,7 +8,7 @@ from src.error import AccessError
 from src.utils import workspace_reset, check_token, generate_token, invalidate_token, curr_users
 
 
-def symmetric_test():
+def test_symmetric():
     '''
     A JWT that is encrypted should decrypt to the same integer
     '''
@@ -17,7 +17,7 @@ def symmetric_test():
         assert check_token(new_token) == new_token
 
 
-def invalidation_test():
+def test_invalidation():
     '''
     A token that has been invalidated should raise an error
     '''
@@ -29,7 +29,7 @@ def invalidation_test():
     assert len(curr_users) == 0
 
 
-def application_clean_test():
+def test_application_clean():
     '''
     Tests that all global variables have been emptied by the reset
     '''
