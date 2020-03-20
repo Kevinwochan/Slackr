@@ -1,4 +1,9 @@
-from auth import USERS
+'''
+Functions to create and list channels
+channels_list and channels_listall are written using list comprehension.
+For the previous versions which used for loops, see git log.
+'''
+
 from utils import check_token
 from error import InputError
 
@@ -14,22 +19,20 @@ def get_channels():
 
 def channels_list(token):
     '''
-    Loops through CHANNELS and generates a list of only the channels which 
+    Loops through CHANNELS and generates a list of only the channels which
     contain the user as a member
     '''
     u_id = check_token(token)
     glob_channels = get_channels()
 
-    chan_lst = []
-    for channel_id in glob_channels:
+    return {'channels': [
+        {
+            'channel_id': channel_id,
+            'name': glob_channels[channel_id]['name']
+        } for channel_id in glob_channels
         if u_id in glob_channels[channel_id]['owners']\
-        or u_id in glob_channels[channel_id]['members']: 
-            chan_lst.append({
-                'channel_id': channel_id,
-                'name': glob_channels[channel_id]['name']
-            })
-
-    return {'channels': chan_lst}
+        or u_id in glob_channels[channel_id]['members']
+    ]}
 
 def channels_listall(token):
     '''
@@ -62,7 +65,7 @@ def channels_create(token, name, is_public):
     channel_id = len(glob_channels)
 
     # adding an empty channel with one owner: u_id
-    glob_channels[channel_id] = { 
+    glob_channels[channel_id] = {
         'name': name,
         'owners': [u_id],
         'members': [],
