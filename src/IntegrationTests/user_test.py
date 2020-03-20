@@ -4,6 +4,7 @@ from src.auth import auth_register
 from src.error import InputError, AccessError
 # Note: fixture inv_token is imported by pytest from conftest.py automatically.
 
+
 # Creates a user and returns their details
 @pytest.fixture
 def user1():
