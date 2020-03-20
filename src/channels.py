@@ -1,5 +1,29 @@
+from auth import USERS
+from utils import check_token
+from error import InputError
 
+''' 
+CHANNELS usage (from README.md)
+    channel = CHANNELS[channel_id]
+    each channel is a dictionary 
+    { 
+        'name': 'channel_name'
+        'owners': [user_id1, user_id2],
+        'members': [user_id2, user_id3]
+        'messages' : [message1, message2] 
+        'is_public' : True
+    }
+
+'''
 CHANNELS = {}
+
+def get_channels():
+    '''
+    function that returns CHANNELS as a global variable
+    Use this function rather than CHANNELS directly
+    '''
+    global CHANNELS # pylint: disable=global-statement
+    return CHANNELS
 
 def channels_list(token):
     return {
@@ -12,16 +36,46 @@ def channels_list(token):
     }
 
 def channels_listall(token):
+    '''
+    loops through CHANNELS and generates a list of all channel_ids and 
+    their associated names.
+    '''
+    u_id = check_token(token)
+    glob_channels = get_channels()
+
+    chan_lst = []
+    for channel_id in glob_channels:
+        chan_lst.append({
+            'channel_id': channel_id,
+            'name': glob_channels[channel_id]['name']
+        })
+
+
     return {
-        'channels': [
-        	{
-        		'channel_id': 1,
-        		'name': 'My Channel',
-        	}
-        ],
+        'channels': chan_lst
     }
 
 def channels_create(token, name, is_public):
+    '''
+    creates a new channel and stores it in CHANNELS
+    user who creates channel is set as owner of the channel
+    '''
+    u_id = check_token(token)
+
+    if len(name) > 20:
+        raise InputError(description="Channel name must be less that 20 characters long")
+
+    glob_channels = get_channels()
+    channel_id = len(glob_channels)
+
+    # adding an empty channel with one owner: u_id
+    glob_channels[channel_id] = { 
+        'name': name,
+        'owners': [u_id],
+        'members': [],
+        'messages' : [],
+        'is_public' : is_public
+    }
     return {
-        'channel_id': 1,
+        'channel_id': channel_id
     }
