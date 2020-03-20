@@ -14,25 +14,17 @@ def is_valid_channel(channel_id):
 
 def is_user_a_member(channel_id, user_id):
     ''' returns true if the user_id is a member of the channel '''
-    for user in CHANNELS[channel_id]['all_members']:
-        if user['user_id'] == user_id:
-            return True
-    return False
+    return user_id in CHANNELS[channel_id]['members']
 
 
 def is_user_a_owner(channel_id, user_id):
     ''' returns true if the user_id is an owner of the channel '''
-    for user in CHANNELS[channel_id]['members']:
-        if user['user_id'] == user_id and user['is_owner']:
-            return True
-    return False
+    return user_id in CHANNELS[channel_id]['owners']
 
 
 def get_channel_owners(channel_id):
     ''' returns a list of owners of a channel '''
-    return [
-        user for user in CHANNELS[channel_id]['members'] if user['is_owner']
-    ]
+    return CHANNELS[channel_id]['owners']
 
 
 def get_channel_members(channel_id):
