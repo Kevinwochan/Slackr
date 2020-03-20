@@ -1,3 +1,9 @@
+"""
+I want to create a separate file user_data to store the information of the 
+user, like their token, u_id, names, emails etc. 
+Because it is easier to fetch the information like u_id by user's token
+
+"""
 from error import InputError
 import user_data
 
