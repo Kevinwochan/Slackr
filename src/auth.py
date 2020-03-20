@@ -1,5 +1,6 @@
 TOKENS = {}
 USERS = {}
+SLACKR_OWNER = 0
 
 def auth_login(email, password):
     return {
