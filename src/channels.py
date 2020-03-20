@@ -34,6 +34,7 @@ def channels_list(token):
         or u_id in glob_channels[channel_id]['members']
     ]}
 
+
 def channels_listall(token):
     '''
     loops through CHANNELS and generates a list of all channel_ids and
@@ -50,6 +51,7 @@ def channels_listall(token):
             } for channel_id in glob_channels
         ]
     }
+
 
 def channels_create(token, name, is_public):
     '''
