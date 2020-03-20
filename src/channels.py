@@ -2,19 +2,6 @@ from auth import USERS
 from utils import check_token
 from error import InputError
 
-''' 
-CHANNELS usage (from README.md)
-    channel = CHANNELS[channel_id]
-    each channel is a dictionary 
-    { 
-        'name': 'channel_name'
-        'owners': [user_id1, user_id2],
-        'members': [user_id2, user_id3]
-        'messages' : [message1, message2] 
-        'is_public' : True
-    }
-
-'''
 CHANNELS = {}
 
 def get_channels():
@@ -26,14 +13,23 @@ def get_channels():
     return CHANNELS
 
 def channels_list(token):
-    return {
-        'channels': [
-        	{
-        		'channel_id': 1,
-        		'name': 'My Channel',
-        	}
-        ],
-    }
+    '''
+    Loops through CHANNELS and generates a list of only the channels which 
+    contain the user as a member
+    '''
+    u_id = check_token(token)
+    glob_channels = get_channels()
+
+    chan_lst = []
+    for channel_id in glob_channels:
+        if u_id in glob_channels[channel_id]['owners']\
+        or u_id in glob_channels[channel_id]['members']: 
+            chan_lst.append({
+                'channel_id': channel_id,
+                'name': glob_channels[channel_id]['name']
+            })
+
+    return {'channels': chan_lst}
 
 def channels_listall(token):
     '''
