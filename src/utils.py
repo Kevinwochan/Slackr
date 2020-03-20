@@ -5,7 +5,7 @@ Contains miscellaneous helper functions. These may be seperated into different f
 #needs pip3 install pyjwt
 # Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
 from jwt import encode, decode
-from error import AccessError
+from src.error import AccessError
 
 SECRET = 'F FOR HAYDEN'
 
