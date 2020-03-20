@@ -312,7 +312,7 @@ For example, if we imagine a user with token "12345" is trying to read messages 
 
 ## Working with the frontend
 
-Every group has had a new repository created for them since iteration 2. It's URL is *https://gitlab.cse.unsw.edu.au/COMP1531/20T1/[yourgroupname]*. Instructions of how to have your frontend use your backend are there.
+Every group has had a new repository created for them since iteration 2. It's URL is *https://gitlab.cse.unsw.edu.au/COMP1531/20T1frontend/[yourgroupname]*. Instructions of how to have your frontend use your backend are there.
 
 If you run the frontend at the same time as your flask server is running on the backend, then you can power the frontend via your backend.
 
