@@ -1,38 +1,34 @@
 # Type Defintions
 There are 3 global variables:
 - CHANNELS
+    - Currently declared in scr.channels
 - USERS
-- TOKENS
+    - Currently declared in scr.auth
+- curr_user
+    - declared in src.utils
 
 ## CHANNELS
-use CHANNELS to store your info
-
+Channels is a dictionary
 ``` 
     if you want channnel information you can access it using it's channel id like
     channel = CHANNELS[channel_id]
 
     each channel is a dictionary 
     { 
-        'owners': [user_id1, user_id2],
-        'members': [user_id2, user_id3]
-        'messages' : [message1, message2] 
+        'name': 'channel_name',
+        'owners': [0, 1],  # a list of user_ids
+        'members': [2, 3],
+        'messages' : [message1, message2], # a lsit of messages sorted by most recent first, see below for type def
+        'is_public' : True
     }
-
-    each message is a dictionary with a unix timestamp
-    {
-        'timestamp': 1584538791 ,
-        'content' : 'this is the message content',
-        'reacts' : [ 
-                    'user_id': user_id1,
-                     'emoji' : U+1F600  # this is a s mily face in unicode
-                   ]
-    }
-
 ```
 
+## Messages
+is a dictionary
 ```
     each message in CHANNELS[channel_id]['messges'] a dictionary with a unix timestamp
     {
+        'message_id': 1
         'timestamp': 1584538791 ,
         'message' : 'this is the message content',
         'reacts' : [ 
@@ -62,45 +58,41 @@ each user in USERS is also a dictionary
     }
 ```
 
-## TOKENS
-TOKENS is a dictionary, the keys are u_ids with the value is a validated token for that user
-Each TOKENS[user_id] is a user's token for logging in
-```
-TOKENS[u_id] = 'a valid token for u_id'
-```
-
+## curr_users
+curr_users is a list of active JWTs, access this by using functions in utils.py
 
 
 # Backend
 ## Installation
 In order for everything to run you need to have the following installed:
-
 ```
-pip install flask pytest pylint yapf python-dotenv
+pip install -r requirements.txt
 ```
-
+Or if youre comfortable with pipenv run
+```
+pipenv install --dev
+```
 ## Running
 run the command below
 ```
-python3.7 app.py
+python3.7 src/server.py
 ```
 e.g
 
 ```
-$ ls
-assumptions.md	Pipfile  README.md  src
-$ cd src
-$ ls       
-app.py	auth.py  auth_test.py  channel.py  channels.py	conftest.py  echo.py  error.py	__init__.py  message.py  other.py  Pipfile  Pipfile.lock  __pycache__  README.md  tests  user.py  utils.py
-$ flask run
+$ python3 src/server.py 
+ * Serving Flask app "server" (lazy loading)
  * Environment: production
    WARNING: This is a development server. Do not use it in a production deployment.
    Use a production WSGI server instead.
- * Debug mode: off
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Debug mode: on
+ * Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 358-897-093
 ```
 
-You can now open firefox/google chrome at http://127.0.0.1:5000/ to view the api
+You can now open firefox/google chrome at http://127.0.0.1:8080/ to view the api
 
 
 ## Testing TODO

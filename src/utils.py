@@ -12,15 +12,17 @@ from src.channel import CHANNELS
 
 SECRET = 'F FOR HAYDEN'
 
-curr_users = [] # pylint: disable=invalid-name
+curr_users = []  # pylint: disable=invalid-name
+
 
 def generate_token(user_id):
     '''
     Returns a JWT token based on the users id and a secret message.
     '''
-    token = encode({'id' : user_id}, SECRET, algorithm='HS256').decode('utf-8')
+    token = encode({'id': user_id}, SECRET, algorithm='HS256').decode('utf-8')
     curr_users.append(token)
     return token
+
 
 def check_token(token):
     '''
@@ -30,6 +32,7 @@ def check_token(token):
     if not token in curr_users:
         raise AccessError(description="You do not have a valid token")
     return decode(token.encode('utf-8'), SECRET, algorithm='HS256')['id']
+
 
 def invalidate_token(token):
     '''
