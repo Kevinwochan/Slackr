@@ -2,10 +2,10 @@
 There are 3 global variables:
 - CHANNELS
 - USERS
-- TOKENS
+- SLACKR_OWNERS
 
 ## CHANNELS
-use CHANNELS to store your info
+Channels is a dictionary
 
 ``` 
     if you want channnel information you can access it using it's channel id like
@@ -13,8 +13,8 @@ use CHANNELS to store your info
 
     each channel is a dictionary 
     { 
-        'owners': [user_id1, user_id2],
-        'members': [user_id2, user_id3]
+        'owners': []
+        'members': []
         'messages' : [message1, message2] 
     }
 
@@ -62,14 +62,16 @@ each user in USERS is also a dictionary
     }
 ```
 
-## TOKENS
-TOKENS is a dictionary, the keys are u_ids with the value is a validated token for that user
-Each TOKENS[user_id] is a user's token for logging in
-```
-TOKENS[u_id] = 'a valid token for u_id'
-```
+## SLACKR OWNER
+Is a single u_id that can
+- reset the workspace 
+- make any user a owner of a channel
+- Force any user that is now a channel owner to leave a channel
 
-
+Change the slackr id by asssigning it to a valid user_id
+```
+    SLACKR_OWNER = 1
+```
 
 # Backend
 ## Installation
@@ -82,7 +84,7 @@ pip install flask pytest pylint yapf python-dotenv
 ## Running
 run the command below
 ```
-python3.7 app.py
+python3 server.py
 ```
 e.g
 
