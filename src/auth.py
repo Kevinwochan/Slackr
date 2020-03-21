@@ -1,6 +1,4 @@
-import re
-from utils import generate_token, invalidate_token
-from error import InputError
+from utils import generate_token, invalidate_token, check_registration_inputs
 
 '''
     user = USERS[u_id] # Example of accessing a user with a u_id
@@ -38,7 +36,8 @@ def auth_register(email, password, name_first, name_last):
     generate_token() from utils.py. u_id's start from 0.
     '''
     # Checking inputs
-    
+    check_registration_inputs(email, password, name_first, name_last)
+    print('yay')
     return {
         'u_id': 1,
         'token': '12345',

@@ -4,12 +4,11 @@ Contains miscellaneous helper functions. These may be seperated into different f
 
 #needs pip3 install pyjwt
 # Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
+import re
 from jwt import encode, decode
 from error import AccessError, InputError
 from global_variables import get_valid_tokens, get_users
 SECRET = 'F FOR HAYDEN'
-
-
 
 
 
