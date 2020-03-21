@@ -1,4 +1,3 @@
-from src.channel import get_channels
 from src.error import InputError, AccessError
 from src.utils import check_token
 from src.global_variables import get_channels, get_users, get_slackr_owner

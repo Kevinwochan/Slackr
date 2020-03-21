@@ -36,5 +36,5 @@ def get_slackr_owner():
     Returns the user id of the slackr owner
     '''
     global global_slackr_owner
-    returns global_slackr_owner
+    return global_slackr_owner
 # pylint: enable=invalid-name, global-statement
