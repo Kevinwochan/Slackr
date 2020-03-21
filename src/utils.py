@@ -42,3 +42,9 @@ def invalidate_token(token):
     except ValueError:
         raise AccessError(description="Token is already invalid")
     return True
+
+####################################################################################################
+##                                   ||Auth Helper Functions||                                    ##
+####################################################################################################
+# These functions check that inputs are valid according to the project specifications
+#TODO: MOVE HELPER FUNCTIONS FROM AUTH
