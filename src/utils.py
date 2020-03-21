@@ -90,13 +90,24 @@ def is_name_valid(name):
 
 def is_email_unique(email):
     '''
-    Checks if an email is already associated with a user in USERS
+    Checks if an email is already associated with a user in glob_users
     '''
     glob_users = get_users()
 
 
     for user in glob_users.values():
         if email == user['email']:
+            return False
+    return True
+
+def is_handle_unique(handle_str):
+    '''
+    Checks if a handle is already associated with a user in glob_users
+    '''
+    glob_users = get_users()
+
+    for user in glob_users.values():
+        if handle_str == user['handle_str']:
             return False
     return True
 
