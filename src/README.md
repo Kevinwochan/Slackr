@@ -5,9 +5,9 @@
     - accessed using the function get_users()
 - global_valid_tokens
     - accessed using the function get_valid_tokens()
-- global_slackr_owner
-    - provides the user_id of the slackr owner
-    - access with get_slackr_owner()
+- global_slackr_owners
+    - provides the user_ids of the slackr owners
+    - access with get_slackr_owners()
 
 These are declared in the file global_variables.py. To access these global variables you must import the corresponding function from global_variables.py
 
