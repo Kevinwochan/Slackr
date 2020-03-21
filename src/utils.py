@@ -6,10 +6,12 @@ Contains miscellaneous helper functions. These may be seperated into different f
 # Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
 from jwt import encode, decode
 from error import AccessError
+from global_variables import get_valid_tokens
 
 SECRET = 'F FOR HAYDEN'
 
-curr_users = []  # pylint: disable=invalid-name
+
+curr_users = get_valid_tokens() # pylint: disable=invalid-name
 
 
 def generate_token(user_id):
