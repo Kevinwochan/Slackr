@@ -1,6 +1,3 @@
-CHANNELS = {}
-
-
 def channels_list(token):
     return {
         'channels': [{
