@@ -1,5 +1,6 @@
 import re
 from utils import generate_token, invalidate_token
+from error import InputError
 
 '''
     user = USERS[u_id] # Example of accessing a user with a u_id
@@ -45,7 +46,6 @@ def is_password_valid(password):
 
     return bool(condition)
 
-
 def is_name_valid(name):
     '''
     '[Invalid if] name is not between 1 and 50 characters inclusive in length'
@@ -68,6 +68,18 @@ def is_email_unique(email):
         if email == user['email']:
             return False
     return True
+
+def check_registration_inputs(email, password, name_first, name_last):
+    if not is_email_valid(email):
+        raise InputError(description="Invalid Email")
+    if not is_email_unique(email):
+        raise InputError(description="An account with this email has already been registered")
+    if not is_password_valid(password):
+        raise InputError(description="Password not strong enough")
+    if not is_name_valid(name_first):
+        raise InputError(description="First name must be between 1 and 50 characters long")
+    if not is_name_valid(name_last):
+        raise InputError(description="Last name must be between 1 and 50 characters long")
 
 
 
