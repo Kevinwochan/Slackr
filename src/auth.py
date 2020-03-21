@@ -1,44 +1,6 @@
-from utils import generate_token, invalidate_token
 import re
-USERS = {}
+from utils import generate_token, invalidate_token
 
-# Helper functions
-def is_email_valid(email):
-    '''
-    Checks if email is valid, using the method described here:
-    https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
-
-    Returns True if email is valid, otherwise returns False.
-    '''
-    condition = re.search(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$', email)
-
-    return bool(condition)
-
-def is_password_valid(password):
-    '''
-    Checks if password is valid, according to project specifications:
-    '[invalid if] Password entered is less than 6 characters long'
-
-    Returns True if password is valid, otherwise returns False
-    '''
-    condition = len(password)>=6
-
-    return bool(condition)
-
-
-def is_name_valid(name):
-    '''
-    Checks if a name (first or last) is valid, according to the project specifications:
-    '[Invalid if] name is not between 1 and 50 characters inclusive in length'
-
-    Returns True if name is valid, otherwise returns False.
-    '''
-    condition_1 = len(name)>=1
-    condition_2 = len(name)<=50
-
-    return bool(condition_1 and condition_2)
-
-# Auth functions
 '''
     user = USERS[u_id] # Example of accessing a user with a u_id
     user = {
@@ -52,7 +14,65 @@ def is_name_valid(name):
         username
     }
 '''
+USERS = {}
+def get_users():
+    '''
+    returns global USERS
+    Use this function rather than directly accessing USERS
+    '''
+    global USERS # pylint: disable=global-statement
+    return USERS
 
+# helper functions
+def is_email_valid(email):
+    '''
+    Checks if email is valid, using the method described here:
+    https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
+
+    Returns True if email is valid, otherwise returns False.
+    '''
+    condition = re.search(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$', email)
+
+    return bool(condition)
+
+def is_password_valid(password):
+    '''
+    '[invalid if] Password entered is less than 6 characters long'
+
+    Returns True if password is valid, otherwise returns False
+    '''
+    condition = len(password) >= 6
+
+    return bool(condition)
+
+
+def is_name_valid(name):
+    '''
+    '[Invalid if] name is not between 1 and 50 characters inclusive in length'
+
+    Returns True if name is valid, otherwise returns False.
+    '''
+    condition_1 = len(name) >= 1
+    condition_2 = len(name) <= 50
+
+    return bool(condition_1 and condition_2)
+
+def is_email_unique(email):
+    '''
+    Checks if an email is already associated with a user in USERS
+    '''
+    glob_users = get_users()
+
+
+    for user in glob_users.values():
+        if email == user['email']:
+            return False
+    return True
+
+
+
+
+# Auth functions
 def auth_login(email, password):
     return {
         'u_id': 1,
