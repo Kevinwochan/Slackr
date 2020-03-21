@@ -10,8 +10,6 @@ from error import AccessError, InputError
 from global_variables import get_valid_tokens, get_users
 SECRET = 'F FOR HAYDEN'
 
-
-
 def generate_token(user_id):
     '''
     Returns a JWT token based on the users id and a secret message.
@@ -126,7 +124,7 @@ def check_registration_inputs(email, password, name_first, name_last):
     if not is_name_valid(name_last):
         raise InputError(description="Last name must be between 1 and 50 characters long")
 
-def check_login_inputs(email, password):
+def check_login_inputs(email):
     '''
     Checks all inputs for login raises the appropriate errors
     '''
