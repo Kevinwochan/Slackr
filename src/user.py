@@ -7,9 +7,21 @@ from src.error import InputError
 from src.global_variables import get_users
 
 
+def is_valid_handle(handle_str):
+    '''
+    checks that no existing user has this handle_str
+    '''
+    for user in get_users():
+        if user['handle_str'] == handle_str:
+            return False
+    return True
 
 def is_valid_email(email):
-    ''' code from https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/'''
+    ''' 
+    code from https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
+    checks that the valid is in a valid format according to geeks for geeks
+    and checks that this email is not already in use
+    '''
     regex = r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
     if not re.search(regex, email):
         return False
@@ -66,6 +78,8 @@ def user_profile_setemail(token, email):
     user_id = check_token(token)
     if not user_id in get_users():
         raise InputError
+    if not is_valid_email(email):
+        raise InputError
 
     user = get_users()[user_id]
     user['email'] = email
@@ -81,6 +95,8 @@ def user_profile_sethandle(token, handle_str):
     if not user_id in get_users():
         raise InputError
     if len(handle_str) < 1 or len(handle_str) > 50:
+        raise InputError
+    if not is_valid_handle(handle_str):
         raise InputError
 
     user = get_users()[user_id]
