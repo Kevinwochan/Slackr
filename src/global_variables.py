@@ -7,6 +7,7 @@ Their structure is described in the README.md file in src.
 global_users = {}
 global_channels = {}
 global_valid_tokens = []
+global_slackr_owner = 0
 
 # Functions used to access global variables
 def get_users():
@@ -29,4 +30,11 @@ def get_valid_tokens():
     '''
     global global_valid_tokens
     return global_valid_tokens
+
+def get_slackr_owner():
+    '''
+    Returns the user id of the slackr owner
+    '''
+    global global_slackr_owner
+    returns global_slackr_owner
 # pylint: enable=invalid-name, global-statement

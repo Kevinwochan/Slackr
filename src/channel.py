@@ -1,7 +1,8 @@
-from src.channels import CHANNELS
+from src.channel import get_channels
 from src.error import InputError, AccessError
 from src.utils import check_token
-from src.auth import SLACKR_OWNER, USERS
+from src.global_variables import get_channels, get_users, get_slackr_owner
+
 '''
     Helper functions for writing less code
 '''
@@ -9,28 +10,31 @@ from src.auth import SLACKR_OWNER, USERS
 
 def is_valid_channel(channel_id):
     ''' returns true if the channel id is valid'''
-    return channel_id in CHANNELS
+    return channel_id in get_channels()
 
 
 def is_user_a_member(channel_id, user_id):
     ''' returns true if the user_id is a member of the channel '''
-    return user_id in CHANNELS[channel_id]['members']
+    return user_id in get_channels()[channel_id]['members']
 
 
 def is_user_a_owner(channel_id, user_id):
     ''' returns true if the user_id is an owner of the channel '''
-    return user_id in CHANNELS[channel_id]['owners']
+    return user_id in get_channels()[channel_id]['owners']
 
 
 def get_channel_owners(channel_id):
     ''' returns a list of owners of a channel '''
-    return CHANNELS[channel_id]['owners']
+    return get_channels()[channel_id]['owners']
 
 
 def get_channel_members(channel_id):
     ''' returns a list of channel members '''
-    return CHANNELS[channel_id]['members']
+    return get_channels()[channel_id]['members']
 
+def is_valid_user(user_id):
+    ''' returns true if user_id refers to an existing user '''
+    return user_id in get_users() # TODO move this somewhere else
 
 '''
     Main Channel functions
@@ -44,9 +48,8 @@ def channel_invite(token, channel_id, user_id):
     An input error is thrown when the user_id/channel_id  is invalid
     Access error when the user is not a member of the channel
     '''
-    try:
-        host_user_id = check_token(token)
-    except AccessError:  #TODO:  find cleaner solution to this
+    host_user_id = check_token(token)
+    if not is_valid_user(user_id):
         raise InputError
 
     if not is_valid_channel(channel_id):
@@ -55,7 +58,7 @@ def channel_invite(token, channel_id, user_id):
     if not is_user_a_member(channel_id, host_user_id):
         raise AccessError
 
-    CHANNELS[channel_id]['members'].append(user_id)
+    get_channels()[channel_id]['members'].append(user_id)
     return {}
 
 
@@ -76,23 +79,23 @@ def channel_details(token, channel_id):
     for user_id in get_channel_owners(channel_id):
         owner_members.append({
             'user_id': user_id,
-            'name_first': USERS[user_id]['name_first'],
-            'name_last': USERS[user_id]['name_last']
+            'name_first': get_users()[user_id]['name_first'],
+            'name_last': get_users()[user_id]['name_last']
         })
         all_members.append({
             'user_id': user_id,
-            'name_first': USERS[user_id]['name_first'],
-            'name_last': USERS[user_id]['name_last']
+            'name_first': get_users()[user_id]['name_first'],
+            'name_last': get_users()[user_id]['name_last']
         })
 
     for user_id in get_channel_members(channel_id):
         all_members.append({
             'user_id': user_id,
-            'name_first': USERS[user_id]['name_first'],
-            'name_last': USERS[user_id]['name_last']
+            'name_first': get_users()[user_id]['name_first'],
+            'name_last': get_users()[user_id]['name_last']
         })
     return {
-        'name': CHANNELS[channel_id]['name'],
+        'name': get_channels()[channel_id]['name'],
         'owner_members': owner_members,
         'all_members': all_members
     }
@@ -114,7 +117,7 @@ def channel_messages(token, channel_id, start):
             channel_id, user_id):
         raise AccessError
 
-    channel = CHANNELS[channel_id]
+    channel = get_channels()[channel_id]
     if start > len(channel['messages']):
         raise InputError
 
@@ -148,7 +151,7 @@ def channel_addowner(token, channel_id, user_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not is_user_a_owner(channel_id, owner_id) and owner_id != SLACKR_OWNER:
+    if not is_user_a_owner(channel_id, owner_id) and owner_id != get_slackr_owner():
         raise AccessError
 
     if is_user_a_owner(channel_id, user_id):
@@ -171,7 +174,7 @@ def channel_removeowner(token, channel_id, user_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not is_user_a_owner(channel_id, owner_id) and owner_id != SLACKR_OWNER:
+    if not is_user_a_owner(channel_id, owner_id) and owner_id != get_slackr_owner():
         raise AccessError
 
     if is_user_a_owner(channel_id, user_id):
