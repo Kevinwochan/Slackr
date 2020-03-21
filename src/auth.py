@@ -10,8 +10,9 @@ def is_email_valid(email):
 
     Returns True if email is valid, otherwise returns False.
     '''
-    regex = r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-    return bool(re.search(regex, email))
+    condition = re.search(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$', email)
+
+    return bool(condition)
 
 def is_password_valid(password):
     '''
@@ -20,7 +21,9 @@ def is_password_valid(password):
 
     Returns True if password is valid, otherwise returns False
     '''
-    return bool(len(password)>=6)
+    condition = len(password)>=6
+
+    return bool(condition)
 
 
 def is_name_valid(name):
@@ -30,8 +33,10 @@ def is_name_valid(name):
 
     Returns True if name is valid, otherwise returns False.
     '''
-    return bool(len(name)>=1 and len(name)<=50)
+    condition_1 = len(name)>=1
+    condition_2 = len(name)<=50
 
+    return bool(condition_1 and condition_2)
 
 # Auth functions
 '''
