@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/usr/bin/python3.7",
+    "python.venvPath": "${workspaceFolder}/.venv/bin/python",
     "python.linting.enabled": true,
     "python.formatting.provider": "yapf",
     "cSpell.words": [
