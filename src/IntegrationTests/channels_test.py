@@ -221,4 +221,3 @@ def test_listall_private():
     # Checking that channels_listall returns the same list for user2,
     assert len(chan_lst1) == len(chan_lst2) == 1
     assert chan_lst1 == chan_lst2
-

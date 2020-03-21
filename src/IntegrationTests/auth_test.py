@@ -24,6 +24,7 @@ def test_register_email_invalid():
         assert auth_register('z55555555.unsw.edu.au', 'password',
                              'placeholder_first_name', 'placeholder_last_name')
 
+
 def test_register_email_in_use():
     """Tests that registration throws an input error when an email is used to create two accounts"""
     auth_register('z55555555@unsw.edu.au', 'password',

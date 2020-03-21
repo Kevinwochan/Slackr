@@ -1,38 +1,46 @@
 # Type Defintions
 There are 3 global variables:
-- CHANNELS
-- USERS
-- SLACKR_OWNERS
+- global_channels
+    - accessed using the function get_channels()
+- global_users
+    - accessed using the function get_users()
+- global_valid_tokens
+    - accessed using the function get_valid_tokens()
 
-## CHANNELS
-Channels is a dictionary
+These are declared in the file global_variables.py. To access these global variables you must import the corresponding function from global_variables.py
 
+For example, to access global_channels, use the following code:
+'''
+from global_variables import get_channels
+channels = get_channels()
+'''
+Any variable name can be used in place of 'channels'.
+
+## global_channels
+global_channels is a dictionary
 ``` 
-    if you want channnel information you can access it using it's channel id like
-    channel = CHANNELS[channel_id]
+    if you want channnel information you can access it using it's channel id like:
+
+    from global_variables import get_channels
+    glob_channels = get_channels()
+    channel = glob_channels[channel_id]
 
     each channel is a dictionary 
     { 
-        'owners': []
-        'members': []
-        'messages' : [message1, message2] 
+        'name': 'channel_name',
+        'owners': [0, 1],  # a list of user_ids
+        'members': [2, 3],
+        'messages' : [message1, message2], # a lsit of messages sorted by most recent first, see below for type def
+        'is_public' : True
     }
-
-    each message is a dictionary with a unix timestamp
-    {
-        'timestamp': 1584538791 ,
-        'content' : 'this is the message content',
-        'reacts' : [ 
-                    'user_id': user_id1,
-                     'emoji' : U+1F600  # this is a s mily face in unicode
-                   ]
-    }
-
 ```
 
+## Messages
+is a dictionary
 ```
     each message in CHANNELS[channel_id]['messges'] a dictionary with a unix timestamp
     {
+        'message_id': 1
         'timestamp': 1584538791 ,
         'message' : 'this is the message content',
         'reacts' : [ 
@@ -45,64 +53,62 @@ Channels is a dictionary
 
 
 
-## USERS
-USERS is a dictionary with each item in the list representing a user
-each user in USERS is also a dictionary
+## global_users
+global_users is a dictionary with each item in the list representing a user.
+Each user in global_users is also a dictionary
 ```
-    user = USERS[u_id] # Example of accessing a user with a u_id
+    from global_variables import get_users
+    glob_users = get_users()
+
+    user = glob_users[u_id] # Example of accessing a user with a u_id
     user = {
-        'u_id': 2,
         'email' : 'z5555555@unsw.edu.au',
         'name_first': 'Hayden', 
         'name_last' : 'Smith', 
          etc...
         handle_str,
-        password,
-        username
     }
 ```
 
-## SLACKR OWNER
-Is a single u_id that can
-- reset the workspace 
-- make any user a owner of a channel
-- Force any user that is now a channel owner to leave a channel
+## global_valid_tokens
+global_valid_tokens is a list of all active JWTs1.
+Access this by using the function get_valid_tokens.
 
-Change the slackr id by asssigning it to a valid user_id
-```
-    SLACKR_OWNER = 1
-```
+NOTE: If youre accessing this variable to check if a token is valid, USE THE FUNCTIONS IN utils.py. i.e. check_token()
+Generally, you should not need to access this variable.
+
 
 # Backend
 ## Installation
 In order for everything to run you need to have the following installed:
-
 ```
-pip install flask pytest pylint yapf python-dotenv
+pip install -r requirements.txt
 ```
-
+Or if youre comfortable with pipenv run
+```
+pipenv install --dev
+```
 ## Running
 run the command below
 ```
-python3 server.py
+python3.7 src/server.py
 ```
 e.g
 
 ```
-$ ls
-assumptions.md	Pipfile  README.md  src
-$ cd src
-$ ls       
-app.py	auth.py  auth_test.py  channel.py  channels.py	conftest.py  echo.py  error.py	__init__.py  message.py  other.py  Pipfile  Pipfile.lock  __pycache__  README.md  tests  user.py  utils.py
-$ flask run
+$ python3 src/server.py 
+ * Serving Flask app "server" (lazy loading)
  * Environment: production
    WARNING: This is a development server. Do not use it in a production deployment.
    Use a production WSGI server instead.
- * Debug mode: off
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Debug mode: on
+ * Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 358-897-093
 ```
 
-You can now open firefox/google chrome at http://127.0.0.1:5000/ to view the api
+You can now open firefox/google chrome at http://127.0.0.1:8080/ to view the api
 
 
 ## Testing TODO
