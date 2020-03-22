@@ -81,20 +81,6 @@ def check_registration_inputs(email, password, name_first, name_last):
     if not is_name_valid(name_last):
         raise InputError(description="Last name must be between 1 and 50 characters long")
 
-
-def find_id(email):
-    '''
-    Finds the user id associated with an email and returns it
-    #TODO: this function is very similar to is_email_unique - may want to combine
-    '''
-    glob_users = get_users()
-
-    for u_id in glob_users:
-        if email == glob_users[u_id]['email']:
-            return u_id
-    # if no user is found with this email
-    return False
-
 def check_login_inputs(email):
     '''
     Checks all inputs for login raises the appropriate errors
@@ -105,6 +91,11 @@ def check_login_inputs(email):
 
     if is_email_unique(email):
         raise InputError(description="This email has not been registered")
+    glob_users = get_users()
+
+    for u_id in glob_users:
+        if email == glob_users[u_id]['email']:
+            return u_id
 
 def create_handle(name_first, name_last):
     '''

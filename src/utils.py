@@ -1,5 +1,5 @@
 '''
-Contains miscellaneous helper functions. These may be seperated into different files eventually
+Contains miscellaneous helper functions.
 '''
 #needs pip3 install pyjwt
 # Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
