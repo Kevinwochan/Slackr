@@ -11,11 +11,13 @@ SECRET = 'F FOR HAYDEN'
 def generate_token(user_id):
     '''
     Returns a JWT token based on the users id and a secret message.
+    if a user is already logged in, it does not add the token to curr_users
     '''
     curr_users = get_valid_tokens()
 
     token = encode({'id': user_id}, SECRET, algorithm='HS256').decode('utf-8')
-    curr_users.append(token)
+    if token not in curr_users:
+        curr_users.append(token)
     return token
 
 
