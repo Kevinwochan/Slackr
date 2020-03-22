@@ -13,6 +13,7 @@ python-dotenv = "*"
 flask = "*"
 pyjwt = "*"
 flask-cors = "*"
+jwt = "*"
 
 [requires]
 python_version = "3.7"
