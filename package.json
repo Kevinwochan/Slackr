@@ -1,0 +1,17 @@
+{
+	"lint-staged": {
+		"lint": "pylint"
+	},
+	"scripts": {
+		"format": "yapf src --in-place --recursive",
+		"lint": "pylint src"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm run format"
+		}
+	},
+	"dependencies": {
+		"lint-staged": "^10.0.8"
+	}
+}
