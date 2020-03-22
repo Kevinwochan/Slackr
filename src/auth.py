@@ -37,6 +37,7 @@ def auth_register(email, password, name_first, name_last):
     Checks if their email, password and names are valid (according to the specifications).
     assigns them a user id and generates a token for them from that id using the function
     generate_token() from utils.py. u_id's start from 0.
+    Note: USER WITH ID 0 is default Slackr owner
     '''
     # Checking inputs
     helper.check_registration_inputs(email, password, name_first, name_last)
@@ -45,12 +46,17 @@ def auth_register(email, password, name_first, name_last):
     password_hash = sha256(password.encode()).hexdigest()
     handle_str = helper.create_handle(name_first, name_last)
 
+    is_owner = False
+    if u_id == 0:
+        is_owner = True
+
     glob_users[u_id] = {
         'email' : email,
         'name_first': name_first,
         'name_last' : name_last,
         'handle_str': handle_str,
-        'password_hash': password_hash
+        'password_hash': password_hash,
+        'is_owner': is_owner
     }
     token = generate_token(u_id)
     return {
