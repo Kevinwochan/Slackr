@@ -22,7 +22,6 @@ def is_email_valid(email):
     return bool(condition)
 
 def is_password_valid(password):
-    
     '''
     '[invalid if] Password entered is less than 6 characters long'
 
@@ -81,6 +80,20 @@ def check_registration_inputs(email, password, name_first, name_last):
     if not is_name_valid(name_last):
         raise InputError(description="Last name must be between 1 and 50 characters long")
 
+def find_id(email):
+    '''
+    Finds the user id associated with an email and returns it
+    returns false if no user is found
+    TODO: find better solution - discuss in next standup
+    '''
+    glob_users = get_users()
+
+    for u_id in glob_users:
+        if email == glob_users[u_id]['email']:
+            return u_id
+    # if no user is found with this email
+    raise Exception('No user found')
+
 def check_login_inputs(email):
     '''
     Checks all inputs for login raises the appropriate errors
@@ -88,14 +101,9 @@ def check_login_inputs(email):
     '''
     if not is_email_valid(email):
         raise InputError(description="Invalid Email")
-
     if is_email_unique(email):
         raise InputError(description="This email has not been registered")
-    glob_users = get_users()
-
-    for u_id in glob_users:
-        if email == glob_users[u_id]['email']:
-            return u_id
+    return find_id(email)
 
 def create_handle(name_first, name_last):
     '''
