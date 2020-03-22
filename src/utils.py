@@ -5,8 +5,8 @@ Contains miscellaneous helper functions. These may be seperated into different f
 #needs pip3 install pyjwt
 # Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
 from jwt import encode, decode
-from error import AccessError
-from global_variables import get_valid_tokens
+from src.error import AccessError
+from src.global_variables import get_valid_tokens
 SECRET = 'F FOR HAYDEN'
 
 
@@ -49,10 +49,3 @@ def invalidate_token(token):
     except ValueError:
         raise AccessError(description="Token is already invalid")
     return True
-
-def workspace_reset():
-    ''' Deletes all Slackr information as if the website was just launched '''
-    # TODO: verify user is an owner of the slackr
-    curr_users.clear()
-    USERS.clear()
-    CHANNELS.clear()
