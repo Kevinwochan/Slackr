@@ -29,4 +29,15 @@ def get_valid_tokens():
     '''
     global global_valid_tokens
     return global_valid_tokens
+
+def get_slackr_owners():
+    '''
+    Returns global_valid_tokens
+    '''
+    global global_users
+    owners = []
+    for user_id in global_users:
+        if global_users[user_id]['is_owner']:
+            owners.append(user)
+    return owners
 # pylint: enable=invalid-name, global-statement
