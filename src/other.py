@@ -1,6 +1,3 @@
-from src.auth import USERS, JTWS
-from src.channels import CHANNELS
-
 
 def users_all(token):
     return {
