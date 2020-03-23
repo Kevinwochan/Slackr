@@ -136,6 +136,17 @@ def channel_leave(token, channel_id):
     '''
     Removes a user from a channel
     '''
+    user_id = check_token(token)
+
+    if not is_valid_channel(channel_id):
+        raise InputError
+
+    if not channel_id in channels_listall(token):
+        raise AccessError
+    
+    if channel_id in channels_listall(token):
+        get_channel_members(channel_id).remove(user_id)
+
     return {}
 
 
