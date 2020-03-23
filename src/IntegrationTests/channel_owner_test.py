@@ -1,16 +1,17 @@
+'''
+Tests for priviledged uses functionality
+'''
 import pytest
 from src.error import AccessError, InputError
 from src.auth import auth_register, auth_logout
-from src.channels import channel_invite, channel_details, channel_messages, channel_leave, channel_addowner, channel_join
+from src.channel import channel_addowner, channel_join, channel_removeowner
 from src.channels import channels_create
-from src.message import message_send
-'''
-    Tests for adding an owner to a channel
-'''
-
 
 # Assumption that first person to join/create a channel is Owner of that channel
 def test_channel_addowner():
+    '''
+        Tests for adding an owner to a channel
+    '''
     test_Owner_user = auth_register("z5555555@unsw.edu.au", "password", "John",
                                     "Smith")
     test_normal_user = auth_register("z8888888@unsw.edu.au", "password", "Bob",
