@@ -120,7 +120,7 @@ def create_handle(name_first, name_last):
     creates handle by joining a users (lowercase) first and last names, cutting it off at
     20 characters, and adding numbers to the end to make it unique if nessessary.
     '''
-    concat = (name_first + name_last)[:20]
+    concat = (name_first + name_last)[:20].lower()
     i = '0'
     handle_str = concat
     while not is_handle_unique(handle_str):
