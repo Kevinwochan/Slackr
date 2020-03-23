@@ -4,7 +4,7 @@ This file uses helper functions which are located in the file auth_helper.py
 """
 
 from hashlib import sha256
-from utils import generate_token, invalidate_token
+from src.utils import generate_token, invalidate_token
 import auth_helper as helper
 from global_variables import get_users
 
@@ -36,7 +36,7 @@ def auth_register(email, password, name_first, name_last):
     Registers a user by saving their information to the global variable USERS.
     Checks if their email, password and names are valid (according to the specifications).
     assigns them a user id and generates a token for them from that id using the function
-    generate_token() from utils.py. u_id's start from 0.
+    generate_token() from src.utils.py. u_id's start from 0.
     Note: USER WITH ID 0 is default Slackr owner
     '''
     # Checking inputs

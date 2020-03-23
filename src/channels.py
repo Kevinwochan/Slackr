@@ -4,7 +4,7 @@ channels_list and channels_listall are written using list comprehension.
 For the previous versions which used for loops, see git log.
 '''
 
-from utils import check_token
+from src.utils import check_token
 from error import InputError
 
 
