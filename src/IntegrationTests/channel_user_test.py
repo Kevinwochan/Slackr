@@ -25,7 +25,7 @@ def test_channel_leave():
 
 
 # Trying to leave a channel with invalid channel ID
-def test_channel_leave_InputError():
+def test_channel_leave_invald_channel_id():
     test_user = auth_register("z5555555@unsw.edu.au", "password", "John",
                               "Smith")
     with pytest.raises(InputError) as e:
@@ -33,7 +33,7 @@ def test_channel_leave_InputError():
 
 
 # Trying to leave a channel that the user isn't in
-def test_channel_leave_AccessError():
+def test_channel_leave_non_member():
     test_Owner_user = auth_register("z5555555@unsw.edu.au", "password", "John",
                                     "Smith")
     test_normal_user = auth_register("z8888888@unsw.edu.au", "password", "Bob",
@@ -45,7 +45,7 @@ def test_channel_leave_AccessError():
 
 
 #Trying to leave a channel with invalid token (invalid after logging out)
-def test_channel_leave_InvalidToken():
+def test_channel_leave_invalid_token():
     test_user = auth_register("z5555555@unsw.edu.au", "password", "John",
                               "Smith")
     test_channel = channels_create(test_user["token"], "test_channel", True)
@@ -174,7 +174,7 @@ def test_invite_right(user_jas, user_chas, channel_dav):
 
 # Test if the invited member has already been invited
 # This test will not be run unless the test_invite working well
-def test_double_invite(user_dav, user_jas, channel_dav):
+def test_channel_invite_already_member(user_dav, user_jas, channel_dav):
 
     # First invitation
     channel_invite(user_dav['token'], channel_dav['channel_id'],
@@ -198,7 +198,7 @@ def test_double_invite(user_dav, user_jas, channel_dav):
 
 
 # If the user in the channel invite himself
-def test_invite_itself(user_dav, channel_dav, user_jas):
+def test_channel_invite_self_invite(user_dav, channel_dav, user_jas):
 
     # invite jas to the channel
     channel_invite(user_dav['token'], channel_dav['channel_id'],
@@ -222,7 +222,7 @@ def test_invite_itself(user_dav, channel_dav, user_jas):
 
 
 # If a user invite itself to a channel where he is not a member
-def invite_itself(user_jas, channel_dav, user_dav):
+def test_channel_invite_not_a_mamber(user_jas, channel_dav, user_dav):
 
     # jas invite himself again
     channel_invite(user_jas['token'], channel_dav['channel_id'],
@@ -242,7 +242,7 @@ def invite_itself(user_jas, channel_dav, user_dav):
 
 
 # Test for the input error when the channel id is not valid
-def test_invalid_channel_id(user_dav, channel_dav):
+def test_channel_messages_invalid_channel_id(user_dav, channel_dav):
 
     # There is only one message inside the channel
     msg_1 = message_send(user_dav['token'], channel_dav['channel_id'],
@@ -254,7 +254,7 @@ def test_invalid_channel_id(user_dav, channel_dav):
 
 # Test for the input error when the start is greater than the total number of
 # messages
-def test_overflow(channel_dav, user_dav):
+def test_channel_messages_invalid_start(channel_dav, user_dav):
 
     # There is only one message inside the channel
     msg_1 = message_send(user_dav['token'], channel_dav['channel_id'],
@@ -266,7 +266,7 @@ def test_overflow(channel_dav, user_dav):
 
 
 # Test for the AccessError when the Authorised user is not a member of channel
-def test_invalid_user(channel_dav, user_dav, user_chas):
+def test_channel_messages_invalid_user(channel_dav, user_dav, user_chas):
 
     # There is only one message inside the channel
     msg_1 = message_send(user_dav['token'], channel_dav['channel_id'],

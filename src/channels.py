@@ -17,7 +17,7 @@ def create_channel_id():
     for channel_id in range(0, len(channels)):
         if not channel_id in channels:
             return channel_id
-    return len(channel_id)
+    return len(channels)
 
 
 def channels_list(token):
