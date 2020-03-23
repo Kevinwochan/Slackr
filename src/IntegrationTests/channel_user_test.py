@@ -1,7 +1,7 @@
 import pytest
 from src.error import AccessError, InputError
 from src.auth import auth_register, auth_logout
-from src.channel import channel_invite, channel_details, channel_messages, channel_leave, channel_addowner, channel_join
+from src.channel import channel_invite, channel_details, channel_messages, channel_leave, channel_join
 from src.channels import channels_create
 from src.message import message_send
 

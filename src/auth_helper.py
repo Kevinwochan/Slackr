@@ -4,8 +4,8 @@ Checks inputs and raises appropriate errors.
 '''
 import re
 from hashlib import sha256
-from error import InputError
-from global_variables import get_users
+from src.error import InputError
+from src.global_variables import get_users
 
 # These functions check that inputs are valid according to the project specifications for the
 # functions auth login and auth register.

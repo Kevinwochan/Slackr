@@ -1,6 +1,6 @@
 import pytest
 from src.auth import auth_register, auth_logout
-from src.utils import workspace_reset
+from src.global_variables import workspace_reset
 
 
 # Generates an invalid token for testing AcessErrors. uses auth_register and auth_logout

@@ -2,10 +2,13 @@
     Tests for utility functions
 '''
 import pytest
-from src.auth import auth_register, USERS
-from src.channels import channels_create, CHANNELS
+from src.auth import auth_register
+from src.channels import channels_create
 from src.error import AccessError
-from src.utils import workspace_reset, check_token, generate_token, invalidate_token, curr_users
+from src.global_variables import (workspace_reset, get_channels,
+                                  get_valid_tokens, get_users,
+                                  get_slackr_owners)
+from src.utils import check_token, generate_token, invalidate_token
 
 
 def test_symmetric():
@@ -27,7 +30,7 @@ def test_invalidation():
         invalidate_token(new_token)
         with pytest.raises(AccessError):
             assert check_token(new_token)
-    assert len(curr_users) == 0
+    assert len(get_users()) == 0
 
 
 def test_application_clean():
@@ -40,6 +43,8 @@ def test_application_clean():
                              "f for hayden rip", "hydaen", "smith")
         channels_create(user['token'], "test channel" + str(new_user), True)
     workspace_reset()
-    assert len(CHANNELS.keys()) == 0
-    assert len(USERS.keys()) == 0
-    assert len(curr_users) == 0
+    assert len(get_channels().keys()) == 0
+    assert len(get_users().keys()) == 0
+    assert len(get_users()) == 0
+    assert len(get_slackr_owners()) == 0
+    assert len(get_valid_tokens()) == 0
