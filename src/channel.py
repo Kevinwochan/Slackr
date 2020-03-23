@@ -1,6 +1,7 @@
 from src.error import InputError, AccessError
 from src.utils import check_token
 from src.global_variables import get_channels, get_users, get_slackr_owner
+from src.channels import channels_listall
 
 '''
     Helper functions for writing less code
@@ -132,10 +133,27 @@ def channel_messages(token, channel_id, start):
 
 
 def channel_leave(token, channel_id):
+    '''
+    Removes a user from a channel
+    '''
     return {}
 
 
 def channel_join(token, channel_id):
+    '''
+    Adds a user to a channel if they are authorised to join it
+    '''
+    user_id = check_token(token)
+    
+    if not is_valid_channel(channel_id):
+        raise InputError
+
+    if not channel_id in channels_listall(token) and owner_id != get_slackr_owner():
+        raise AccessError
+
+    if channel_id in channels_listall(token):
+        get_channel_members(channel_id).append(user_id)
+
 
     return {}
 
