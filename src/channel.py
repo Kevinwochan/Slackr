@@ -159,7 +159,7 @@ def channel_join(token, channel_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not channel_id in channels_listall(token) and owner_id != get_slackr_owner():
+    if not channel_id in channels_listall(token) and user_id != get_slackr_owners():
         raise AccessError
 
     if channel_id in channels_listall(token):
