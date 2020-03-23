@@ -1,6 +1,6 @@
 from src.error import InputError, AccessError
 from src.utils import check_token
-from src.global_variables import get_channels, get_users, get_slackr_owner
+from src.global_variables import get_channels, get_users, get_slackr_owners
 from src.channels import channels_listall
 
 '''
@@ -168,7 +168,7 @@ def channel_addowner(token, channel_id, user_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not is_user_a_owner(channel_id, owner_id) and owner_id != get_slackr_owner():
+    if not is_user_a_owner(channel_id, owner_id) and not owner_id in get_slackr_owners():
         raise AccessError
 
     if is_user_a_owner(channel_id, user_id):
@@ -191,7 +191,7 @@ def channel_removeowner(token, channel_id, user_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not is_user_a_owner(channel_id, owner_id) and owner_id != get_slackr_owner():
+    if not is_user_a_owner(channel_id, owner_id) and not owner_id in get_slackr_owners():
         raise AccessError
 
     if is_user_a_owner(channel_id, user_id):
