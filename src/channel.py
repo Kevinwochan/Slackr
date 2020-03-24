@@ -165,7 +165,6 @@ def channel_join(token, channel_id):
     if channel_id in channels_listall(token):
         get_channel_members(channel_id).append(user_id)
 
-
     return {}
 
 
