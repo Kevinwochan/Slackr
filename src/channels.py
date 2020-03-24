@@ -8,17 +8,6 @@ from src.utils import check_token
 from src.error import InputError
 from src.global_variables import get_channels
 
-def create_channel_id():
-    '''
-    Generates a new channel id to be used for a created channel
-    this iterates through the dictionary search for an unused key
-    '''
-    channels = get_channels()
-    for channel_id in range(0, len(channels)):
-        if not channel_id in channels:
-            return channel_id
-    return len(channels)
-
 
 def channels_list(token):
     '''
