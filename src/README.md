@@ -1,17 +1,31 @@
 # Type Defintions
-There are 3 global variables:
-- CHANNELS
-    - Currently declared in scr.channels
-- USERS
-    - Currently declared in scr.auth
-- curr_user
-    - declared in src.utils
+- global_channels
+    - accessed using the function get_channels()
+- global_users
+    - accessed using the function get_users()
+- global_valid_tokens
+    - accessed using the function get_valid_tokens()
+- global_slackr_owners
+    - provides the user_ids of the slackr owners
+    - access with get_slackr_owners()
 
-## CHANNELS
-Channels is a dictionary
+These are declared in the file global_variables.py. To access these global variables you must import the corresponding function from global_variables.py
+
+For example, to access global_channels, use the following code:
+'''
+from global_variables import get_channels
+channels = get_channels()
+'''
+Any variable name can be used in place of 'channels'.
+
+## global_channels
+global_channels is a dictionary
 ``` 
-    if you want channnel information you can access it using it's channel id like
-    channel = CHANNELS[channel_id]
+    if you want channnel information you can access it using it's channel id like:
+
+    from global_variables import get_channels
+    glob_channels = get_channels()
+    channel = glob_channels[channel_id]
 
     each channel is a dictionary 
     { 
@@ -41,25 +55,29 @@ is a dictionary
 
 
 
-## USERS
-USERS is a dictionary with each item in the list representing a user
-each user in USERS is also a dictionary
+## global_users
+global_users is a dictionary with each item in the list representing a user.
+Each user in global_users is also a dictionary
 ```
-    user = USERS[u_id] # Example of accessing a user with a u_id
+    from global_variables import get_users
+    glob_users = get_users()
+
+    user = glob_users[u_id] # Example of accessing a user with a u_id
     user = {
-        'u_id': 2,
         'email' : 'z5555555@unsw.edu.au',
         'name_first': 'Hayden', 
         'name_last' : 'Smith', 
          etc...
         handle_str,
-        password,
-        username
     }
 ```
 
-## curr_users
-curr_users is a list of active JWTs, access this by using functions in utils.py
+## global_valid_tokens
+global_valid_tokens is a list of all active JWTs1.
+Access this by using the function get_valid_tokens.
+
+NOTE: If youre accessing this variable to check if a token is valid, USE THE FUNCTIONS IN utils.py. i.e. check_token()
+Generally, you should not need to access this variable.
 
 
 # Backend
