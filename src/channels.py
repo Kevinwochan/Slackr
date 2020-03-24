@@ -6,16 +6,8 @@ For the previous versions which used for loops, see git log.
 
 from utils import check_token
 from error import InputError
+from global_variables import get_channels
 
-CHANNELS = {}
-
-def get_channels():
-    '''
-    function that returns CHANNELS as a global variable
-    Use this function rather than CHANNELS directly
-    '''
-    global CHANNELS # pylint: disable=global-statement
-    return CHANNELS
 
 def channels_list(token):
     '''

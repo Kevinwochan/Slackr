@@ -1,4 +1,4 @@
-from src.channels import CHANNELS
+from global_variables import get_channels
 from utils import check_token
 from error import AccessError, InputError
 import time
@@ -17,7 +17,9 @@ def message_send(token, channel_id, message):
     
     global message_id
     message_id += 1
-    CHANNELS[channel_id]['messges'].append({
+    glob_channels = get_channels()
+    channel = glob_channels[channel_id]
+    channel['messges'].append({
         'message_id': message_id,
         'timestamp': str(time.strftime("%Y%m%d%H%M")),
         'message': message
@@ -29,7 +31,7 @@ def message_send(token, channel_id, message):
             'emoji':[]  
         }]
     })
-
+    
     return {
         'message_id': message_id,
     }
