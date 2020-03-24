@@ -32,13 +32,16 @@ def get_channel_members(channel_id):
     ''' returns a list of channel members '''
     return get_channels()[channel_id]['members']
 
+
 def is_valid_user(user_id):
     ''' returns true if user_id refers to an existing user '''
-    return user_id in get_users() # TODO move this somewhere else
+    return user_id in get_users()  # TODO move this somewhere else
+
 
 def is_channel_public(channel_id):
     ''' returns true or false depending if channel is public'''
     return get_channels()[channel_id]['is_public']
+
 
 '''
     Main Channel functions
@@ -59,7 +62,7 @@ def channel_invite(token, channel_id, user_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not is_user_a_member(channel_id, host_user_id):
+    if not is_user_a_member(channel_id, host_user_id) and not is_user_a_owner(channel_id, host_user_id):
         raise AccessError
 
     get_channels()[channel_id]['members'].append(user_id)
@@ -82,19 +85,19 @@ def channel_details(token, channel_id):
     all_members = []
     for user_id in get_channel_owners(channel_id):
         owner_members.append({
-            'user_id': user_id,
+            'u_id': user_id,
             'name_first': get_users()[user_id]['name_first'],
             'name_last': get_users()[user_id]['name_last']
         })
         all_members.append({
-            'user_id': user_id,
+            'u_id': user_id,
             'name_first': get_users()[user_id]['name_first'],
             'name_last': get_users()[user_id]['name_last']
         })
 
     for user_id in get_channel_members(channel_id):
         all_members.append({
-            'user_id': user_id,
+            'u_id': user_id,
             'name_first': get_users()[user_id]['name_first'],
             'name_last': get_users()[user_id]['name_last']
         })
@@ -145,13 +148,16 @@ def channel_leave(token, channel_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not is_user_a_member(channel_id, user_id):
-        raise AccessError
-    
     if is_user_a_owner(channel_id, user_id):
         get_channel_owners(channel_id).remove(user_id)
-
-    get_channel_members(channel_id).remove(user_id)
+        if len(
+                get_channels()
+        ) == 0:  # TODO: disdvcuss if the last owner delets teh channel when leaving
+            del get_channels()[channel_id]
+    elif is_user_a_member(channel_id, user_id):
+        get_channel_members(channel_id).remove(user_id)
+    else:
+        raise AccessError
 
     return {}
 
@@ -161,11 +167,12 @@ def channel_join(token, channel_id):
     Adds a user to a channel if they are authorised to join it
     '''
     user_id = check_token(token)
-    
+
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not is_channel_public(channel_id) and not user_id in get_slackr_owners():
+    if not is_channel_public(
+            channel_id) and not user_id in get_slackr_owners():
         raise AccessError
 
     get_channel_members(channel_id).append(user_id)
@@ -174,7 +181,7 @@ def channel_join(token, channel_id):
 
 
 def channel_addowner(token, channel_id, user_id):
-    ''' 
+    '''
         Makes a user a channel owner, 
         The token must be of a channel owner or the slackr owner
     '''
@@ -183,7 +190,8 @@ def channel_addowner(token, channel_id, user_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not is_user_a_owner(channel_id, owner_id) and not owner_id in get_slackr_owners():
+    if not is_user_a_owner(channel_id,
+                           owner_id) and not owner_id in get_slackr_owners():
         raise AccessError
 
     if is_user_a_owner(channel_id, user_id):
@@ -206,7 +214,8 @@ def channel_removeowner(token, channel_id, user_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not is_user_a_owner(channel_id, owner_id) and not owner_id in get_slackr_owners():
+    if not is_user_a_owner(channel_id,
+                           owner_id) and not owner_id in get_slackr_owners():
         raise AccessError
 
     if is_user_a_owner(channel_id, user_id):
