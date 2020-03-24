@@ -6,6 +6,7 @@ For the previous versions which used for loops, see git log.
 
 from utils import check_token
 from error import InputError
+from global_variables import get_channels
 
 
 def channels_list(token):
