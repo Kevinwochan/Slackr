@@ -36,6 +36,10 @@ def is_valid_user(user_id):
     ''' returns true if user_id refers to an existing user '''
     return user_id in get_users() # TODO move this somewhere else
 
+def is_channel_public(channel_id):
+    ''' returns true or false depending if channel is public'''
+    return get_channels()[channel_id]['is_public']
+
 '''
     Main Channel functions
 '''
@@ -141,11 +145,13 @@ def channel_leave(token, channel_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not channel_id in channels_listall(token):
+    if not is_user_a_member(channel_id, user_id):
         raise AccessError
     
-    if channel_id in channels_listall(token):
-        get_channel_members(channel_id).remove(user_id)
+    if is_user_a_owner(channel_id, user_id):
+        get_channel_owners(channel_id).remove(user_id)
+
+    get_channel_members(channel_id).remove(user_id)
 
     return {}
 
@@ -159,18 +165,17 @@ def channel_join(token, channel_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not channel_id in channels_listall(token) and not user_id in get_slackr_owners():
+    if not is_channel_public(channel_id) and not user_id in get_slackr_owners():
         raise AccessError
 
-    if channel_id in channels_listall(token):
-        get_channel_members(channel_id).append(user_id)
+    get_channel_members(channel_id).append(user_id)
 
     return {}
 
 
 def channel_addowner(token, channel_id, user_id):
     ''' 
-        Makes a user a channel ower, 
+        Makes a user a channel owner, 
         The token must be of a channel owner or the slackr owner
     '''
     owner_id = check_token(token)

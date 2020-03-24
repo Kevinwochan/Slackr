@@ -82,9 +82,9 @@ def test_channel_join_AccessError():
                               "Smith")
     test_user2 = auth_register("z8888888@unsw.edu.au", "password", "Bob",
                                "Smith")
-    test_channel = channels_create(test_user2["token"], "test_channel", False)
+    test_channel = channels_create(test_user["token"], "test_channel", False)
     with pytest.raises(AccessError) as e:
-        channel_join(test_user["token"], test_channel["channel_id"])
+        channel_join(test_user2["token"], test_channel["channel_id"])
 
 
 #Trying to join with an invalid token (invalid after logging out)
