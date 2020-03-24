@@ -7,16 +7,22 @@ from src.error import InputError
 from src.global_variables import get_users
 
 
-def is_valid_handle(handle_str):
+def is_valid_handle(host_user_id, handle_str):
     '''
     checks that no existing user has this handle_str
     '''
-    for user in get_users():
-        if user['handle_str'] == handle_str:
+    if len(handle_str) < 3 or len(handle_str) > 20:
+        return False
+    users = get_users()
+    if users[host_user_id]['handle_str'] == handle_str:
+        return True
+    for user_id in users:
+        if users[user_id]['handle_str'] == handle_str:
             return False
     return True
 
-def is_valid_email(email):
+
+def is_valid_email(host_user_id, email):
     ''' 
     code from https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
     checks that the valid is in a valid format according to geeks for geeks
@@ -25,8 +31,11 @@ def is_valid_email(email):
     regex = r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
     if not re.search(regex, email):
         return False
-    for user in get_users():
-        if user['email'] == email:
+    users = get_users()
+    if users[host_user_id]['email'] == email:
+        return True
+    for user_id in users:
+        if users[user_id]['email'] == email:
             return False
     return True
 
@@ -41,10 +50,10 @@ def user_profile(token, user_id):
 
     user = get_users()[user_id]
     return {
-        'user': user_id,
+        'u_id': user_id,
         'email': user['email'],
         'name_first': user['name_first'],
-        'name_list': user['name_last'],
+        'name_last': user['name_last'],
         'handle_str': user['handle_str']
     }
 
@@ -66,7 +75,7 @@ def user_profile_setname(token, name_first, name_last):
 
     user = get_users()[user_id]
     user['name_first'] = name_first
-    user['name_list'] = name_last
+    user['name_last'] = name_last
 
     return {}
 
@@ -78,7 +87,7 @@ def user_profile_setemail(token, email):
     user_id = check_token(token)
     if not user_id in get_users():
         raise InputError
-    if not is_valid_email(email):
+    if not is_valid_email(user_id, email):
         raise InputError
 
     user = get_users()[user_id]
@@ -96,7 +105,7 @@ def user_profile_sethandle(token, handle_str):
         raise InputError
     if len(handle_str) < 1 or len(handle_str) > 50:
         raise InputError
-    if not is_valid_handle(handle_str):
+    if not is_valid_handle(user_id, handle_str):
         raise InputError
 
     user = get_users()[user_id]

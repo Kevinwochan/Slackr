@@ -4,9 +4,9 @@ channels_list and channels_listall are written using list comprehension.
 For the previous versions which used for loops, see git log.
 '''
 
-from utils import check_token
-from error import InputError
-from global_variables import get_channels
+from src.utils import check_token
+from src.error import InputError
+from src.global_variables import get_channels
 
 
 def channels_list(token):
@@ -56,7 +56,7 @@ def channels_create(token, name, is_public):
         raise InputError(description="Channel name must be less that 20 characters long")
 
     glob_channels = get_channels()
-    channel_id = len(glob_channels)
+    channel_id = create_channel_id()
 
     # adding an empty channel with one owner: u_id
     glob_channels[channel_id] = {

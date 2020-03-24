@@ -4,8 +4,8 @@ Contains miscellaneous helper functions.
 #needs pip3 install pyjwt
 # Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
 from jwt import encode, decode
-from error import AccessError
-from global_variables import get_valid_tokens
+from src.error import AccessError
+from src.global_variables import get_valid_tokens
 SECRET = 'F FOR HAYDEN'
 
 def generate_token(user_id):
