@@ -56,7 +56,7 @@ def channels_create(token, name, is_public):
         raise InputError(description="Channel name must be between 1 and 20 characters long")
 
     glob_channels = get_channels()
-    channel_id = len(glob_channels)
+    #trying to fix gitlab to recognise this change 
 
     # adding an empty channel with one owner: u_id
     glob_channels[channel_id] = {
