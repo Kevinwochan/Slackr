@@ -9,11 +9,11 @@
     - provides the user_ids of the slackr owners
     - access with get_slackr_owners()
 
-These are declared in the file global_variables.py. To access these global variables you must import the corresponding function from global_variables.py
+These are declared in the file global_variables.py. To access these global variables you must import the corresponding function from src.global_variables.py
 
 For example, to access global_channels, use the following code:
 '''
-from global_variables import get_channels
+from src.global_variables import get_channels
 channels = get_channels()
 '''
 Any variable name can be used in place of 'channels'.
@@ -23,7 +23,7 @@ global_channels is a dictionary
 ``` 
     if you want channnel information you can access it using it's channel id like:
 
-    from global_variables import get_channels
+    from src.global_variables import get_channels
     glob_channels = get_channels()
     channel = glob_channels[channel_id]
 
@@ -59,7 +59,7 @@ is a dictionary
 global_users is a dictionary with each item in the list representing a user.
 Each user in global_users is also a dictionary
 ```
-    from global_variables import get_users
+    from src.global_variables import get_users
     glob_users = get_users()
 
     user = glob_users[u_id] # Example of accessing a user with a u_id
