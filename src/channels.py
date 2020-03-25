@@ -52,8 +52,8 @@ def channels_create(token, name, is_public):
     '''
     u_id = check_token(token)
 
-    if len(name) > 20:
-        raise InputError(description="Channel name must be less that 20 characters long")
+    if len(name) > 20 or len(name) < 1:
+        raise InputError(description="Channel name must be between 1 and 20 characters long")
 
     glob_channels = get_channels()
     channel_id = create_channel_id()
