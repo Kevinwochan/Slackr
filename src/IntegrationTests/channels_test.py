@@ -204,8 +204,8 @@ def test_listall_not_member():
     user1 = auth_register("testemail@gmail.com", "1234567", "John", "Smith")
     channel1 = channels_create(user1['token'], "name", True)
     user2 = auth_register("secondemail@gmail.com", "1234567", "Jane", "Smith")
-    chan_lst1 = channels_list(user1['token'])['channels']
-    chan_lst2 = channels_list(user2['token'])['channels']
+    chan_lst1 = channels_listall(user1['token'])['channels']
+    chan_lst2 = channels_listall(user2['token'])['channels']
     # Checking that channels_listall returns the same list for user2,
     assert len(chan_lst1) == len(chan_lst2) == 1
     assert chan_lst1 == chan_lst2
@@ -216,8 +216,8 @@ def test_listall_private():
     user1 = auth_register("testemail@gmail.com", "1234567", "John", "Smith")
     channel1 = channels_create(user1['token'], "name", False)
     user2 = auth_register("secondemail@gmail.com", "1234567", "Jane", "Smith")
-    chan_lst1 = channels_list(user1['token'])['channels']
-    chan_lst2 = channels_list(user2['token'])['channels']
+    chan_lst1 = channels_listall(user1['token'])['channels']
+    chan_lst2 = channels_listall(user2['token'])['channels']
     # Checking that channels_listall returns the same list for user2,
     assert len(chan_lst1) == len(chan_lst2) == 1
     assert chan_lst1 == chan_lst2
