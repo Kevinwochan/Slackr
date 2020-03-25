@@ -4,20 +4,9 @@ channels_list and channels_listall are written using list comprehension.
 For the previous versions which used for loops, see git log.
 '''
 
-from src.utils import check_token
-from src.error import InputError
-from src.global_variables import get_channels
-
-def create_channel_id():
-    '''
-    Generates a new channel id to be used for a created channel
-    this iterates through the dictionary search for an unused key
-    '''
-    channels = get_channels()
-    for channel_id in range(0, len(channels)):
-        if not channel_id in channels:
-            return channel_id
-    return len(channels)
+from utils import check_token
+from error import InputError
+from global_variables import get_channels
 
 
 def channels_list(token):
@@ -63,10 +52,11 @@ def channels_create(token, name, is_public):
     '''
     u_id = check_token(token)
 
-    if len(name) > 20:
-        raise InputError(description="Channel name must be less that 20 characters long")
+    if len(name) > 20 or len(name) < 1:
+        raise InputError(description="Channel name must be between 1 and 20 characters long")
+
     glob_channels = get_channels()
-    channel_id = create_channel_id()
+    channel_id = len(glob_channels)
 
     # adding an empty channel with one owner: u_id
     glob_channels[channel_id] = {
