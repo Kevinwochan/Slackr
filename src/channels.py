@@ -56,7 +56,7 @@ def channels_create(token, name, is_public):
         raise InputError(description="Channel name must be less that 20 characters long")
 
     glob_channels = get_channels()
-    channel_id = create_channel_id()
+    channel_id = len(glob_channels)
 
     # adding an empty channel with one owner: u_id
     glob_channels[channel_id] = {
