@@ -30,7 +30,7 @@ def check_token(token):
 
     if not token in curr_users:
         raise AccessError(description="You do not have a valid token")
-    return decode(token.encode('utf-8'), SECRET, algorithm='HS256')['id']
+    return decode(token.encode('utf-8'), SECRET, algorithms=['HS256'])['id']
 
 
 def invalidate_token(token):
