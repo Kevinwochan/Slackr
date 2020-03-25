@@ -152,7 +152,7 @@ def channel_leave(token, channel_id):
         get_channel_owners(channel_id).remove(user_id)
         if len(
                 get_channels()
-        ) == 0:  # TODO: disdvcuss if the last owner delets teh channel when leaving
+        ) == 0:  # TODO: discuss if the last owner deletes the channel when leaving
             del get_channels()[channel_id]
     elif is_user_a_member(channel_id, user_id):
         get_channel_members(channel_id).remove(user_id)
@@ -218,8 +218,11 @@ def channel_removeowner(token, channel_id, user_id):
                            owner_id) and not owner_id in get_slackr_owners():
         raise AccessError
 
-    if is_user_a_owner(channel_id, user_id):
+    if not is_user_a_owner(channel_id, user_id):
         raise InputError
 
-    get_channel_owners(channel_id).remove(user_id)
+    if is_user_a_owner(channel_id, user_id):
+        get_channel_owners(channel_id).remove(user_id)
+    get_channel_members(channel_id).append(user_id)
+    
     return {}
