@@ -55,7 +55,7 @@ def test_channel_addowner_InputError_invalid_user():
                                    True)
     with pytest.raises(InputError) as e:
         channel_addowner(test_Owner_user["token"], test_channel["channel_id"],
-                         1)
+                         0)
 
 
 # Assuming there isn't a Slackr owner
@@ -84,7 +84,7 @@ def test_channel_addowner_InvalidToken():
     test_channel = channels_create(test_Owner_user["token"], "test_channel",
                                    True)
     channel_join(test_normal_user["token"], test_channel["channel_id"])
-    auth_logout(test_normal_user["token"])  # Invalidating token of normal user
+    auth_logout(test_Owner_user["token"])  # Invalidating token of normal user
     with pytest.raises(AccessError) as e:
         channel_addowner(test_Owner_user["token"], test_channel["channel_id"],
                          test_normal_user["u_id"])
@@ -130,7 +130,7 @@ def test_channel_removeowner_InputError_invalid_channel():
                                    True)
     channel_join(test_normal_user["token"], test_channel["channel_id"])
     with pytest.raises(InputError) as e:
-        channel_addowner(test_Owner_user["token"], test_channel["channel_id"],
+        channel_removeowner(test_Owner_user["token"], test_channel["channel_id"],
                          test_normal_user["u_id"])
 
 
@@ -161,7 +161,7 @@ def test_channel_removeowner_InvalidToken():
     test_channel = channels_create(test_Owner_user["token"], "test_channel",
                                    True)
     channel_join(test_normal_user["token"], test_channel["channel_id"])
-    auth_logout(test_normal_user["token"])  # Invalidating token of normal user
+    auth_logout(test_Owner_user["token"])  # Invalidating token of owner user
     with pytest.raises(AccessError) as e:
         channel_removeowner(test_Owner_user["token"],
                             test_channel["channel_id"],
