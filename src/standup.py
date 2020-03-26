@@ -4,6 +4,8 @@ from global_variables import get_channels
 from error import InputError,AccessError
 from channel import is_valid_channel, is_user_a_member, is_user_a_owner
 #TODO: change get_message_id, check reacts, update with latest changes to message.py
+#currently places an empty message in the channels messages if standup_send is not called during standup
+# this may be different from the example
 #helper stuff
 global_standups = {}
 
@@ -40,11 +42,18 @@ def get_message_id():
     message_id += 1
     return message_id
 
+def find_handle(user_id):
+    from global_variables import get_users
+    users = get_users()
+    return users[user_id]['handle_str']
+
+
 
 def standup_end(channel_id):
     glob_channels = get_channels()
     glob_standups = get_standups()
     glob_standups[channel_id]['message_id'] = get_message_id()
+    glob_standups[channel_id]['message'] = '\n'.join(glob_standups[channel_id]['message'])
     glob_channels[channel_id]['messages'].append(glob_standups.pop(channel_id))
 
 
@@ -64,11 +73,11 @@ def standup_start(token, channel_id, length):
     time_finish = get_current_timestamp() + length
     #creating blank message with time_finish timestamp, and storing it in glob_standups
     #has placeholder message_id
-    global_standups[channel_id] = {
+    glob_standups[channel_id] = {
         'u_id': u_id,
         'message_id': -1,
         'timestamp': time_finish,
-        'message': '',
+        'message': [], # "starts as list of strings, which is joined"
         'reacts': [], # TODO: update this when reacts are finished
         'is_pined':False
     }
@@ -98,5 +107,14 @@ def standup_active(token, channel_id):
 
 
 def standup_send(token, channel_id, message):
+    u_id = check_token(token)
+    check_standup_inputs(channel_id, u_id)
+    if len(message) > 1000:
+        raise InputError
+    if not is_standup_active(channel_id):
+        raise InputError
+    
+    get_standups()[channel_id]['message'].append(f'{find_handle(u_id)}: {message}')
+    
     return {}
 
