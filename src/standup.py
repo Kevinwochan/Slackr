@@ -43,6 +43,9 @@ def get_message_id():
     return message_id
 
 def find_handle(user_id):
+    '''
+    returns the handle_str corresponding to a user_id
+    '''
     from global_variables import get_users
     users = get_users()
     return users[user_id]['handle_str']
@@ -50,6 +53,12 @@ def find_handle(user_id):
 
 
 def standup_end(channel_id):
+    '''
+    replaces placeholder message_id with the next available message id,
+    uses str.join() to turn the message list into a string separated by newlines
+    appends this new message to the list of messages in the given channel, and removes that
+    channel id from the list of active standups
+    '''
     glob_channels = get_channels()
     glob_standups = get_standups()
     glob_standups[channel_id]['message_id'] = get_message_id()
@@ -68,7 +77,7 @@ def standup_start(token, channel_id, length):
     check_standup_inputs(channel_id, u_id)
     if is_standup_active(channel_id):
         raise InputError(description='A standup is already active in this channel')
-    
+
     glob_standups = get_standups()
     time_finish = get_current_timestamp() + length
     #creating blank message with time_finish timestamp, and storing it in glob_standups
@@ -91,6 +100,10 @@ def standup_start(token, channel_id, length):
 
 
 def standup_active(token, channel_id):
+    '''
+    if there is an active standup in the channel, returns unix timestamp of when standup will finish
+    otherwise, returns None
+    '''
     u_id = check_token(token)
     check_standup_inputs(channel_id, u_id)
     is_active = is_standup_active(channel_id)
@@ -107,14 +120,17 @@ def standup_active(token, channel_id):
 
 
 def standup_send(token, channel_id, message):
+    '''
+    adds a given message to the buffer of messages to be sent when the standup ends.
+    message is saved as 'handle_str: message', to be ready to be printed
+    '''
     u_id = check_token(token)
     check_standup_inputs(channel_id, u_id)
     if len(message) > 1000:
-        raise InputError
+        raise InputError(description='Message must be less than 1000 characters')
     if not is_standup_active(channel_id):
-        raise InputError
-    
-    get_standups()[channel_id]['message'].append(f'{find_handle(u_id)}: {message}')
-    
-    return {}
+        raise InputError(description='There is no standup active in this channel')
 
+    get_standups()[channel_id]['message'].append(f'{find_handle(u_id)}: {message}')
+
+    return {}
