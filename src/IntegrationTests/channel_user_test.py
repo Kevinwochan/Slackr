@@ -213,14 +213,9 @@ def test_channel_invite_not_a_member(user_jas, channel_dav, user_dav):
 
 
 # Test for the input error when the channel id is not valid
-def test_channel_messages_invalid_channel_id(user_dav, channel_dav):
-
-    # There is only one message inside the channel
-    msg_1 = message_send(user_dav['token'], channel_dav['channel_id'],
-                         "message")
-
+def test_channel_messages_invalid_channel_id(user_dav):
     with pytest.raises(InputError):
-        assert channel_messages(user_dav['token'], 000000, 0)
+        assert channel_messages(user_dav['token'], 0, 0)
 
 
 # Test for the input error when the start is greater than the total number of
@@ -270,7 +265,7 @@ def test_channel_messages_num_messages(channel_dav, user_dav):
 
     assert test_1['start'] == 1
     assert test_1['end'] == -1
-    assert len(test_0['messages']) == 3
+    assert len(test_1['messages']) == 3
 
 
 """
