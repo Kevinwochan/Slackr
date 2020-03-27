@@ -1,8 +1,6 @@
 '''
 Contains miscellaneous helper functions.
 '''
-#needs pip3 install pyjwt
-# Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
 from jwt import encode, decode
 from src.error import AccessError
 from src.global_variables import get_valid_tokens
