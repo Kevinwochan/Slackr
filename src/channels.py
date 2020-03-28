@@ -4,9 +4,9 @@ channels_list and channels_listall are written using list comprehension.
 For the previous versions which used for loops, see git log.
 '''
 
-from utils import check_token
-from error import InputError
-from global_variables import get_channels
+from src.utils import check_token
+from src.error import InputError
+from src.global_variables import get_channels
 
 
 def channels_list(token):
