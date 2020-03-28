@@ -133,12 +133,11 @@ def message_react(token, message_id, react_id):
                 'is_this_user_reacted': False
             }
         )
-    else:
-        for react in message['reacts']:
-            if react['react_id'] == react_id:
-                if u_id in react['u_ids']:
-                    raise InputError(description='Already reacted')
-                react['u_ids'].append(u_id)
+    for react in message['reacts']:
+        if react['react_id'] == react_id:
+            if u_id in react['u_ids']:
+                raise InputError(description='Already reacted')
+            react['u_ids'].append(u_id)
     return {}
 
 
@@ -150,13 +149,13 @@ def message_unreact(token, message_id, react_id):
         raise InputError(description='Invalid react id')
     if not user_in_channel_by_msgID(message_id, token):
         raise InputError(description='User is not in channel')
-    if u_id in message['reacts'][0]['u_ids']:
-        raise InputError(description='Already reacted')
+    if not is_message_reacted(message_id, react_id):
+        InputError(description='This message contains no reaction with that ID')
 
-    message['reacts'][0]['u_ids'].remove(u_id)
-
+    for react in message['reacts']:
+        if react['react_id'] == react_id:
+            react['u_ids'].remove(u_id)
     return {}
-
 
 def message_remove(token, message_id):
     '''
