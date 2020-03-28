@@ -7,7 +7,7 @@ from src.utils import check_token, get_current_timestamp
 from src.global_variables import (get_slackr_owners, get_channels,
                                   get_num_messages, set_num_messages)
 from src.channel import is_user_a_member
-
+VALID_REACTS = [1]
 
 def get_message_by_msgID(message_id):
     """
@@ -41,7 +41,7 @@ def user_in_channel_by_msgID(message_id, token):
     u_id = check_token(token)
     channels = get_channel_by_msgID(message_id)
     #TODO
-    if u_id in channels['members']:
+    if u_id in channels['members'] or u_id in channels['owners']:
         return True
     else:
         return False
@@ -78,6 +78,16 @@ def is_slackr_owner(token):
     else:
         return False
 
+def is_message_reacted(message, react_id):
+    '''
+    loops through all reactions in a message, and returns true if react_id is one of them
+    otherwise, returns false
+    '''
+    for react in message['reacts']:
+        if react['react_id'] == react_id:
+            return True
+    return False
+
 
 def message_send(token, channel_id, message):
     user_id = check_token(token)
@@ -97,14 +107,9 @@ def message_send(token, channel_id, message):
         0, {
             'u_id': user_id,
             'message_id': message_id,
-            #TODO
             'time_created': get_current_timestamp(),
             'message': message,
-            'reacts': [{
-                #TODO
-                'u_ids': [],
-                'emoji': []
-            }],
+            'reacts': [], 
             'is_pinned': False
         })
     set_num_messages(message_id + 1)
@@ -115,29 +120,35 @@ def message_react(token, message_id, react_id):
     u_id = check_token(token)
     message = get_message_by_msgID(message_id)
 
-    if react_id != 1:
+    if react_id not in VALID_REACTS:
         raise InputError(description='Invalid react id')
-    #TODO
-    if user_in_channel_by_msgID(message_id, token) is False:
+    if not user_in_channel_by_msgID(message_id, token):
         raise InputError(description='User is not in channel')
-    if u_id in message['reacts'][0]['u_ids']:
-    #TODO
-        raise InputError(description='Already reacted')
-
-    message['reacts'][0]['u_ids'].append(u_id)
-
+    # adding reaction to reacts if it does not exist already
+    if not is_message_reacted(message, react_id):
+        message['reacts'].append(
+            {
+                'react_id': react_id,
+                'u_ids': [],
+                'is_this_user_reacted': False
+            }
+        )
+    else:
+        for react in message['reacts']:
+            if react['react_id'] == react_id:
+                if u_id in react['u_ids']:
+                    raise InputError(description='Already reacted')
+                react['u_ids'].append(u_id)
     return {}
 
 
 def message_unreact(token, message_id, react_id):
     u_id = check_token(token)
     message = get_message_by_msgID(message_id)
-    channel_id = get_channel_by_msgID(message_id)
 
-    if react_id != 1:
+    if react_id not in VALID_REACTS:
         raise InputError(description='Invalid react id')
-    #TODO
-    if user_in_channel_by_msgID(message_id, token) is False:
+    if not user_in_channel_by_msgID(message_id, token):
         raise InputError(description='User is not in channel')
     if u_id in message['reacts'][0]['u_ids']:
         raise InputError(description='Already reacted')
