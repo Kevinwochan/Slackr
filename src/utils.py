@@ -1,7 +1,6 @@
 '''
 Contains miscellaneous helper functions.
 '''
-# Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
 from datetime import datetime, timezone
 from jwt import encode, decode
 from src.error import AccessError

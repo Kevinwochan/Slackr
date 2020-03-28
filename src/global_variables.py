@@ -4,10 +4,12 @@ These can be access by importing and using the get_ functions below.
 Their structure is described in the README.md file in src.
 '''
 # pylint: disable=invalid-name, global-statement
+
 global_users = {}
 global_channels = {}
 global_valid_tokens = []
 global_slackr_owner = 0
+global_num_messages = 0
 
 
 # Functions used to access global variables
@@ -45,6 +47,15 @@ def get_slackr_owners():
             owners.append(user_id)
     return owners
 
+def get_num_messages():
+    global global_num_messages
+    return global_num_messages
+
+def set_num_messages(new_num_messages):
+    global global_num_messages
+    global_num_messages = new_num_messages
+    return
+
 def workspace_reset():
     '''
     Deletes all Slackr information as if the website was just launched
@@ -53,10 +64,12 @@ def workspace_reset():
     global global_channels
     global global_valid_tokens
     global global_slackr_owner
+    global global_num_messages
 
     global_users.clear()
     global_channels.clear()
     global_valid_tokens.clear()
     global_slackr_owner = 0
+    global_num_messages = 0
 
 # pylint: enable=invalid-name, global-statement
