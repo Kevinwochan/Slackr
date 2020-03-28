@@ -40,7 +40,7 @@ def user_in_channel_by_msgID(message_id, token):
 
     u_id = check_token(token)
     channels = get_channel_by_msgID(message_id)
-
+    #TODO
     if u_id in channels['members']:
         return True
     else:
@@ -48,6 +48,7 @@ def user_in_channel_by_msgID(message_id, token):
 
 
 def is_channel_owner(token, channel):
+    #TODO
     """
     Determine whether the user is the owner of the channel
     """
@@ -86,7 +87,7 @@ def message_send(token, channel_id, message):
             description=
             'Your message should be less than 1000 characters and at least 1 character'
         )
-
+    #TODO
     if not is_user_a_member(channel_id, user_id):
         raise AccessError
     message_id = get_num_messages()
@@ -96,9 +97,11 @@ def message_send(token, channel_id, message):
         0, {
             'u_id': user_id,
             'message_id': message_id,
+            #TODO
             'timestamp': str(time.strftime("%Y%m%d%H%M")),
             'message': message,
             'reacts': [{
+                #TODO
                 'u_ids': [],
                 'emoji': []
             }],
@@ -114,9 +117,11 @@ def message_react(token, message_id, react_id):
 
     if react_id != 1:
         raise InputError(description='Invalid react id')
+    #TODO
     if user_in_channel_by_msgID(message_id, token) is False:
         raise InputError(description='User is not in channel')
     if u_id in message['reacts'][0]['u_ids']:
+    #TODO
         raise InputError(description='Already reacted')
 
     message['reacts'][0]['u_ids'].append(u_id)
@@ -131,6 +136,7 @@ def message_unreact(token, message_id, react_id):
 
     if react_id != 1:
         raise InputError(description='Invalid react id')
+    #TODO
     if user_in_channel_by_msgID(message_id, token) is False:
         raise InputError(description='User is not in channel')
     if u_id in message['reacts'][0]['u_ids']:
@@ -173,6 +179,7 @@ def message_edit(token, message_id, message):
 def message_pin(token, message_id):
     u_id = check_token(token)
     message_specific = get_message_by_msgID(message_id)
+    #TODO
     if u_id not in message_specific['u_id']:
         raise InputError(description='The authorised user is not an owner')
     if message_specific['is_pined'] == True:
