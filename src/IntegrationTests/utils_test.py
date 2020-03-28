@@ -18,7 +18,7 @@ def test_symmetric():
     for user_id in range(100):
         new_token = generate_token(user_id)
         decrypted_token = check_token(new_token)
-        assert decrypted_token == new_token
+        assert decrypted_token == user_id
 
 
 def test_invalidation():
