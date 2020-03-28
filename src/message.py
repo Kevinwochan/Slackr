@@ -32,7 +32,7 @@ def get_channel_by_msg_id(message_id):
     raise InputError("channel is not found")
 
 
-def user_in_channel_by_msgID(message_id, token):
+def user_in_channel_by_msg_id(message_id, token):
     """
     Determine whether or not the user is in that channel which contains message_id
     """
@@ -130,7 +130,7 @@ def message_react(token, message_id, react_id):
 
     if react_id not in VALID_REACTS:
         raise InputError(description='Invalid react id')
-    if not user_in_channel_by_msgID(message_id, token):
+    if not user_in_channel_by_msg_id(message_id, token):
         raise InputError(description='User is not in channel')
     # adding reaction to reacts if it does not exist already
     if not is_message_reacted(message, react_id):
@@ -163,7 +163,7 @@ def message_unreact(token, message_id, react_id):
 
     if react_id not in VALID_REACTS:
         raise InputError(description='Invalid react id')
-    if not user_in_channel_by_msgID(message_id, token):
+    if not user_in_channel_by_msg_id(message_id, token):
         raise InputError(description='User is not in channel')
     if not is_message_reacted(message_id, react_id):
         InputError(description='This message contains no reaction with that ID')
