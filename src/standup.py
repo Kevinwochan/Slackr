@@ -1,7 +1,7 @@
 from threading import Timer
 from utils import check_token, get_current_timestamp
-from global_variables import get_channels
-from error import InputError,AccessError
+from global_variables import get_channels, get_num_messages, set_num_messages
+from error import InputError, AccessError
 from channel import is_valid_channel, is_user_a_member, is_user_a_owner
 #TODO: change get_message_id, check reacts, update with latest changes to message.py
 #currently places an empty message in the channels messages if standup_send is not called during standup
@@ -34,12 +34,11 @@ def check_standup_inputs(channel_id, user_id):
 
 def get_message_id():
     '''
-    placeholder function - used untill messages file is complete with method to generate message id's
-    #TODO: replace this with same method used in message.py (ideally by importing a function)
+    uses get_num_messages, set_num_messages to get a new message id, 
+    then increments the global message id count.
     '''
-    from message import message_id
-    global message_id
-    message_id += 1
+    message_id = get_num_messages()
+    set_num_messages(message_id + 1)
     return message_id
 
 def find_handle(user_id):
@@ -58,12 +57,19 @@ def standup_end(channel_id):
     uses str.join() to turn the message list into a string separated by newlines
     appends this new message to the list of messages in the given channel, and removes that
     channel id from the list of active standups
+    if there no messages were sent during the standup, the standup is not added to the list of
+    messages, but is still removed from the list of active standups
     '''
     glob_channels = get_channels()
     glob_standups = get_standups()
-    glob_standups[channel_id]['message_id'] = get_message_id()
-    glob_standups[channel_id]['message'] = '\n'.join(glob_standups[channel_id]['message'])
-    glob_channels[channel_id]['messages'].append(glob_standups.pop(channel_id))
+    message_lst = glob_standups[channel_id]['message']
+    if len(message_lst) > 0:
+    # setting message id
+        glob_standups[channel_id]['message_id'] = get_message_id()
+        glob_standups[channel_id]['message'] = '\n'.join(message_lst)
+        glob_channels[channel_id]['messages'].append(glob_standups.pop(channel_id))
+    else:
+        glob_standups.pop(channel_id)
 
 
 
