@@ -3,6 +3,7 @@ from utils import check_token
 from channels import channels_list
 
 def search(token, query_str):
+    search_results = []
     user_channels = channels_list(token)
 
     for id_channel in user_channels[channel_id]:
@@ -10,4 +11,6 @@ def search(token, query_str):
         for id_message in messages['message_id']:
             message = messages[id_message]['message']
             if query_str in message:
-                return message
+                search_results.append(message)
+
+    return search_results
