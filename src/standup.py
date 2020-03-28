@@ -86,7 +86,7 @@ def standup_start(token, channel_id, length):
     time_finish = get_current_timestamp() + length
 
     message_template = create_message(u_id, -1, time_finish, [])
-    glob_standups[channel_id] = {message_template}
+    glob_standups[channel_id] = message_template
 
     standup = Timer(length, standup_end, args=[channel_id])
     standup.start()
@@ -106,7 +106,7 @@ def standup_active(token, channel_id):
     is_active = is_standup_active(channel_id)
 
     try:
-        time_finish = get_standups()[channel_id]['timestamp']
+        time_finish = get_standups()[channel_id]['time_created']
     except KeyError:
         time_finish = None
     return {
