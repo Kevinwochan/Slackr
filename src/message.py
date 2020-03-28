@@ -153,7 +153,7 @@ def message_unreact(token, message_id, react_id):
         InputError(description='This message contains no reaction with that ID')
 
     for react in message['reacts']:
-        if react['react_id'] == react_id:
+        if react['react_id'] == react_id and u_id in react['u_ids']:
             react['u_ids'].remove(u_id)
     return {}
 
