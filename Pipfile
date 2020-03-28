@@ -13,6 +13,7 @@ pytest = "*"
 pylint = "*"
 yapf = "*"
 python-dotenv = "*"
+requests = "*"
 
 [requires]
 python_version = "3.7"
