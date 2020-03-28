@@ -8,9 +8,8 @@ Their structure is described in the README.md file in src.
 global_users = {}
 global_channels = {}
 global_valid_tokens = []
-global_slackr_owner = 0
 global_num_messages = 0
-
+global_standups = {}
 
 # Functions used to access global variables
 def get_users():
@@ -55,6 +54,14 @@ def set_num_messages(new_num_messages):
     global global_num_messages
     global_num_messages = new_num_messages
     return
+
+def get_standups():
+    '''
+    returns global_standups
+    '''
+    global global_standups
+    return global_standups
+
 
 def workspace_reset():
     '''
