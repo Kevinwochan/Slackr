@@ -3,7 +3,7 @@ Message module for sending. editing and removing messages
 '''
 import time
 from src.error import AccessError, InputError
-from src.utils import check_token
+from src.utils import check_token, get_current_timestamp
 from src.global_variables import (get_slackr_owners, get_channels,
                                   get_num_messages, set_num_messages)
 from src.channel import is_user_a_member
@@ -98,7 +98,7 @@ def message_send(token, channel_id, message):
             'u_id': user_id,
             'message_id': message_id,
             #TODO
-            'timestamp': str(time.strftime("%Y%m%d%H%M")),
+            'time_created': get_current_timestamp(),
             'message': message,
             'reacts': [{
                 #TODO
