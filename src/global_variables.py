@@ -7,6 +7,7 @@ Their structure is described in the README.md file in src.
 global_users = {}
 global_channels = {}
 global_valid_tokens = []
+global_slackr_owner = 0
 
 
 # Functions used to access global variables
