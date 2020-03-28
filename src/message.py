@@ -88,6 +88,18 @@ def is_message_reacted(message, react_id):
             return True
     return False
 
+def create_message(user_id, message_id, time_created, message):
+    '''
+    returns a default message with reacts = [] and is_pinned = False
+    '''
+    return {
+        'u_id': user_id,
+        'message_id': message_id,
+        'time_created': time_created,
+        'message': message,
+        'reacts': [],
+        'is_pinned': False
+    }
 
 def message_send(token, channel_id, message):
     user_id = check_token(token)
@@ -97,21 +109,14 @@ def message_send(token, channel_id, message):
             description=
             'Your message should be less than 1000 characters and at least 1 character'
         )
-    #TODO
     if not is_user_a_member(channel_id, user_id):
         raise AccessError
     message_id = get_num_messages()
     glob_channels = get_channels()
     channel = glob_channels[channel_id]
-    channel['messages'].insert(
-        0, {
-            'u_id': user_id,
-            'message_id': message_id,
-            'time_created': get_current_timestamp(),
-            'message': message,
-            'reacts': [], 
-            'is_pinned': False
-        })
+    time_created = get_current_timestamp()
+
+    channel['messages'].insert(0, create_message(user_id, message_id, time_created, message))
     set_num_messages(message_id + 1)
     return {'message_id': message_id}
 
@@ -155,6 +160,8 @@ def message_unreact(token, message_id, react_id):
     for react in message['reacts']:
         if react['react_id'] == react_id and u_id in react['u_ids']:
             react['u_ids'].remove(u_id)
+        elif react['react_id'] == react_id:
+            raise InputError(description='You have not made this reaction')
     return {}
 
 def message_remove(token, message_id):
