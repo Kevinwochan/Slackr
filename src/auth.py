@@ -5,7 +5,7 @@ This file uses helper functions which are located in the file auth_py
 
 from hashlib import sha256
 from src.utils import generate_token, invalidate_token
-from src.auth_helper import check_login_inputs, create_handle, check_login_inputs, check_registration_inputs
+from src.auth_helper import check_login_inputs, check_registration_inputs, create_handle
 from src.global_variables import get_users
 
 # Auth functions
