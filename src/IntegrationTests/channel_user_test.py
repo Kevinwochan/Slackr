@@ -82,9 +82,9 @@ def test_channel_join_AccessError():
                               "Smith")
     test_user2 = auth_register("z8888888@unsw.edu.au", "password", "Bob",
                                "Smith")
-    test_channel = channels_create(test_user2["token"], "test_channel", False)
+    test_channel = channels_create(test_user["token"], "test_channel", False)
     with pytest.raises(AccessError) as e:
-        channel_join(test_user["token"], test_channel["channel_id"])
+        channel_join(test_user2["token"], test_channel["channel_id"])
 
 
 #Trying to join with an invalid token (invalid after logging out)
@@ -126,18 +126,16 @@ def channel_dav(user_dav):
     return channels_create(user_dav['token'], "channel_dav", False)
 
 
-# Test for invite a new member by an old member
-def test_invite(user_dav, user_jas, channel_dav):
+def test_channel_invite_valid_inputs(user_dav, user_jas, channel_dav):
+    ''' user_dav invites user_jas to channel_dav '''
     channel_invite(user_dav['token'], channel_dav['channel_id'],
                    user_jas['u_id'])
 
-    # create member jas
     member_jas = {}
     member_jas['u_id'] = user_jas['u_id']
     member_jas['name_first'] = "jas"
     member_jas['name_last'] = "zhu"
 
-    # set up channel details
     channel_dav_detail = channel_details(user_dav['token'],
                                          channel_dav['channel_id'])
 
@@ -151,25 +149,10 @@ def test_invalid_channel_invite(user_dav, user_jas):
                               user_jas['u_id'])
 
 
-# Test for the channel_id is a valid channel but the invitor isn't a member
-def test_valid_channel_invite(user_chas, user_jas, channel_dav):
+def test_invalid_user(user_dav, channel_dav):
+    ''' tests that an input error is thrown when an invalid user_id is provided'''
     with pytest.raises(InputError):
-        assert channel_invite(user_chas['token'], channel_dav['channel_id'],
-                              user_jas['u_id'])
-
-
-# Test for u_id does not refer to a valid user
-def test_valid_u_id(user_dav, channel_dav):
-    with pytest.raises(InputError):
-        assert channel_invite(user_dav['token'], channel_dav['channel_id'],
-                              00000)
-
-
-# Test for the authorised user is not part of channel.
-def test_invite_right(user_jas, user_chas, channel_dav):
-    with pytest.raises(AccessError):
-        assert channel_invite(user_jas['token'], channel_dav['channel_id'],
-                              user_chas)
+        assert channel_invite(user_dav['token'], channel_dav['channel_id'], -1)
 
 
 # Test if the invited member has already been invited
@@ -221,24 +204,12 @@ def test_channel_invite_self_invite(user_dav, channel_dav, user_jas):
     assert member_jas in channel_dav_detail['all_members']
 
 
-# If a user invite itself to a channel where he is not a member
-def test_channel_invite_not_a_mamber(user_jas, channel_dav, user_dav):
+def test_channel_invite_not_a_member(user_jas, channel_dav, user_dav):
+    ''' inviting user_dav to a channel that user_jas is not part of '''
 
-    # jas invite himself again
-    channel_invite(user_jas['token'], channel_dav['channel_id'],
-                   user_jas['u_id'])
-
-    # create member jas
-    member_jas = {}
-    member_jas['u_id'] = user_jas['u_id']
-    member_jas['name_first'] = "jas"
-    member_jas['name_last'] = "zhu"
-
-    # set up channel details
-    channel_dav_detail = channel_details(user_dav['token'],
-                                         channel_dav['channel_id'])
-
-    assert member_jas not in channel_dav_detail['all_members']
+    with pytest.raises(AccessError):
+        channel_invite(user_jas['token'], channel_dav['channel_id'],
+                       user_jas['u_id'])
 
 
 # Test for the input error when the channel id is not valid
@@ -278,62 +249,78 @@ def test_channel_messages_invalid_user(channel_dav, user_dav, user_chas):
 
 
 # Normal test for this function
-def test_channel_messages(channel_dav, user_dav):
+def test_channel_messages_num_messages(channel_dav, user_dav):
 
     # Create couple messages
-    msg_1 = message_send(user_dav['token'], channel_dav['channel_id'],
-                         "Message")
-    msg_2 = message_send(user_dav['token'], channel_dav['channel_id'],
-                         "I love cs1531")
-    msg_3 = message_send(user_dav['token'], channel_dav['channel_id'],
-                         "Make it")
-    msg_4 = message_send(user_dav['token'], channel_dav['channel_id'],
-                         "can't do it")
-
-    # Create the dictionary of each message
-    # Assume the time_created are all the same "12345"
-    msg_1_card = {}
-    msg_1_card['message_id'] = msg_1['message_id']
-    msg_1_card['u_id'] = user_dav['u_id']
-    msg_1_card['message'] = "Message"
-    msg_1_card['time_created'] = 12345
-
-    msg_2_card = {}
-    msg_2_card['message_id'] = msg_2['message_id']
-    msg_2_card['u_id'] = user_dav['u_id']
-    msg_2_card['message'] = "I love cs1531"
-    msg_2_card['time_created'] = 12345
-
-    msg_3_card = {}
-    msg_3_card['message_id'] = msg_3['message_id']
-    msg_3_card['u_id'] = user_dav['u_id']
-    msg_3_card['message'] = "Make it"
-    msg_3_card['time_created'] = 12345
-
-    msg_4_card = {}
-    msg_4_card['message_id'] = msg_4['message_id']
-    msg_4_card['u_id'] = user_dav['u_id']
-    msg_4_card['message'] = "can't do it"
-    msg_4_card['time_created'] = 12345
+    message_send(user_dav['token'], channel_dav['channel_id'], "Message")
+    message_send(user_dav['token'], channel_dav['channel_id'], "I love cs1531")
+    message_send(user_dav['token'], channel_dav['channel_id'], "Make it")
+    message_send(user_dav['token'], channel_dav['channel_id'], "can't do it")
 
     # Test 0
     # When the start index is 0
     test_0 = channel_messages(user_dav['token'], channel_dav['channel_id'], 0)
 
     assert test_0['start'] == 0
-    assert test_0['end'] == 50
-    assert msg_1_card in test_0['messages']
-    assert msg_2_card in test_0['messages']
-    assert msg_3_card in test_0['messages']
-    assert msg_4_card in test_0['messages']
-
+    assert test_0['end'] == -1
+    assert len(test_0['messages']) == 4
     # Test 1
     # When the start index is 1
     test_1 = channel_messages(user_dav['token'], channel_dav['channel_id'], 1)
 
     assert test_1['start'] == 1
-    assert test_1['end'] == 51
-    assert msg_1_card in test_1['messages']
-    assert msg_2_card in test_1['messages']
-    assert msg_3_card in test_1['messages']
-    assert msg_4_card in test_1['messages']
+    assert test_1['end'] == -1
+    assert len(test_0['messages']) == 3
+
+
+"""
+    Assume the owner of a channel can only be one person
+"""
+
+
+# Normal test for the channel_details
+def test_channel_details(user_chas, user_dav, user_jas, channel_dav):
+
+    # Invite jas and chas to the channel
+    channel_invite(user_dav['token'], channel_dav['channel_id'],
+                   user_jas['u_id'])
+    channel_invite(user_dav['token'], channel_dav['channel_id'],
+                   user_chas['u_id'])
+
+    # Achieve the detail of the channel by dev
+    channel_dav_detail = channel_details(user_dav['token'],
+                                         channel_dav['channel_id'])
+
+    # Set up the member card for every member
+    member_dav = {}
+    member_dav['u_id'] = user_dav['u_id']
+    member_dav['name_first'] = "dav"
+    member_dav['name_last'] = "zhu"
+
+    member_jas = {}
+    member_jas['u_id'] = user_jas['u_id']
+    member_jas['name_first'] = "jas"
+    member_jas['name_last'] = "zhu"
+
+    member_chas = {}
+    member_chas['u_id'] = user_chas['u_id']
+    member_chas['name_first'] = "chas"
+    member_chas['name_last'] = "zhu"
+
+    assert channel_dav_detail['name'] == "channel_dav"
+    assert channel_dav_detail['owner_members'][0] == member_dav
+    assert member_chas in channel_dav_detail['all_members']
+    assert member_dav in channel_dav_detail['all_members']
+    assert member_jas in channel_dav_detail['all_members']
+
+
+# Test for the InputError
+def test_invalid_channel(user_dav):
+    with pytest.raises(InputError):
+        assert channel_details(user_dav['token'], 000000)
+
+
+# Test for the AccessError
+def test_invalid_member(user_chas, channel_dav):
+    with pytest.raises(AccessError):
+        assert channel_details(user_chas['token'], channel_dav['channel_id'])
