@@ -1,7 +1,6 @@
 '''
 Message module for sending. editing and removing messages
 '''
-import time
 from src.error import AccessError, InputError
 from src.utils import check_token, get_current_timestamp
 from src.global_variables import (get_slackr_owners, get_channels,
@@ -9,24 +8,24 @@ from src.global_variables import (get_slackr_owners, get_channels,
 from src.channel import is_user_a_member
 VALID_REACTS = [1]
 
-def get_message_by_msgID(message_id):
+def get_message_by_msg_id(message_id):
     """
     Get the corresponding message by message_id
     """
     channels_data = get_channels()
-    for channel_id in channels_data.keys():
+    for channel_id in channels_data:
         for message in channels_data[channel_id]['messages']:
             if message_id == message['message_id']:
                 return message
     raise InputError("Message_id is not valid")
 
 
-def get_channel_by_msgID(message_id):
+def get_channel_by_msg_id(message_id):
     """
     Get the channel dictionary by message_id
     """
     channels_data = get_channels()
-    for channel_id in channels_data.keys():
+    for channel_id in channels_data:
         for message in channels_data[channel_id]['messages']:
             if message_id == message['message_id']:
                 return channels_data[channel_id]
@@ -39,31 +38,22 @@ def user_in_channel_by_msgID(message_id, token):
     """
 
     u_id = check_token(token)
-    channels = get_channel_by_msgID(message_id)
-    #TODO
-    if u_id in channels['members'] or u_id in channels['owners']:
-        return True
-    else:
-        return False
-
+    channels = get_channel_by_msg_id(message_id)
+    return u_id in channels['members'] or u_id in channels['owners']
 
 def is_channel_owner(token, channel):
-    #TODO
     """
     Determine whether the user is the owner of the channel
     """
     u_id = check_token(token)
-    if u_id in channel['owners']:
-        return True
-    else:
-        return False
+    return u_id in channel['owners']
 
 
 def is_message_owner(token, message_id):
     """
     Determine whether the user is the owner of the message
     """
-    message = get_message_by_msgID(message_id)
+    message = get_message_by_msg_id(message_id)
     u_id = check_token(token)
     return u_id == message['u_id']
 
@@ -73,10 +63,7 @@ def is_slackr_owner(token):
     """
     owners = get_slackr_owners()
     u_id = check_token(token)
-    if u_id in owners:
-        return True
-    else:
-        return False
+    return u_id in owners
 
 def is_message_reacted(message, react_id):
     '''
@@ -102,6 +89,14 @@ def create_message(user_id, message_id, time_created, message):
     }
 
 def message_send(token, channel_id, message):
+    '''
+    adds message to a channels list of messages
+    expects parameter types:
+        token: str
+        channel_id: int
+        message: str
+    returns dictionary
+    '''
     user_id = check_token(token)
 
     if len(message) > 1000 or len(message) < 1:
@@ -122,8 +117,16 @@ def message_send(token, channel_id, message):
 
 
 def message_react(token, message_id, react_id):
+    '''
+    adds a reaction to a messages list of reactions
+    expects parameter types:
+        token: str
+        message_id: int
+        react_id: int
+    returns empty dictionary
+    '''
     u_id = check_token(token)
-    message = get_message_by_msgID(message_id)
+    message = get_message_by_msg_id(message_id)
 
     if react_id not in VALID_REACTS:
         raise InputError(description='Invalid react id')
@@ -147,8 +150,16 @@ def message_react(token, message_id, react_id):
 
 
 def message_unreact(token, message_id, react_id):
+    '''
+    removes a reaction from a messages list of reactions
+    expects parameter types:
+        token: str
+        message_id: int
+        react_id: int
+    returns empty dictionary
+    '''
     u_id = check_token(token)
-    message = get_message_by_msgID(message_id)
+    message = get_message_by_msg_id(message_id)
 
     if react_id not in VALID_REACTS:
         raise InputError(description='Invalid react id')
@@ -169,8 +180,8 @@ def message_remove(token, message_id):
     Deletes a valid message based on message id
     '''
     check_token(token)
-    channel_specific = get_channel_by_msgID(message_id)
-    message_specific = get_message_by_msgID(message_id)
+    channel_specific = get_channel_by_msg_id(message_id)
+    message_specific = get_message_by_msg_id(message_id)
     if not is_channel_owner(token, channel_specific) and not is_message_owner(
             token, message_id) and not is_slackr_owner(token):
         raise AccessError(description='Not qualified to edit')
@@ -179,12 +190,15 @@ def message_remove(token, message_id):
 
 
 def message_edit(token, message_id, message):
+    '''
+    Changes a valid message. deletes message if the message is changed to be empty
+    '''
     check_token(token)
-    channel_specific = get_channel_by_msgID(message_id)
-    message_specific = get_message_by_msgID(message_id)
-    if is_channel_owner(token, channel_specific) == False:
-        if is_message_owner(token, message_id) == False:
-            if is_slackr_owner(token) == False:
+    channel_specific = get_channel_by_msg_id(message_id)
+    message_specific = get_message_by_msg_id(message_id)
+    if not is_channel_owner(token, channel_specific):
+        if not is_message_owner(token, message_id):
+            if not is_slackr_owner(token):
                 raise AccessError(description='Not qualified to edit')
     if len(message) == 0:
         channel_specific['messages'].remove(message_specific)
@@ -194,39 +208,46 @@ def message_edit(token, message_id, message):
 
 
 def message_pin(token, message_id):
+    '''
+    Pins a message in a channel
+    '''
     u_id = check_token(token)
-    message_specific = get_message_by_msgID(message_id)
-    #TODO
-    if u_id not in message_specific['u_id']:
+    message_specific = get_message_by_msg_id(message_id)
+    channel = get_channel_by_msg_id(message_id)
+    if not is_channel_owner(u_id, channel):
         raise InputError(description='The authorised user is not an owner')
-    if message_specific['is_pined'] == True:
+    if message_specific['is_pined']:
         raise InputError(
             description='Message with ID message_id is already pinned')
-    channel_specific = get_channel_by_msgID(message_id)
+    channel_specific = get_channel_by_msg_id(message_id)
     if u_id not in channel_specific['members']:
         raise AccessError(
             description=
             'The authorised user is not a member of the channel that the message is within'
         )
 
-    message_specific['is_pined'] == True
+    message_specific['is_pined'] = True
     return {}
 
 
 def message_unpin(token, message_id):
+    '''
+    Unpins a message in a channel
+    '''
     u_id = check_token(token)
-    message_specific = get_message_by_msgID(message_id)
-    if u_id not in message_specific['u_id']:
+    message_specific = get_message_by_msg_id(message_id)
+    channel = get_channel_by_msg_id(message_id)
+    if not is_channel_owner(u_id, channel):
         raise InputError(description='The authorised user is not an owner')
-    if message_specific['is_pined'] == False:
+    if message_specific['is_pined']:
         raise InputError(
             description='Message with ID message_id is already unpinned')
-    channel_specific = get_channel_by_msgID(message_id)
+    channel_specific = get_channel_by_msg_id(message_id)
     if u_id not in channel_specific['members']:
         raise AccessError(
             description=
             'The authorised user is not a member of the channel that the message is within'
         )
 
-    message_specific['is_pined'] == False
+    message_specific['is_pined'] = False
     return {}
