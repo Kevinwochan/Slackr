@@ -152,6 +152,8 @@ def message_react(token, message_id, react_id):
 def message_unreact(token, message_id, react_id):
     '''
     removes a reaction from a messages list of reactions
+    Also removes a reaction from the list of reactions if all
+    users have unreacted
     expects parameter types:
         token: str
         message_id: int
@@ -165,12 +167,15 @@ def message_unreact(token, message_id, react_id):
         raise InputError(description='Invalid react id')
     if not user_in_channel_by_msg_id(message_id, token):
         raise InputError(description='User is not in channel')
-    if not is_message_reacted(message_id, react_id):
+    if not is_message_reacted(message, react_id):
         InputError(description='This message contains no reaction with that ID')
 
     for react in message['reacts']:
         if react['react_id'] == react_id and u_id in react['u_ids']:
             react['u_ids'].remove(u_id)
+            # remove a reaction if everyone has unreacted
+            if len(react['u_ids']) == 0:
+                message['reacts'].remove(react)
         elif react['react_id'] == react_id:
             raise InputError(description='You have not made this reaction')
     return {}
