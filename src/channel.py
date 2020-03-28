@@ -1,8 +1,9 @@
+'''
+A module for creating channels to group messages and slackr users
+'''
 from src.error import InputError, AccessError
 from src.utils import check_token
 from src.global_variables import get_channels, get_users, get_slackr_owners
-from src.channels import channels_listall
-
 '''
     Helper functions for writing less code
 '''
@@ -15,7 +16,8 @@ def is_valid_channel(channel_id):
 
 def is_user_a_member(channel_id, user_id):
     ''' returns true if the user_id is a member of the channel '''
-    return user_id in get_channels()[channel_id]['members']
+    return user_id in get_channels()[channel_id]['members'] or is_user_a_owner(
+        channel_id, user_id)
 
 
 def is_user_a_owner(channel_id, user_id):
@@ -62,7 +64,7 @@ def channel_invite(token, channel_id, user_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not is_user_a_member(channel_id, host_user_id) and not is_user_a_owner(channel_id, host_user_id):
+    if not is_user_a_member(channel_id, host_user_id):
         raise AccessError
 
     get_channels()[channel_id]['members'].append(user_id)
@@ -77,8 +79,7 @@ def channel_details(token, channel_id):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not is_user_a_member(channel_id, user_id) and not is_user_a_owner(
-            channel_id, user_id):
+    if not is_user_a_member(channel_id, user_id):
         raise AccessError
 
     owner_members = []
@@ -120,8 +121,7 @@ def channel_messages(token, channel_id, start):
     if not is_valid_channel(channel_id):
         raise InputError
 
-    if not is_user_a_member(channel_id, user_id) and not is_user_a_owner(
-            channel_id, user_id):
+    if not is_user_a_member(channel_id, user_id):
         raise AccessError
 
     channel = get_channels()[channel_id]
@@ -224,5 +224,5 @@ def channel_removeowner(token, channel_id, user_id):
     if is_user_a_owner(channel_id, user_id):
         get_channel_owners(channel_id).remove(user_id)
     get_channel_members(channel_id).append(user_id)
-    
+
     return {}
