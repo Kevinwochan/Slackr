@@ -1,6 +1,6 @@
 from threading import Timer
 from utils import check_token, get_current_timestamp
-from global_variables import get_channels, get_num_messages, set_num_messages
+from global_variables import get_channels, get_num_messages, set_num_messages, get_users
 from error import InputError, AccessError
 from channel import is_valid_channel, is_user_a_member, is_user_a_owner
 #TODO: change get_message_id, check reacts, update with latest changes to message.py
@@ -45,7 +45,6 @@ def find_handle(user_id):
     '''
     returns the handle_str corresponding to a user_id
     '''
-    from global_variables import get_users
     users = get_users()
     return users[user_id]['handle_str']
 
@@ -118,9 +117,8 @@ def standup_active(token, channel_id):
         time_finish = get_standups()[channel_id]['timestamp']
     except KeyError:
         time_finish = None
-
     return {
-        'is_active': is_active, 
+        'is_active': is_active,
         'time_finish': time_finish
     }
 
