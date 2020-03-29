@@ -46,7 +46,10 @@ def is_channel_owner(token, channel):
     Determine whether the user is the owner of the channel
     """
     u_id = check_token(token)
-    return u_id in channel['owners']
+    if u_id in channel['owners']:
+        return True
+    else :
+        return False 
 
 
 def is_message_owner(token, message_id):
@@ -138,7 +141,7 @@ def message_react(token, message_id, react_id):
             {
                 'react_id': react_id,
                 'u_ids': [],
-                'is_this_user_reacted': False
+                'is_this_user_reacted': True
             }
         )
     for react in message['reacts']:
@@ -168,7 +171,7 @@ def message_unreact(token, message_id, react_id):
     if not user_in_channel_by_msg_id(message_id, token):
         raise InputError(description='User is not in channel')
     if not is_message_reacted(message, react_id):
-        InputError(description='This message contains no reaction with that ID')
+        raise InputError(description='This message contains no reaction with that ID')
 
     for react in message['reacts']:
         if react['react_id'] == react_id and u_id in react['u_ids']:
@@ -217,21 +220,25 @@ def message_pin(token, message_id):
     Pins a message in a channel
     '''
     u_id = check_token(token)
-    message_specific = get_message_by_msg_id(message_id)
-    channel = get_channel_by_msg_id(message_id)
-    if not is_channel_owner(u_id, channel):
-        raise InputError(description='The authorised user is not an owner')
-    if message_specific['is_pined']:
-        raise InputError(
-            description='Message with ID message_id is already pinned')
     channel_specific = get_channel_by_msg_id(message_id)
-    if u_id not in channel_specific['members']:
+    message_specific = get_message_by_msg_id(message_id)
+
+    if u_id not in channel_specific['members'] and not is_channel_owner(token, channel_specific):
         raise AccessError(
             description=
             'The authorised user is not a member of the channel that the message is within'
         )
 
-    message_specific['is_pined'] = True
+    if not is_channel_owner(token, channel_specific):
+        raise InputError(description='The authorised user is not an owner')
+    
+    if message_specific['is_pinned']:
+        raise InputError(
+            description='Message with ID message_id is already pinned')
+            
+    if is_channel_owner(token, channel_specific) is True and message_specific['is_pinned'] is False:
+        message_specific['is_pinned'] = True
+    
     return {}
 
 
@@ -241,18 +248,19 @@ def message_unpin(token, message_id):
     '''
     u_id = check_token(token)
     message_specific = get_message_by_msg_id(message_id)
-    channel = get_channel_by_msg_id(message_id)
-    if not is_channel_owner(u_id, channel):
-        raise InputError(description='The authorised user is not an owner')
-    if message_specific['is_pined']:
-        raise InputError(
-            description='Message with ID message_id is already unpinned')
     channel_specific = get_channel_by_msg_id(message_id)
-    if u_id not in channel_specific['members']:
+    if u_id not in channel_specific['members'] and not is_channel_owner(token, channel_specific):
         raise AccessError(
             description=
             'The authorised user is not a member of the channel that the message is within'
         )
 
-    message_specific['is_pined'] = False
+    if not is_channel_owner(token, channel_specific):
+        raise InputError(description='The authorised user is not an owner')
+    if message_specific['is_pinned'] is False:
+        raise InputError(
+            description='Message with ID message_id is already unpinned')
+    if is_channel_owner(token, channel_specific) is True and message_specific['is_pinned'] is True:
+        message_specific['is_pinned'] = False
+        
     return {}
