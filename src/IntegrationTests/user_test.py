@@ -59,7 +59,7 @@ def test_profile_invalid_id(user1):
 
 # Checking all returned data is of the right type
 def test_profile_return_types(user1):
-    user1_profile= user_profile(user1['token'], user1['u_id'])
+    user1_profile = user_profile(user1['token'], user1['u_id'])
     assert isinstance(user1_profile, dict)
 
     assert 'u_id' in user1_profile

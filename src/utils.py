@@ -8,6 +8,7 @@ from src.error import AccessError
 from src.global_variables import get_valid_tokens
 SECRET = 'F FOR HAYDEN'
 
+
 def generate_token(user_id):
     '''
     Returns a JWT token based on the users id and a secret message.
@@ -47,10 +48,11 @@ def invalidate_token(token):
         raise AccessError(description="Token is already invalid")
     return True
 
+
 def get_current_timestamp():
     '''
     uses datetime to generate and return a unix timestamp for the current time in UTC
     TODO: check that this is the timezone we want
     '''
     curr_time = datetime.now()
-    return  curr_time.replace(tzinfo=timezone.utc).timestamp()
+    return curr_time.replace(tzinfo=timezone.utc).timestamp()

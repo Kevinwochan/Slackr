@@ -36,6 +36,7 @@ def get_valid_tokens():
     global global_valid_tokens
     return global_valid_tokens
 
+
 def get_slackr_owners():
     '''
     Returns a list of user_ids that are slackr owners
@@ -47,14 +48,17 @@ def get_slackr_owners():
             owners.append(user_id)
     return owners
 
+
 def get_num_messages():
     global global_num_messages
     return global_num_messages
+
 
 def set_num_messages(new_num_messages):
     global global_num_messages
     global_num_messages = new_num_messages
     return
+
 
 def workspace_reset():
     '''
@@ -71,5 +75,6 @@ def workspace_reset():
     global_valid_tokens.clear()
     global_slackr_owner = 0
     global_num_messages = 0
+
 
 # pylint: enable=invalid-name, global-statement
