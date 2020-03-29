@@ -8,6 +8,7 @@ from src.error import AccessError
 from src.global_variables import get_valid_tokens
 SECRET = 'F FOR HAYDEN'
 
+
 def generate_token(user_id):
     '''
     Returns a JWT token based on the users id and a secret message.
@@ -46,6 +47,7 @@ def invalidate_token(token):
     except ValueError:
         raise AccessError(description="Token is already invalid")
     return True
+
 
 def get_current_timestamp():
     '''
