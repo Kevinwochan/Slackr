@@ -1,11 +1,12 @@
 '''
 Message module for sending. editing and removing messages
 '''
+from threading import Timer
 from src.error import AccessError, InputError
 from src.utils import check_token, get_current_timestamp
 from src.global_variables import (get_slackr_owners, get_channels,
                                   get_num_messages, set_num_messages)
-from src.channel import is_user_a_member
+from src.channel import is_user_a_member, is_valid_channel
 VALID_REACTS = [1]
 
 
@@ -275,3 +276,42 @@ def message_unpin(token, message_id):
         message_specific['is_pinned'] = False
 
     return {}
+
+
+def sendlater_end(channel_id, message):
+    '''
+    Helper function for message_sendlater, used with threading.Timer to
+    add a messsage to a channels list of message after a delay.
+    '''
+    glob_channels = get_channels()
+    glob_channels[channel_id]['messages'].insert(0, message)
+
+
+
+def message_sendlater(token, channel_id, message, time_sent):
+    '''
+    sends a message at a given time_sent, where time_sent is a unix timestamp
+    greater than the current time.
+    '''
+    u_id = check_token(token)
+    if not is_valid_channel(channel_id):
+        raise InputError(description="No channel exists with that ID")
+    if not is_user_a_member(channel_id, u_id):
+        raise AccessError(description='You are not a member of this channel')
+    if len(message) > 1000 or len(message) < 1:
+        raise InputError(
+            description=
+            'Your message should be less than 1000 characters and at least 1 character'
+        )
+    curr_time = get_current_timestamp()
+    if curr_time >= time_sent:
+        raise InputError(description="You can not send a message back in time")
+    delay = time_sent - curr_time
+    message_id = get_num_messages()
+    set_num_messages(message_id + 1)
+    message_template = create_message(u_id, message_id, time_sent, message)
+    timer = Timer(delay, sendlater_end, args=[channel_id, message_template])
+    timer.start()
+    return{
+        'message_id' : message_id
+    }

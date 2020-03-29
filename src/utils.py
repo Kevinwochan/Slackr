@@ -55,4 +55,4 @@ def get_current_timestamp():
     TODO: check that this is the timezone we want
     '''
     curr_time = datetime.now()
-    return curr_time.replace(tzinfo=timezone.utc).timestamp()
+    return  int(curr_time.replace(tzinfo=timezone.utc).timestamp())
