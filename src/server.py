@@ -156,7 +156,7 @@ def message_pin_wsgi():
 @APP.route('/message/unpin', methods=['POST'])
 def message_unpin_wsgi():
     json = request.get_json()
-    return jsonify(message_unpin(json['token'], json['mesage_id']))
+    return jsonify(message_unpin(json['token'], json['message_id']))
 
 
 @APP.route('/message/remove', methods=['DELETE'])
