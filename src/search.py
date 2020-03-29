@@ -2,6 +2,7 @@ from global_variables import get_channels
 from utils import check_token
 from channels import channels_list
 
+
 def search(token, query_str):
     search_results = []
     user_channels = channels_list(token)

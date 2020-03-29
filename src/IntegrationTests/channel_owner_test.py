@@ -7,6 +7,7 @@ from src.auth import auth_register, auth_logout
 from src.channel import channel_addowner, channel_join, channel_removeowner
 from src.channels import channels_create
 
+
 # Assumption that first person to join/create a channel is Owner of that channel
 def test_channel_addowner():
     '''
@@ -130,8 +131,9 @@ def test_channel_removeowner_InputError_invalid_channel():
                                    True)
     channel_join(test_normal_user["token"], test_channel["channel_id"])
     with pytest.raises(InputError) as e:
-        channel_removeowner(test_Owner_user["token"], test_channel["channel_id"],
-                         test_normal_user["u_id"])
+        channel_removeowner(test_Owner_user["token"],
+                            test_channel["channel_id"],
+                            test_normal_user["u_id"])
 
 
 # Assuming there isn't a Slackr owner
