@@ -7,6 +7,7 @@ from hashlib import sha256
 from src.error import InputError
 from src.global_variables import get_users
 
+
 # These functions check that inputs are valid according to the project specifications for the
 # functions auth login and auth register.
 def is_email_valid(email):
@@ -16,9 +17,11 @@ def is_email_valid(email):
 
     Returns True if email is valid, otherwise returns False.
     '''
-    condition = re.search(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$', email)
+    condition = re.search(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$',
+                          email)
 
     return bool(condition)
+
 
 def is_password_valid(password):
     '''
@@ -29,6 +32,7 @@ def is_password_valid(password):
     condition = len(password) >= 6
 
     return bool(condition)
+
 
 def is_name_valid(name):
     '''
@@ -41,17 +45,18 @@ def is_name_valid(name):
 
     return bool(condition_1 and condition_2)
 
+
 def is_email_unique(email):
     '''
     Checks if an email is already associated with a user in glob_users
     '''
     glob_users = get_users()
 
-
     for user in glob_users.values():
         if email == user['email']:
             return False
     return True
+
 
 def is_handle_unique(handle_str):
     '''
@@ -63,6 +68,7 @@ def is_handle_unique(handle_str):
         if handle_str == user['handle_str']:
             return False
     return True
+
 
 def find_id(email):
     '''
@@ -78,6 +84,7 @@ def find_id(email):
     # if no user is found with this email
     raise Exception('No user found')
 
+
 def check_registration_inputs(email, password, name_first, name_last):
     '''
     Checks all inputs for registration raises the appropriate errors
@@ -85,13 +92,18 @@ def check_registration_inputs(email, password, name_first, name_last):
     if not is_email_valid(email):
         raise InputError(description="Invalid Email")
     if not is_email_unique(email):
-        raise InputError(description="An account with this email has already been registered")
+        raise InputError(
+            description="An account with this email has already been registered"
+        )
     if not is_password_valid(password):
         raise InputError(description="Password not strong enough")
     if not is_name_valid(name_first):
-        raise InputError(description="First name must be between 1 and 50 characters long")
+        raise InputError(
+            description="First name must be between 1 and 50 characters long")
     if not is_name_valid(name_last):
-        raise InputError(description="Last name must be between 1 and 50 characters long")
+        raise InputError(
+            description="Last name must be between 1 and 50 characters long")
+
 
 def check_login_inputs(email, password):
     '''
@@ -115,6 +127,7 @@ def check_login_inputs(email, password):
 
     return u_id
 
+
 def create_handle(name_first, name_last):
     '''
     creates handle by joining a users (lowercase) first and last names, cutting it off at
@@ -125,7 +138,7 @@ def create_handle(name_first, name_last):
     handle_str = concat
     while not is_handle_unique(handle_str):
         # Loop and add numbers to the end of handle_str until unique
-        handle_str = concat[:20-len(i)] + i
+        handle_str = concat[:20 - len(i)] + i
         i = str(int(i) + 1)
 
     return handle_str

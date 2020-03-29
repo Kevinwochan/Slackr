@@ -5,17 +5,6 @@ from src.channel import channel_invite, channel_details, channel_messages, chann
 from src.channels import channels_create
 from src.message import message_send
 
-# Assumptions #
-# Assuming that when you create a channel, you automatically join it as Owner
-# Assuming that there isn't a Slackr Owner in these tests
-# Assumes there are no existing channels or users when each test is run
-# Assumes channel ids begin with id 0
-# Assumes channels_details is implemented to verify members have been added/removed
-# Assumes user ids begin with id 0
-'''
-    Tests for leaving a channel
-'''
-
 
 def test_channel_leave():
     test_user = auth_register("z5555555@unsw.edu.au", "password", "John",
@@ -28,19 +17,19 @@ def test_channel_leave():
 def test_channel_leave_invald_channel_id():
     test_user = auth_register("z5555555@unsw.edu.au", "password", "John",
                               "Smith")
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channel_leave(test_user["token"], 0)
 
 
 # Trying to leave a channel that the user isn't in
 def test_channel_leave_non_member():
-    test_Owner_user = auth_register("z5555555@unsw.edu.au", "password", "John",
+    test_owner_user = auth_register("z5555555@unsw.edu.au", "password", "John",
                                     "Smith")
     test_normal_user = auth_register("z8888888@unsw.edu.au", "password", "Bob",
                                      "Smith")
-    test_channel = channels_create(test_Owner_user["token"], "test_channel",
+    test_channel = channels_create(test_owner_user["token"], "test_channel",
                                    True)
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channel_leave(test_normal_user["token"], test_channel["channel_id"])
 
 
@@ -50,13 +39,8 @@ def test_channel_leave_invalid_token():
                               "Smith")
     test_channel = channels_create(test_user["token"], "test_channel", True)
     auth_logout(test_user["token"])  # Invalidating token
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channel_leave(test_user["token"], test_channel["channel_id"])
-
-
-'''
-    Tests for joining a channel
-'''
 
 
 def test_channel_join():
@@ -72,7 +56,7 @@ def test_channel_join():
 def test_channel_join_InputError():
     test_user = auth_register("z5555555@unsw.edu.au", "password", "John",
                               "Smith")
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channel_join(test_user["token"], 0)
 
 
@@ -83,7 +67,7 @@ def test_channel_join_AccessError():
     test_user2 = auth_register("z8888888@unsw.edu.au", "password", "Bob",
                                "Smith")
     test_channel = channels_create(test_user["token"], "test_channel", False)
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channel_join(test_user2["token"], test_channel["channel_id"])
 
 
@@ -95,13 +79,8 @@ def test_channel_join_InvalidToken():
                                "Smith")
     test_channel = channels_create(test_user2["token"], "test_channel", True)
     auth_logout(test_user["token"])  # Invalidating token of user1
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channel_join(test_user["token"], test_channel["channel_id"])
-
-
-'''
-    Test functions for inviting a user to a channel
-'''
 
 
 # Set up the users

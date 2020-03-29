@@ -23,7 +23,7 @@ def is_valid_handle(host_user_id, handle_str):
 
 
 def is_valid_email(host_user_id, email):
-    ''' 
+    '''
     code from https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
     checks that the valid is in a valid format according to geeks for geeks
     and checks that this email is not already in use
