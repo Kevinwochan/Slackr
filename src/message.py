@@ -230,16 +230,27 @@ def message_pin(token, message_id):
     Pins a message in a channel
     '''
     u_id = check_token(token)
+    channel_specific = get_channel_by_msg_id(message_id)
     message_specific = get_message_by_msg_id(message_id)
-    channel = get_channel_by_msg_id(message_id)
-    if not is_channel_owner(u_id, channel) and not user_in_channel_by_msg_id(message_id, token):
-        raise AccessError
+
+    if u_id not in channel_specific['members'] and not is_channel_owner(
+            token, channel_specific):
+        raise AccessError(
+            description=
+            'The authorised user is not a member of the channel that the message is within'
+        )
+
+    if not is_channel_owner(token, channel_specific):
+        raise InputError(description='The authorised user is not an owner')
 
     if message_specific['is_pinned']:
         raise InputError(
             description='Message with ID message_id is already pinned')
 
-    message_specific['is_pinned'] = True
+    if is_channel_owner(token, channel_specific
+                        ) is True and message_specific['is_pinned'] is False:
+        message_specific['is_pinned'] = True
+
     return {}
 
 
@@ -249,12 +260,6 @@ def message_unpin(token, message_id):
     '''
     u_id = check_token(token)
     message_specific = get_message_by_msg_id(message_id)
-    channel = get_channel_by_msg_id(message_id)
-    if not is_channel_owner(u_id, channel):
-        raise InputError(description='The authorised user is not an owner')
-    if message_specific['is_pinned']:
-        raise InputError(
-            description='Message with ID message_id is already unpinned')
     channel_specific = get_channel_by_msg_id(message_id)
     if u_id not in channel_specific['members'] and not is_channel_owner(
             token, channel_specific):
@@ -263,7 +268,15 @@ def message_unpin(token, message_id):
             'The authorised user is not a member of the channel that the message is within'
         )
 
-    message_specific['is_pinned'] = False
+    if not is_channel_owner(token, channel_specific):
+        raise InputError(description='The authorised user is not an owner')
+    if message_specific['is_pinned'] is False:
+        raise InputError(
+            description='Message with ID message_id is already unpinned')
+    if is_channel_owner(token, channel_specific
+                        ) is True and message_specific['is_pinned'] is True:
+        message_specific['is_pinned'] = False
+
     return {}
 
 
