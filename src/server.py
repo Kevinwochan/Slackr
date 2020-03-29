@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from json import dumps
 from src.auth import auth_register, auth_login, auth_logout, auth_permission_change
-from src.channel import channel_addowner, channel_details, channel_invite, channel_invite, channel_join, channel_leave, channel_messages, channel_removeowner
+from src.channel import channel_addowner, channel_details, channel_invite, channel_join, channel_leave, channel_messages, channel_removeowner
 from src.channels import channels_create, channels_list, channels_listall
 from src.user import user_profile, user_profile_setemail, user_profile_sethandle, user_profile_setname
 from src.message import message_edit, message_remove, message_send, message_sendlater, message_pin, message_react, message_unpin, message_unreact
@@ -107,25 +107,25 @@ def channels_list_wsgi():
 
 @APP.route('/channels/listall', methods=['GET'])
 def channels_listall_wsgi():
-    json = request.get_json()
+    json = request.args
     return jsonify(channels_listall(json['token']))
 
 
-@APP.route('channels/create', methods=['POST'])
+@APP.route('/channels/create', methods=['POST'])
 def channels_create_wsgi():
     json = request.get_json()
     return jsonify(
         channels_create(json['token'], json['name'], json['is_public']))
 
 
-@APP.route('message/send', methods=['POST'])
+@APP.route('/message/send', methods=['POST'])
 def message_send_wsgi():
     json = request.get_json()
     return jsonify(
         message_send(json['token'], json['channel_id'], json['message']))
 
 
-@APP.route('message/sendlater', methods=['POST'])
+@APP.route('/message/sendlater', methods=['POST'])
 def message_sendlater_wsgi():
     json = request.get_json()
     return jsonify(
@@ -133,52 +133,52 @@ def message_sendlater_wsgi():
                           json['time_sent']))
 
 
-@APP.route('message/react', methods=['POST'])
+@APP.route('/message/react', methods=['POST'])
 def message_react_wsgi():
     json = request.get_json()
     return jsonify(
         message_react(json['token'], json['message_id'], json['react_id']))
 
 
-@APP.route('message/unreact', methods=['POST'])
+@APP.route('/message/unreact', methods=['POST'])
 def message_unreact_wsgi():
     json = request.get_json()
     return jsonify(
         message_unreact(json['token'], json['message_id'], json['react_id']))
 
 
-@APP.route('message/pin', methods=['POST'])
+@APP.route('/message/pin', methods=['POST'])
 def message_pin_wsgi():
     json = request.get_json()
     return jsonify(message_pin(json['token'], json['message_id']))
 
 
-@APP.route('message/unpin', methods=['POST'])
+@APP.route('/message/unpin', methods=['POST'])
 def message_unpin_wsgi():
     json = request.get_json()
     return jsonify(message_unpin(json['token'], json['mesage_id']))
 
 
-@APP.route('message/remove', methods=['DELETE'])
+@APP.route('/message/remove', methods=['DELETE'])
 def message_remove_wsgi():
     json = request.get_json()
     return jsonify(message_remove(json['token'], json['message_id']))
 
 
-@APP.route('message/edit', methods=['PUT'])
+@APP.route('/message/edit', methods=['PUT'])
 def message_edit_wsgi():
     json = request.get_json()
     return jsonify(
         message_edit(json['token'], json['message_id'], json['message']))
 
 
-@APP.route('user/profile', methods=['GET'])
+@APP.route('/user/profile', methods=['GET'])
 def user_profile_wsgi():
-    json = request.get_json()
+    json = request.args
     return jsonify(user_profile(json['token'], json['u_id']))
 
 
-@APP.route('user/profile/setname', methods=['PUT'])
+@APP.route('/user/profile/setname', methods=['PUT'])
 def user_profile_setname_wsgi():
     json = request.get_json()
     return jsonify(
@@ -198,7 +198,7 @@ def user_profile_sethandle_wsgi():
     return jsonify(user_profile_sethandle(json['token'], json['handle_str']))
 
 
-@APP.route('users/all', methods=['GET'])
+@APP.route('/users/all', methods=['GET'])
 def users_all_wsgi():
     json = request.args
     return jsonify(users_all(json['token']))
@@ -206,31 +206,31 @@ def users_all_wsgi():
 
 @APP.route('/search', methods=['GET'])
 def search_wsgi():
-    json = request.get_json()
+    json = request.agrs
     return jsonify(search(json['token'], json['query_str']))
 
 
-@APP.route('standup/start', methods=['POST'])
+@APP.route('/standup/start', methods=['POST'])
 def standup_start_wsgi():
     json = request.get_json()
     return jsonify(
         standup_start(json['token'], json['channel_id'], json['length']))
 
 
-@APP.route('standup/active', methods=['GET'])
+@APP.route('/standup/active', methods=['GET'])
 def standup_active_wsgi():
-    json = request.get_json()
+    json = request.agrs
     return jsonify(standup_active(json['token'], json['channel_id']))
 
 
-@APP.route('standup/send', methods=['POST'])
+@APP.route('/standup/send', methods=['POST'])
 def standup_send_wsgi():
     json = request.get_json()
     return jsonify(
         standup_send(json['token'], json['channel_id'], json['message']))
 
 
-@APP.route('admin/userpermission/change', methods=['POST'])
+@APP.route('/admin/userpermission/change', methods=['POST'])
 def admin_userpermission_change_wsgi():
     json = request.get_json()
     return jsonify(
@@ -238,7 +238,7 @@ def admin_userpermission_change_wsgi():
                                json['permission_id']))
 
 
-@APP.route('workspace/reset', methods=['POST'])
+@APP.route('/workspace/reset', methods=['POST'])
 def workspace_reset_wsgi():
     return jsonify(workspace_reset())
 
