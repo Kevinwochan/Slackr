@@ -11,6 +11,7 @@ global_valid_tokens = []
 global_num_messages = 0
 global_standups = {}
 
+
 # Functions used to access global variables
 def get_users():
     '''
@@ -81,5 +82,6 @@ def workspace_reset():
     global_valid_tokens.clear()
     global_standups.clear()
     global_num_messages = 0
-    
+
+
 # pylint: enable=invalid-name, global-statement
