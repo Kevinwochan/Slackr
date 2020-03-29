@@ -4,9 +4,6 @@ A module for creating channels to group messages and slackr users
 from src.error import InputError, AccessError
 from src.utils import check_token
 from src.global_variables import get_channels, get_users, get_slackr_owners
-'''
-    Helper functions for writing less code
-'''
 
 
 def is_valid_channel(channel_id):
@@ -43,11 +40,6 @@ def is_valid_user(user_id):
 def is_channel_public(channel_id):
     ''' returns true or false depending if channel is public'''
     return get_channels()[channel_id]['is_public']
-
-
-'''
-    Main Channel functions
-'''
 
 
 def channel_invite(token, channel_id, user_id):
@@ -114,7 +106,7 @@ def channel_messages(token, channel_id, start):
     '''
         returns a dictionary containing:
             messages: a list of messages starting with the most recent at index 0
-            start: the index of the starting message 
+            start: the index of the starting message
             end: the index of the last message
     '''
     user_id = check_token(token)
@@ -183,7 +175,7 @@ def channel_join(token, channel_id):
 
 def channel_addowner(token, channel_id, user_id):
     '''
-        Makes a user a channel owner, 
+        Makes a user a channel owner,
         The token must be of a channel owner or the slackr owner
     '''
     owner_id = check_token(token)

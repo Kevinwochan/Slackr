@@ -9,6 +9,7 @@ from src.global_variables import (get_slackr_owners, get_channels,
 from src.channel import is_user_a_member, is_valid_channel
 VALID_REACTS = [1]
 
+
 def get_message_by_msg_id(message_id):
     """
     Get the corresponding message by message_id
@@ -42,12 +43,16 @@ def user_in_channel_by_msg_id(message_id, token):
     channels = get_channel_by_msg_id(message_id)
     return u_id in channels['members'] or u_id in channels['owners']
 
+
 def is_channel_owner(token, channel):
     """
     Determine whether the user is the owner of the channel
     """
     u_id = check_token(token)
-    return u_id in channel['owners']
+    if u_id in channel['owners']:
+        return True
+    else:
+        return False
 
 
 def is_message_owner(token, message_id):
@@ -58,6 +63,7 @@ def is_message_owner(token, message_id):
     u_id = check_token(token)
     return u_id == message['u_id']
 
+
 def is_slackr_owner(token):
     """
     Determine whether the user owns the slackr
@@ -65,6 +71,7 @@ def is_slackr_owner(token):
     owners = get_slackr_owners()
     u_id = check_token(token)
     return u_id in owners
+
 
 def is_message_reacted(message, react_id):
     '''
@@ -75,6 +82,7 @@ def is_message_reacted(message, react_id):
         if react['react_id'] == react_id:
             return True
     return False
+
 
 def create_message(user_id, message_id, time_created, message):
     '''
@@ -88,6 +96,7 @@ def create_message(user_id, message_id, time_created, message):
         'reacts': [],
         'is_pinned': False
     }
+
 
 def message_send(token, channel_id, message):
     '''
@@ -114,7 +123,8 @@ def message_send(token, channel_id, message):
     channel = glob_channels[channel_id]
     time_created = get_current_timestamp()
 
-    channel['messages'].insert(0, create_message(user_id, message_id, time_created, message))
+    channel['messages'].insert(
+        0, create_message(user_id, message_id, time_created, message))
     set_num_messages(message_id + 1)
     return {'message_id': message_id}
 
@@ -137,13 +147,11 @@ def message_react(token, message_id, react_id):
         raise InputError(description='User is not in channel')
     # adding reaction to reacts if it does not exist already
     if not is_message_reacted(message, react_id):
-        message['reacts'].append(
-            {
-                'react_id': react_id,
-                'u_ids': [],
-                'is_this_user_reacted': False
-            }
-        )
+        message['reacts'].append({
+            'react_id': react_id,
+            'u_ids': [],
+            'is_this_user_reacted': True
+        })
     for react in message['reacts']:
         if react['react_id'] == react_id:
             if u_id in react['u_ids']:
@@ -171,7 +179,8 @@ def message_unreact(token, message_id, react_id):
     if not user_in_channel_by_msg_id(message_id, token):
         raise InputError(description='User is not in channel')
     if not is_message_reacted(message, react_id):
-        InputError(description='This message contains no reaction with that ID')
+        raise InputError(
+            description='This message contains no reaction with that ID')
 
     for react in message['reacts']:
         if react['react_id'] == react_id and u_id in react['u_ids']:
@@ -182,6 +191,7 @@ def message_unreact(token, message_id, react_id):
         elif react['react_id'] == react_id:
             raise InputError(description='You have not made this reaction')
     return {}
+
 
 def message_remove(token, message_id):
     '''
@@ -246,7 +256,8 @@ def message_unpin(token, message_id):
         raise InputError(
             description='Message with ID message_id is already unpinned')
     channel_specific = get_channel_by_msg_id(message_id)
-    if u_id not in channel_specific['members']:
+    if u_id not in channel_specific['members'] and not is_channel_owner(
+            token, channel_specific):
         raise AccessError(
             description=
             'The authorised user is not a member of the channel that the message is within'

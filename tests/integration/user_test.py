@@ -2,40 +2,8 @@ import pytest
 from src.user import user_profile, user_profile_setname, user_profile_setemail, user_profile_sethandle
 from src.auth import auth_register
 from src.error import InputError, AccessError
+
 # Note: fixture inv_token is imported by pytest from conftest.py automatically.
-
-
-# Creates a user and returns their details
-@pytest.fixture
-def user1():
-    email = "testemail@gmail.com"
-    name_first = "John"
-    name_last = "Smith"
-
-    user = auth_register(email, "1234567", name_first, name_last)
-    return {
-        'token': user['token'],
-        'u_id': user['u_id'],
-        'email': email,
-        'name_first': name_first,
-        'name_last': name_last
-    }
-
-
-@pytest.fixture
-def user2():
-    email = "testdiff@gmail.com"
-    name_first = "Jane"
-    name_last = "Doe"
-
-    user = auth_register(email, "1234567", name_first, name_last)
-    return {
-        'token': user['token'],
-        'u_id': user['u_id'],
-        'email': email,
-        'name_first': name_first,
-        'name_last': name_last,
-    }
 
 
 ################################################################################
@@ -59,7 +27,7 @@ def test_profile_invalid_id(user1):
 
 # Checking all returned data is of the right type
 def test_profile_return_types(user1):
-    user1_profile= user_profile(user1['token'], user1['u_id'])
+    user1_profile = user_profile(user1['token'], user1['u_id'])
     assert isinstance(user1_profile, dict)
 
     assert 'u_id' in user1_profile
@@ -181,7 +149,7 @@ def test_setemail_invalid(user1):
 
 
 def test_setemail_taken(user1, user2):
-    ''' 
+    '''
     when a user tries to set their user profile email to an email that is already
     in use by another user, an input error is thrown
     '''
