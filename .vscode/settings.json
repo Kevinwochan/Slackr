@@ -1,4 +1,5 @@
 {
+    "python.pythonPath": "/home/kevin/.local/share/virtualenvs/T18A-MEHK-MN0hWdXj/bin/python",
     "python.venvPath": "${workspaceFolder}/.venv/bin/python",
     "python.linting.enabled": true,
     "python.formatting.provider": "yapf",
