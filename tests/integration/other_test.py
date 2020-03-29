@@ -52,7 +52,7 @@ def test_search_for_one_message():
     assert 'message' in message
     assert isinstance(message['message'], str)
     assert 'time_created' in message
-    assert isinstance(message['time_created'], float)
+    assert isinstance(message['time_created'], int)
 
 
 def test_search_for_multiple_messages():
@@ -85,7 +85,7 @@ def test_search_for_multiple_messages():
         assert isinstance(message['message'], str)
         assert message['message'] == messages_sent[message['message_id']]
         assert 'time_created' in message
-        assert isinstance(message['time_created'], float)
+        assert isinstance(message['time_created'], int)
 
 
 def test_searching_multiple_channels():
