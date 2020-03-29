@@ -6,6 +6,7 @@ For the previous versions which used for loops, see git log.
 
 from src.utils import check_token
 from src.error import InputError
+from src.channel import is_user_a_member
 from src.global_variables import get_channels
 
 
@@ -17,14 +18,13 @@ def channels_list(token):
     u_id = check_token(token)
     glob_channels = get_channels()
 
-    return {'channels': [
-        {
+    return {
+        'channels': [{
             'channel_id': channel_id,
             'name': glob_channels[channel_id]['name']
         } for channel_id in glob_channels
-        if u_id in glob_channels[channel_id]['owners']\
-        or u_id in glob_channels[channel_id]['members']
-    ]}
+                     if is_user_a_member(channel_id, u_id)]
+    }
 
 
 def channels_listall(token):
