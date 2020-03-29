@@ -1,6 +1,6 @@
 import pytest
-from src.error import InputError, AccessError
-from src.auth import auth_login, auth_logout, auth_register
+from src.error import InputError
+from src.auth import auth_register
 
 
 # Registration
@@ -82,4 +82,3 @@ def test_register_valid_credentials():
     assert isinstance(new_user['u_id'], int)
     assert 'token' in new_user
     assert isinstance(new_user['token'], str)
-
