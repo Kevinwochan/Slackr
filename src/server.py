@@ -57,7 +57,7 @@ def auth_logout_wsgi():
 def channel_invite_wsgi():
     json = request.get_json()
     return jsonify(
-        channel_invite(json['token'], json['channel_id'], json['u_id']))
+        channel_invite(json['token'], int(json['channel_id']), int(json['u_id'])))
 
 
 @APP.route('/channel/details', methods=['GET'])
@@ -66,37 +66,37 @@ def channel_details_wsgi():
     return jsonify(channel_details(json['token'], int(json['channel_id'])))
 
 
-@APP.route('/channel/messages', methods=['POST'])
+@APP.route('/channel/messages', methods=['GET'])
 def channel_messages_wsgi():
-    json = request.get_json()
+    json = request.args
     return jsonify(
-        channel_messages(json['token'], json['channel_id'], json['start']))
+        channel_messages(json['token'], int(json['channel_id']), int(json['start'])))
 
 
 @APP.route('/channel/leave', methods=['POST'])
 def channel_leave_wsgi():
     json = request.get_json()
-    return jsonify(channel_leave(json['token'], json['channel_id']))
+    return jsonify(channel_leave(json['token'], int(json['channel_id'])))
 
 
 @APP.route('/channel/join', methods=['POST'])
 def channel_join_wsgi():
     json = request.get_json()
-    return jsonify(channel_join(json['token'], json['channel_id']))
+    return jsonify(channel_join(json['token'], int(json['channel_id'])))
 
 
 @APP.route('/channel/addowner', methods=['POST'])
 def channel_addowner_wsgi():
     json = request.get_json()
     return jsonify(
-        channel_addowner(json['token'], json['channel_id'], json['u_id']))
+        channel_addowner(json['token'], int(json['channel_id']), int(json['u_id'])))
 
 
 @APP.route('/channel/removeowner', methods=['POST'])
 def channel_removeowner_wsgi():
     json = request.get_json()
     return jsonify(
-        channel_removeowner(json['token'], json['channel_id'], json['u_id']))
+        channel_removeowner(json['token'], int(json['channel_id']), int(json['u_id'])))
 
 
 @APP.route('/channels/list', methods=['GET'])
@@ -122,14 +122,14 @@ def channels_create_wsgi():
 def message_send_wsgi():
     json = request.get_json()
     return jsonify(
-        message_send(json['token'], json['channel_id'], json['message']))
+        message_send(json['token'], int(int(json['channel_id'])), json['message']))
 
 
 @APP.route('/message/sendlater', methods=['POST'])
 def message_sendlater_wsgi():
     json = request.get_json()
     return jsonify(
-        message_sendlater(json['token'], json['channel_id'], json['message'],
+        message_sendlater(json['token'], int(json['channel_id']), json['message'],
                           json['time_sent']))
 
 
@@ -137,20 +137,20 @@ def message_sendlater_wsgi():
 def message_react_wsgi():
     json = request.get_json()
     return jsonify(
-        message_react(json['token'], json['message_id'], json['react_id']))
+        message_react(json['token'], int(json['message_id']), json['react_id']))
 
 
 @APP.route('/message/unreact', methods=['POST'])
 def message_unreact_wsgi():
     json = request.get_json()
     return jsonify(
-        message_unreact(json['token'], json['message_id'], json['react_id']))
+        message_unreact(json['token'], int(json['message_id']), json['react_id']))
 
 
 @APP.route('/message/pin', methods=['POST'])
 def message_pin_wsgi():
     json = request.get_json()
-    return jsonify(message_pin(json['token'], json['message_id']))
+    return jsonify(message_pin(json['token'], int(json['message_id'])))
 
 
 @APP.route('/message/unpin', methods=['POST'])
@@ -162,14 +162,14 @@ def message_unpin_wsgi():
 @APP.route('/message/remove', methods=['DELETE'])
 def message_remove_wsgi():
     json = request.get_json()
-    return jsonify(message_remove(json['token'], json['message_id']))
+    return jsonify(message_remove(json['token'], int(json['message_id'])))
 
 
 @APP.route('/message/edit', methods=['PUT'])
 def message_edit_wsgi():
     json = request.get_json()
     return jsonify(
-        message_edit(json['token'], json['message_id'], json['message']))
+        message_edit(json['token'], int(json['message_id']), json['message']))
 
 
 @APP.route('/user/profile', methods=['GET'])
@@ -206,7 +206,7 @@ def users_all_wsgi():
 
 @APP.route('/search', methods=['GET'])
 def search_wsgi():
-    json = request.agrs
+    json = request.args
     return jsonify(search(json['token'], json['query_str']))
 
 
@@ -214,12 +214,12 @@ def search_wsgi():
 def standup_start_wsgi():
     json = request.get_json()
     return jsonify(
-        standup_start(json['token'], json['channel_id'], json['length']))
+        standup_start(json['token'], int(json['channel_id']), json['length']))
 
 
 @APP.route('/standup/active', methods=['GET'])
 def standup_active_wsgi():
-    json = request.agrs
+    json = request.args
     return jsonify(standup_active(json['token'], int(json['channel_id'])))
 
 
@@ -227,14 +227,14 @@ def standup_active_wsgi():
 def standup_send_wsgi():
     json = request.get_json()
     return jsonify(
-        standup_send(json['token'], json['channel_id'], json['message']))
+        standup_send(json['token'], int(json['channel_id']), json['message']))
 
 
 @APP.route('/admin/userpermission/change', methods=['POST'])
 def admin_userpermission_change_wsgi():
     json = request.get_json()
     return jsonify(
-        auth_permission_change(json['token'], json['u_id'],
+        auth_permission_change(json['token'], int(json['u_id']),
                                json['permission_id']))
 
 

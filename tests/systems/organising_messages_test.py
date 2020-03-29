@@ -57,7 +57,7 @@ def test_inviting_users():
     '''
     Invites a load of users 
     '''
-    for user_id in range(0, 4):
+    for user_id in range(4):
         response = requests.post(f'{BASE_URL}/channel/invite',
                                  json={
                                      'token': USER['token'],
@@ -72,3 +72,6 @@ def test_inviting_users():
                                 'channel_id': CLIENT_DATA['channels'][0]
                             })
     assert response.status_code == 200
+    json = response.json()
+    assert len(json['all_members']) == 5
+    assert len(json['owner_members']) == 1
