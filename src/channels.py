@@ -12,7 +12,7 @@ from src.global_variables import get_channels
 def channels_list(token):
     '''
     Loops through CHANNELS and generates a list of only the channels which
-    contain the user as a member
+    contain the user as a member or as an owner
     '''
     u_id = check_token(token)
     glob_channels = get_channels()
