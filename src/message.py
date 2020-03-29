@@ -105,6 +105,8 @@ def message_send(token, channel_id, message):
             description=
             'Your message should be less than 1000 characters and at least 1 character'
         )
+    if not is_valid_channel(channel_id):
+        raise InputError
     if not is_user_a_member(channel_id, user_id):
         raise AccessError
     message_id = get_num_messages()
@@ -220,19 +222,14 @@ def message_pin(token, message_id):
     u_id = check_token(token)
     message_specific = get_message_by_msg_id(message_id)
     channel = get_channel_by_msg_id(message_id)
-    if not is_channel_owner(u_id, channel):
-        raise InputError(description='The authorised user is not an owner')
-    if message_specific['is_pined']:
+    if not is_channel_owner(u_id, channel) and not user_in_channel_by_msg_id(message_id, token):
+        raise AccessError
+
+    if message_specific['is_pinned']:
         raise InputError(
             description='Message with ID message_id is already pinned')
-    channel_specific = get_channel_by_msg_id(message_id)
-    if u_id not in channel_specific['members']:
-        raise AccessError(
-            description=
-            'The authorised user is not a member of the channel that the message is within'
-        )
 
-    message_specific['is_pined'] = True
+    message_specific['is_pinned'] = True
     return {}
 
 
@@ -245,7 +242,7 @@ def message_unpin(token, message_id):
     channel = get_channel_by_msg_id(message_id)
     if not is_channel_owner(u_id, channel):
         raise InputError(description='The authorised user is not an owner')
-    if message_specific['is_pined']:
+    if message_specific['is_pinned']:
         raise InputError(
             description='Message with ID message_id is already unpinned')
     channel_specific = get_channel_by_msg_id(message_id)
@@ -255,7 +252,7 @@ def message_unpin(token, message_id):
             'The authorised user is not a member of the channel that the message is within'
         )
 
-    message_specific['is_pined'] = False
+    message_specific['is_pinned'] = False
     return {}
 
 

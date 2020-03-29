@@ -27,7 +27,7 @@ def check_token(token):
     and then returns that users id. raises AccessError if token does not match logged in user.
     '''
     curr_users = get_valid_tokens()
-
+    print(token)
     if not token in curr_users:
         raise AccessError(description="You do not have a valid token")
     return decode(token.encode('utf-8'), SECRET, algorithms=['HS256'])['id']
