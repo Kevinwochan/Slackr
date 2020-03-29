@@ -2,62 +2,18 @@
 
 import pytest
 from src.error import AccessError, InputError
-from src.channels import channels_create
-from src.channel import channel_join, channel_invite
+from src.channel import channel_invite
 from src.auth import auth_register
 from src.message import (message_edit, message_remove, message_send,
-                         message_edit, message_pin, message_unpin,
-                         message_react, message_unreact, message_remove,
-                         get_message_by_msg_id)
-
-
-@pytest.fixture
-def new_user():
-    """creates a new user"""
-    return auth_register("z5555555@unsw.edu.au", "password", "first_name",
-                         "last_name")
-
-
-@pytest.fixture
-def new_user_2():
-    """create a new user"""
-    return auth_register("z2222222@unsw.edu.au", "password2", "first_name2",
-                         "last_name2")
-
-
-@pytest.fixture
-def new_user_3():
-    """create a new user"""
-    return auth_register("z3333333@unsw.edu.au", "password3", "first_name3",
-                         "last_name3")
-
-
-@pytest.fixture
-def new_user_4():
-    """create a new user"""
-    return auth_register("z4444444@unsw.edu.au", "password4", "first_name4",
-                         "last_name4")
-
-
-@pytest.fixture
-def new_channel_and_user(new_user):
-    """creates a new user then a new channel and returns a merged dictionary"""
-    new_channel = channels_create(new_user['token'], "channel_name", False)
-    return {**new_channel, **new_user}
-
-
-@pytest.fixture
-def new_channel_and_user_2(new_user_2):
-    """creates a new user then a new channel and returns a merged dictionary"""
-    new_channel_2 = channels_create(new_user_2['token'], "channel_name", False)
-    return {**new_channel_2, **new_user_2}
+                         message_pin, message_unpin, message_react,
+                         message_unreact, get_message_by_msg_id)
 
 
 # Sending
 def test_sending_long_message(new_channel_and_user):
     """ Test sending a message that is just below the size limit
         uses channel_messages to verify that the message has been recorded
-        assuming message ids start with 0, the first message ever will 
+        assuming message ids start with 0, the first message ever will
         have an id of 0
     """
     message = message_send(new_channel_and_user['token'],
@@ -372,7 +328,7 @@ def test_message_pin_norm(new_channel_and_user):
     message_pin(new_channel_and_user['token'], message['message_id'])
     message_specific = get_message_by_msg_id(message['message_id'])
 
-    assert message_specific['is_pinned'] == True
+    assert message_specific['is_pinned']
 
 
 def test_message_pin_invalid_msg_id(new_channel_and_user):
@@ -417,7 +373,7 @@ def test_message_unpin_norm(new_channel_and_user):
                            new_channel_and_user['channel_id'], 'adcd')
     message_specific = get_message_by_msg_id(message['message_id'])
 
-    assert message_specific['is_pinned'] == False
+    assert not message_specific['is_pinned']
 
 
 def test_message_unpin_invalid_msg_id(new_channel_and_user):

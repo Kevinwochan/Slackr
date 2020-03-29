@@ -45,11 +45,3 @@ def search(token, query_str):
            key=lambda message: message['time_created'],
            reverse=True)
     return {'messages': search_results}
-    return {
-        'messages': [{
-            'message_id': 1,
-            'u_id': 1,
-            'message': 'Hello world',
-            'time_created': 1582426789,
-        }],
-    }

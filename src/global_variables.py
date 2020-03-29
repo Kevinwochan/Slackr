@@ -57,7 +57,6 @@ def get_num_messages():
 def set_num_messages(new_num_messages):
     global global_num_messages
     global_num_messages = new_num_messages
-    return
 
 
 def workspace_reset():
