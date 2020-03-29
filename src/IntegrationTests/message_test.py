@@ -5,7 +5,9 @@ from src.error import AccessError, InputError
 from src.channels import channels_create
 from src.channel import channel_join, channel_invite
 from src.auth import auth_register
-from src.message import message_edit, message_remove, message_send
+from src.message import (message_edit, message_remove, message_send, message_edit, 
+                        message_pin, message_unpin, message_react, message_unreact, message_remove,
+                         get_message_by_msg_id)
 
 
 @pytest.fixture
@@ -14,6 +16,23 @@ def new_user():
     return auth_register("z5555555@unsw.edu.au", "password",
                          "first_name", "last_name")
 
+@pytest.fixture
+def new_user_2():
+    """create a new user"""
+    return auth_register("z2222222@unsw.edu.au", "password2",
+                         "first_name2", "last_name2")
+
+@pytest.fixture
+def new_user_3():
+    """create a new user"""
+    return auth_register("z3333333@unsw.edu.au", "password3",
+                         "first_name3", "last_name3")
+
+@pytest.fixture
+def new_user_4():
+    """create a new user"""
+    return auth_register("z4444444@unsw.edu.au", "password4",
+                         "first_name4", "last_name4")
 
 @pytest.fixture
 def new_channel_and_user(new_user):
@@ -21,6 +40,14 @@ def new_channel_and_user(new_user):
     new_channel = channels_create(new_user['token'],
                                   "channel_name", False)
     return {**new_channel, **new_user}
+
+@pytest.fixture
+def new_channel_and_user_2(new_user_2):
+    """creates a new user then a new channel and returns a merged dictionary"""
+    new_channel_2 = channels_create(new_user_2['token'],
+                                  "channel_name", False)
+    return {**new_channel_2, **new_user_2}
+
 
 
 # Sending
@@ -231,3 +258,161 @@ def test_editing_with_invalid_token(new_channel_and_user):
     with pytest.raises(AccessError):
         message_edit('invalid token', message['message_id'],
                      'new message to replace existing message')
+
+def test_message_react_normal(new_channel_and_user):
+    """ Test that an legal user react a message"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    message_react(new_channel_and_user['token'], message['message_id'], 1)
+    message_specific = get_message_by_msg_id(message['message_id'])
+
+    assert message_specific['reacts'] == [{
+        'react_id': 1,
+        'u_ids': [new_channel_and_user['u_id']],
+        'is_this_user_reacted': True
+    }]
+
+def test_message_already_reacted(new_channel_and_user):
+    """ Test that if a user react to a message that has already been reacted"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    message_react(new_channel_and_user['token'], message['message_id'], 1)
+    with pytest.raises(InputError):
+        message_react(new_channel_and_user['token'], message['message_id'], 1)
+
+def test_message_invalid_react_id(new_channel_and_user):
+    """ Test that if a user try to react a message with an invalid react_id"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    with pytest.raises(InputError):
+        message_react(new_channel_and_user['token'], message['message_id'], 0)
+
+def test_message_react_user_not_in_channel(new_channel_and_user, new_channel_and_user_2):
+    """ Test that if a user try to react a message when he/she is not in that channel"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    with pytest.raises(InputError):
+        message_react(new_channel_and_user_2['token'], message['message_id'], 1)
+
+def test_message_unreact_norm(new_channel_and_user):
+    """ Test that a legal user unreat a peice of mesage when there is only one piece of message"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    message_react(new_channel_and_user['token'], message['message_id'], 1)
+    message_unreact(new_channel_and_user['token'], message['message_id'], 1)
+    message_specific = get_message_by_msg_id(message['message_id'])
+
+    assert message_specific['reacts'] == []
+
+def test_message_unreact_invalid_react_id(new_channel_and_user):
+    """ Test that a legal user unreact a message but with invalid react_id"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    message_react(new_channel_and_user['token'], message['message_id'], 1)
+    with pytest.raises(InputError):
+        message_unreact(new_channel_and_user['token'], message['message_id'], 0)
+
+def test_message_unreact_user_not_in_channel(new_channel_and_user, new_channel_and_user_2):
+    """ Test that if a user try to unreact a message when he/she is not in that channel"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    message_react(new_channel_and_user['token'], message['message_id'], 1)
+    with pytest.raises(InputError):
+        message_unreact(new_channel_and_user_2['token'], message['message_id'], 1)
+
+def test_message_unreact_no_reacts(new_channel_and_user):
+    """ Test that if a user try to unreact a message when there is no reacts in message"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adc')
+    with pytest.raises(InputError):
+        message_unreact(new_channel_and_user['token'], message['message_id'], 1)
+
+def test_message_unreact_ueser_not_react(new_channel_and_user, new_channel_and_user_2):
+    """ Test that if a uer try to unreact a message which is not his/her reaction"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    message_react(new_channel_and_user['token'], message['message_id'], 1)
+
+    channel_invite(new_channel_and_user['token'], new_channel_and_user['channel_id'], new_channel_and_user_2['u_id'])
+
+    with pytest.raises(InputError):
+       message_unreact(new_channel_and_user_2['token'], message['message_id'], 1)
+
+
+def test_message_pin_norm(new_channel_and_user):
+    """ Test that if a legal use pin a message"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    message_pin(new_channel_and_user['token'], message['message_id'])
+    message_specific = get_message_by_msg_id(message['message_id'])
+
+    assert message_specific['is_pinned'] == True
+    
+def test_message_pin_invalid_msg_id(new_channel_and_user):
+    """ Test that if the message is invalid"""
+    with pytest.raises(InputError):
+        message_pin(new_channel_and_user['token'], -1)
+    
+def test_message_pin_not_member(new_channel_and_user, new_channel_and_user_2):
+    """ Test that try to pin a message by a user who is not one of members"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    with pytest.raises(AccessError):
+        message_pin(new_channel_and_user_2['token'], message['message_id'])
+
+def test_message_already_pinned(new_channel_and_user):
+    """ Test that try to pin a message that has already been pinned"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    message_pin(new_channel_and_user['token'], message['message_id'])
+
+    with pytest.raises(InputError):
+        message_pin(new_channel_and_user['token'], message['message_id'])
+
+def test_message_pin_not_owner(new_channel_and_user, new_channel_and_user_2):
+    """ Test that try to pin a message but not the owner"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    channel_invite(new_channel_and_user['token'], new_channel_and_user['channel_id'], new_channel_and_user_2['u_id'])
+
+    with pytest.raises(InputError):
+        message_pin(new_channel_and_user_2['token'], message['message_id'])
+        
+def test_message_unpin_norm(new_channel_and_user):
+    """ Test that if a legal use unpin a message"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    message_specific = get_message_by_msg_id(message['message_id'])
+
+    assert message_specific['is_pinned'] == False
+    
+def test_message_unpin_invalid_msg_id(new_channel_and_user):
+    """ Test that if the message is invalid"""
+    with pytest.raises(InputError):
+        message_unpin(new_channel_and_user['token'], -1)
+    
+def test_message_unpin_not_member(new_channel_and_user, new_channel_and_user_2):
+    """ Test that try to unpin a message by a user who is not one of members"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    with pytest.raises(AccessError):
+        message_unpin(new_channel_and_user_2['token'], message['message_id'])
+
+def test_message_already_unpinned(new_channel_and_user):
+    """ Test that try to unpin a message that has already been pinned"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+
+    with pytest.raises(InputError):
+        message_unpin(new_channel_and_user['token'], message['message_id'])
+
+def test_message_unpin_not_owner(new_channel_and_user, new_channel_and_user_2):
+    """ Test that try to unpin a message but not the owner"""
+    message = message_send(new_channel_and_user['token'],
+                           new_channel_and_user['channel_id'], 'adcd')
+    channel_invite(new_channel_and_user['token'], new_channel_and_user['channel_id'], new_channel_and_user_2['u_id'])
+    message_pin(new_channel_and_user['token'], message['message_id'])
+
+    with pytest.raises(InputError):
+        message_unpin(new_channel_and_user_2['token'], message['message_id'])
+    
