@@ -12,7 +12,7 @@ from src.global_variables import get_channels
 def channels_list(token):
     '''
     Loops through CHANNELS and generates a list of only the channels which
-    contain the user as a member
+    contain the user as a member or as an owner
     '''
     u_id = check_token(token)
     glob_channels = get_channels()
@@ -36,12 +36,10 @@ def channels_listall(token):
     glob_channels = get_channels()
 
     return {
-        'channels': [
-            {
-                'channel_id': channel_id,
-                'name': glob_channels[channel_id]['name']
-            } for channel_id in glob_channels
-        ]
+        'channels': [{
+            'channel_id': channel_id,
+            'name': glob_channels[channel_id]['name']
+        } for channel_id in glob_channels]
     }
 
 
@@ -53,7 +51,9 @@ def channels_create(token, name, is_public):
     u_id = check_token(token)
 
     if len(name) > 20 or len(name) < 1:
-        raise InputError(description="Channel name must be between 1 and 20 characters long")
+        raise InputError(
+            description="Channel name must be between 1 and 20 characters long"
+        )
 
     glob_channels = get_channels()
     channel_id = len(glob_channels)
@@ -63,9 +63,7 @@ def channels_create(token, name, is_public):
         'name': name,
         'owners': [u_id],
         'members': [],
-        'messages' : [],
-        'is_public' : is_public
+        'messages': [],
+        'is_public': is_public
     }
-    return {
-        'channel_id': channel_id
-    }
+    return {'channel_id': channel_id}
