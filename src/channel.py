@@ -77,10 +77,11 @@ def channel_details(token, channel_id):
     '''
     user_id = check_token(token)
     if not is_valid_channel(channel_id):
-        raise InputError
+        print (get_channels().keys())
+        raise InputError(description="Invalid channel id")
 
     if not is_user_a_member(channel_id, user_id):
-        raise AccessError
+        raise AccessError(description="User does not have access to this channel")
 
     owner_members = []
     all_members = []
