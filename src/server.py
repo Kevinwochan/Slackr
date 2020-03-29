@@ -63,7 +63,7 @@ def channel_invite_wsgi():
 @APP.route('/channel/details', methods=['GET'])
 def channel_details_wsgi():
     json = request.args
-    return jsonify(channel_details(json['token'], json['channel_id']))
+    return jsonify(channel_details(json['token'], int(json['channel_id'])))
 
 
 @APP.route('/channel/messages', methods=['POST'])
@@ -175,7 +175,7 @@ def message_edit_wsgi():
 @APP.route('/user/profile', methods=['GET'])
 def user_profile_wsgi():
     json = request.args
-    return jsonify(user_profile(json['token'], json['u_id']))
+    return jsonify(user_profile(json['token'], int(json['u_id'])))
 
 
 @APP.route('/user/profile/setname', methods=['PUT'])
@@ -220,7 +220,7 @@ def standup_start_wsgi():
 @APP.route('/standup/active', methods=['GET'])
 def standup_active_wsgi():
     json = request.agrs
-    return jsonify(standup_active(json['token'], json['channel_id']))
+    return jsonify(standup_active(json['token'], int(json['channel_id'])))
 
 
 @APP.route('/standup/send', methods=['POST'])
