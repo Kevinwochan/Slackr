@@ -76,7 +76,7 @@ def workspace_reset():
     global_users.clear()
     global_channels.clear()
     global_valid_tokens.clear()
-    global_slackr_owner = 0
+    global_standups.clear()
     global_num_messages = 0
-
+    
 # pylint: enable=invalid-name, global-statement
