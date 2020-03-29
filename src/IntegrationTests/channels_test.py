@@ -13,10 +13,10 @@ def test_chan_create_invalid_name():
     test_user = auth_register("testemail@gmail.com", "1234567", "John",
                               "Smith")
 
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channels_create(test_user['token'], 'n' * 21, True)
     #Assumption: channels_create raises an InputError if given empty name
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channels_create(test_user['token'], '', True)
 
 
@@ -26,10 +26,10 @@ def test_chan_create_invalid_token():
                               "Smith")
     token = test_user['token']
     assert auth_logout(token)  #invalidating token
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         auth_logout(token)  #confirming that token is an invalid token
 
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channels_create(token, 'name', True)
 
 
@@ -45,9 +45,9 @@ def test_chan_create_return():
     test_user = auth_register("testemail@gmail.com", "1234567", "John",
                               "Smith")
     chan1 = channels_create(test_user['token'], 'name', True)
-    assert type(chan1) == dict
+    assert isinstance(chan1, dict)
     assert 'channel_id' in chan1.keys()
-    assert type(chan1['channel_id']) == int
+    assert isinstance(chan1['channel_id'], int)
 
 
 # Creating 2+ channels with the same name and checking no errors are raised
@@ -71,7 +71,7 @@ def test_list_invalid_token():
                               "Smith")
     token = test_user['token']
     assert auth_logout(token)  #invalidating token
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channels_list(token)
 
 
@@ -80,9 +80,9 @@ def test_list_return_empty():
     test_user = auth_register("testemail@gmail.com", "1234567", "John",
                               "Smith")
     channels = channels_list(test_user['token'])
-    assert type(channels) == dict
+    assert isinstance(channels, dict)
     assert 'channels' in channels.keys()
-    assert type(channels['channels']) == list
+    assert isinstance(channels['channels'], list)
     #No channels have been created, list should be empty
     assert len(channels['channels']) == 0
 
@@ -93,10 +93,10 @@ def test_list_return_one():
     channel_name = 'My Channel'
     channel = channels_create(test_user['token'], channel_name, True)
     chan_lst = channels_list(test_user['token'])['channels']
-    assert type(chan_lst) == list
+    assert isinstance(chan_lst, list)
     # One channel created. len should be 1
     assert len(chan_lst) == 1
-    assert type(chan_lst[0]) == dict
+    assert isinstance(chan_lst[0], dict)
     assert 'channel_id' in chan_lst[0].keys()
     assert 'name' in chan_lst[0].keys()
     # Checking that the returned details match the channel that was created
@@ -127,7 +127,7 @@ def test_list_return_two():
 
 def test_list_not_member():
     user1 = auth_register("testemail@gmail.com", "1234567", "John", "Smith")
-    channel1 = channels_create(user1['token'], "name", True)
+    channels_create(user1['token'], "name", True)
     user2 = auth_register("secondemail@gmail.com", "1234567", "Jane", "Smith")
     chan_lst2 = channels_list(user2['token'])['channels']
     # Checking that channels_list returns an empty list for user2,
@@ -145,7 +145,7 @@ def test_listall_invalid_token():
                               "Smith")
     token = test_user['token']
     assert auth_logout(token)  #invalidating token
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channels_listall(token)
 
 
@@ -154,9 +154,9 @@ def test_listall_return_empty():
     test_user = auth_register("testemail@gmail.com", "1234567", "John",
                               "Smith")
     channels = channels_listall(test_user['token'])
-    assert type(channels) == dict
+    assert isinstance(channels, dict)
     assert 'channels' in channels.keys()
-    assert type(channels['channels']) == list
+    assert isinstance(channels['channels'], list)
     #No channels have been created, list should be empty
     assert len(channels['channels']) == 0
 
@@ -167,10 +167,10 @@ def test_listall_return_one():
     channel_name = 'My Channel'
     channel = channels_create(test_user['token'], channel_name, True)
     chan_lst = channels_listall(test_user['token'])['channels']
-    assert type(chan_lst) == list
+    assert isinstance(chan_lst, list)
     # One channel created. len should be 1
     assert len(chan_lst) == 1
-    assert type(chan_lst[0]) == dict
+    assert isinstance(chan_lst[0], dict)
     assert 'channel_id' in chan_lst[0].keys()
     assert 'name' in chan_lst[0].keys()
     # Checking that the returned details match the channel that was created
@@ -202,10 +202,10 @@ def test_listall_return_two():
 # Unique tests for channels_listall
 def test_listall_not_member():
     user1 = auth_register("testemail@gmail.com", "1234567", "John", "Smith")
-    channel1 = channels_create(user1['token'], "name", True)
+    channels_create(user1['token'], "name", True)
     user2 = auth_register("secondemail@gmail.com", "1234567", "Jane", "Smith")
-    chan_lst1 = channels_list(user1['token'])['channels']
-    chan_lst2 = channels_list(user2['token'])['channels']
+    chan_lst1 = channels_listall(user1['token'])['channels']
+    chan_lst2 = channels_listall(user2['token'])['channels']
     # Checking that channels_listall returns the same list for user2,
     assert len(chan_lst1) == len(chan_lst2) == 1
     assert chan_lst1 == chan_lst2
@@ -214,10 +214,10 @@ def test_listall_not_member():
 #Assumption: All channels are listed by channels_listall, regardless of if they are private or not
 def test_listall_private():
     user1 = auth_register("testemail@gmail.com", "1234567", "John", "Smith")
-    channel1 = channels_create(user1['token'], "name", False)
+    channels_create(user1['token'], "name", False)
     user2 = auth_register("secondemail@gmail.com", "1234567", "Jane", "Smith")
-    chan_lst1 = channels_list(user1['token'])['channels']
-    chan_lst2 = channels_list(user2['token'])['channels']
+    chan_lst1 = channels_listall(user1['token'])['channels']
+    chan_lst2 = channels_listall(user2['token'])['channels']
     # Checking that channels_listall returns the same list for user2,
     assert len(chan_lst1) == len(chan_lst2) == 1
     assert chan_lst1 == chan_lst2

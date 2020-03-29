@@ -5,8 +5,9 @@ This file uses helper functions which are located in the file auth_py
 
 from hashlib import sha256
 from src.utils import generate_token, invalidate_token
-from src.auth_helper import check_login_inputs, create_handle, check_login_inputs, check_registration_inputs
+from src.auth_helper import check_login_inputs, check_registration_inputs, create_handle
 from src.global_variables import get_users
+
 
 # Auth functions
 def auth_login(email, password):
@@ -51,9 +52,9 @@ def auth_register(email, password, name_first, name_last):
         is_owner = True
 
     glob_users[u_id] = {
-        'email' : email,
+        'email': email,
         'name_first': name_first,
-        'name_last' : name_last,
+        'name_last': name_last,
         'handle_str': handle_str,
         'password_hash': password_hash,
         'is_owner': is_owner
