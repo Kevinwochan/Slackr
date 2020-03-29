@@ -13,9 +13,8 @@ def permission_change(token, u_id, permission_id): #change a user's permissions 
     if not is_valid_user(u_id):
         raise InputError
 
-    if permission_id != 1 or permission_id != 2: #1 = owner, 2 = member
+    if permission_id != 1 and permission_id != 2: #1 = owner, 2 = member
         raise InputError
 
-    
     if not user_id in get_slackr_owners():
         raise AccessError
