@@ -1,6 +1,6 @@
 ''' Users should be able to register an account with Slackr and view available channels '''
 import requests
-from conftest import BASE_URL
+from tests.systems.conftest import BASE_URL
 
 CLIENT_DATA = {}
 

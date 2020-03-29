@@ -1,6 +1,6 @@
 ''' Users should be able to organise messages by a team or topic'''
 import requests
-from conftest import BASE_URL
+from tests.systems.conftest import BASE_URL
 
 USER = {'password': 'bigbrainpassword', 'email': 'z1234567@unsw.edu.au'}
 CLIENT_DATA = {}
@@ -55,7 +55,7 @@ def test_create_channel():
 
 def test_inviting_users():
     '''
-    Invites a load of users 
+    Invites a load of users
     '''
     for user_id in range(4):
         response = requests.post(f'{BASE_URL}/channel/invite',

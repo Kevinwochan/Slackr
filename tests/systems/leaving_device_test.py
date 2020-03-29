@@ -1,6 +1,6 @@
 ''' Users should be able to log out of slackr so that other people that use the device cannot impersonate the user '''
 import requests
-from conftest import BASE_URL
+from tests.systems.conftest import BASE_URL
 
 USER = {'password': 'bigbrainpassword', 'email': 'z1234567@unsw.edu.au'}
 
