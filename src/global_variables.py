@@ -8,9 +8,8 @@ Their structure is described in the README.md file in src.
 global_users = {}
 global_channels = {}
 global_valid_tokens = []
-global_slackr_owner = 0
 global_num_messages = 0
-
+global_standups = {}
 
 # Functions used to access global variables
 def get_users():
@@ -59,6 +58,14 @@ def set_num_messages(new_num_messages):
     global_num_messages = new_num_messages
 
 
+def get_standups():
+    '''
+    returns global_standups
+    '''
+    global global_standups
+    return global_standups
+
+
 def workspace_reset():
     '''
     Deletes all Slackr information as if the website was just launched
@@ -72,8 +79,7 @@ def workspace_reset():
     global_users.clear()
     global_channels.clear()
     global_valid_tokens.clear()
-    global_slackr_owner = 0
+    global_standups.clear()
     global_num_messages = 0
-
-
+    
 # pylint: enable=invalid-name, global-statement
