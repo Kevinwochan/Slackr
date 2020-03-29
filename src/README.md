@@ -113,7 +113,6 @@ $ python3 src/server.py
 You can now open firefox/google chrome at http://127.0.0.1:8080/ to view the api
 
 
-## Testing TODO
 
 # Frontend TODO
 
