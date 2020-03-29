@@ -13,10 +13,10 @@ def test_chan_create_invalid_name():
     test_user = auth_register("testemail@gmail.com", "1234567", "John",
                               "Smith")
 
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channels_create(test_user['token'], 'n' * 21, True)
     #Assumption: channels_create raises an InputError if given empty name
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channels_create(test_user['token'], '', True)
 
 
@@ -26,10 +26,10 @@ def test_chan_create_invalid_token():
                               "Smith")
     token = test_user['token']
     assert auth_logout(token)  #invalidating token
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         auth_logout(token)  #confirming that token is an invalid token
 
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channels_create(token, 'name', True)
 
 
@@ -71,7 +71,7 @@ def test_list_invalid_token():
                               "Smith")
     token = test_user['token']
     assert auth_logout(token)  #invalidating token
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channels_list(token)
 
 
@@ -145,7 +145,7 @@ def test_listall_invalid_token():
                               "Smith")
     token = test_user['token']
     assert auth_logout(token)  #invalidating token
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channels_listall(token)
 
 

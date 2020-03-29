@@ -30,7 +30,7 @@ def test_channel_addowner_InputError_invalid_channel():
                                     "Smith")
     test_normal_user = auth_register("z8888888@unsw.edu.au", "password", "Bob",
                                      "Smith")
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channel_addowner(test_Owner_user["token"], 0, test_normal_user["u_id"])
 
 
@@ -44,7 +44,7 @@ def test_channel_addowner_InputError_user_already_owner():
     channel_join(test_normal_user["token"], test_channel["channel_id"])
     channel_addowner(test_Owner_user["token"], test_channel["channel_id"],
                      test_normal_user["u_id"])
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channel_addowner(test_Owner_user["token"], test_channel["channel_id"],
                          test_normal_user["u_id"])
 
@@ -54,7 +54,7 @@ def test_channel_addowner_InputError_invalid_user():
                                     "Smith")
     test_channel = channels_create(test_Owner_user["token"], "test_channel",
                                    True)
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channel_addowner(test_Owner_user["token"], test_channel["channel_id"],
                          0)
 
@@ -71,7 +71,7 @@ def test_channel_addowner_AccessError():
                                    True)
     channel_join(test_normal_user["token"], test_channel["channel_id"])
     channel_join(test_normal_user2["token"], test_channel["channel_id"])
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channel_addowner(test_normal_user["token"], test_channel["channel_id"],
                          test_normal_user2["u_id"])
 
@@ -86,7 +86,7 @@ def test_channel_addowner_InvalidToken():
                                    True)
     channel_join(test_normal_user["token"], test_channel["channel_id"])
     auth_logout(test_Owner_user["token"])  # Invalidating token of normal user
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channel_addowner(test_Owner_user["token"], test_channel["channel_id"],
                          test_normal_user["u_id"])
 
@@ -117,7 +117,7 @@ def test_channel_removeowner_InputError_invalid_user():
                                     "Smith")
     test_normal_user = auth_register("z8888888@unsw.edu.au", "password", "Bob",
                                      "Smith")
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channel_removeowner(test_Owner_user["token"], 0,
                             test_normal_user["u_id"])
 
@@ -130,7 +130,7 @@ def test_channel_removeowner_InputError_invalid_channel():
     test_channel = channels_create(test_Owner_user["token"], "test_channel",
                                    True)
     channel_join(test_normal_user["token"], test_channel["channel_id"])
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channel_removeowner(test_Owner_user["token"],
                             test_channel["channel_id"],
                             test_normal_user["u_id"])
@@ -148,7 +148,7 @@ def test_channel_removeowner_AccessError():
                                    True)
     channel_join(test_normal_user["token"], test_channel["channel_id"])
     channel_join(test_normal_user2["token"], test_channel["channel_id"])
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channel_removeowner(test_normal_user["token"],
                             test_channel["channel_id"],
                             test_normal_user2["u_id"])
@@ -164,7 +164,7 @@ def test_channel_removeowner_InvalidToken():
                                    True)
     channel_join(test_normal_user["token"], test_channel["channel_id"])
     auth_logout(test_Owner_user["token"])  # Invalidating token of owner user
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channel_removeowner(test_Owner_user["token"],
                             test_channel["channel_id"],
                             test_normal_user["u_id"])

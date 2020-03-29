@@ -28,7 +28,7 @@ def test_channel_leave():
 def test_channel_leave_invald_channel_id():
     test_user = auth_register("z5555555@unsw.edu.au", "password", "John",
                               "Smith")
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channel_leave(test_user["token"], 0)
 
 
@@ -40,7 +40,7 @@ def test_channel_leave_non_member():
                                      "Smith")
     test_channel = channels_create(test_Owner_user["token"], "test_channel",
                                    True)
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channel_leave(test_normal_user["token"], test_channel["channel_id"])
 
 
@@ -50,7 +50,7 @@ def test_channel_leave_invalid_token():
                               "Smith")
     test_channel = channels_create(test_user["token"], "test_channel", True)
     auth_logout(test_user["token"])  # Invalidating token
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channel_leave(test_user["token"], test_channel["channel_id"])
 
 
@@ -72,7 +72,7 @@ def test_channel_join():
 def test_channel_join_InputError():
     test_user = auth_register("z5555555@unsw.edu.au", "password", "John",
                               "Smith")
-    with pytest.raises(InputError) as e:
+    with pytest.raises(InputError):
         channel_join(test_user["token"], 0)
 
 
@@ -83,7 +83,7 @@ def test_channel_join_AccessError():
     test_user2 = auth_register("z8888888@unsw.edu.au", "password", "Bob",
                                "Smith")
     test_channel = channels_create(test_user["token"], "test_channel", False)
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channel_join(test_user2["token"], test_channel["channel_id"])
 
 
@@ -95,7 +95,7 @@ def test_channel_join_InvalidToken():
                                "Smith")
     test_channel = channels_create(test_user2["token"], "test_channel", True)
     auth_logout(test_user["token"])  # Invalidating token of user1
-    with pytest.raises(AccessError) as e:
+    with pytest.raises(AccessError):
         channel_join(test_user["token"], test_channel["channel_id"])
 
 
