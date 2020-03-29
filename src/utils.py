@@ -1,8 +1,8 @@
 '''
 Contains miscellaneous helper functions.
 '''
-#needs pip3 install pyjwt
 # Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
+from datetime import datetime, timezone
 from jwt import encode, decode
 from src.error import AccessError
 from src.global_variables import get_valid_tokens
@@ -30,7 +30,7 @@ def check_token(token):
 
     if not token in curr_users:
         raise AccessError(description="You do not have a valid token")
-    return decode(token.encode('utf-8'), SECRET, algorithm='HS256')['id']
+    return decode(token.encode('utf-8'), SECRET, algorithms=['HS256'])['id']
 
 
 def invalidate_token(token):
@@ -46,3 +46,11 @@ def invalidate_token(token):
     except ValueError:
         raise AccessError(description="Token is already invalid")
     return True
+
+def get_current_timestamp():
+    '''
+    uses datetime to generate and return a unix timestamp for the current time in UTC
+    TODO: check that this is the timezone we want
+    '''
+    curr_time = datetime.now()
+    return  curr_time.replace(tzinfo=timezone.utc).timestamp()
