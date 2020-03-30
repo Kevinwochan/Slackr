@@ -81,7 +81,7 @@ During your lab class, in weeks without demonstrations (see below), you and your
 
 In this iteration, you will be demonstrating the long-term viability of your system by ensuring that it is maintainable and that it can be usefully extended if needed.
 
-1. Fix any outstanding bugs and complete any components that were not full implemented for the iteration 2 deadline. In doing this, you should ensure that your code is of sufficiently high quality for it to be maintained. Consider principles like DRY, KISS, top-down thinking and encapsulation. Furthermore, ensure all your functions are documented with Pydoc using a consistent style.
+1. Fix any outstanding bugs and complete any components that were not full implemented for the iteration 2 deadline. In doing this, you should ensure that your code is of sufficiently high quality for it to be maintained. Consider principles like DRY, KISS, top-down thinking and encapsulation. Furthermore, ensure all your functions are documented with Pydoc using a consistent style. Also, you should ensure that your backend implements the interface in this document exactly. Note that, in this iteration, Sally and Bob fixed some minor issues they considered bugs in the interface specification.
 
 2. Implement the `/passwordreset/request` and `/passwordreset/reset` routes that have been added to the table below. By doing this, the "Forgot your password" feature of the frontend should now work.
 
