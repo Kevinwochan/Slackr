@@ -3,7 +3,7 @@ File containing all global variables.
 These can be access by importing and using the get_ functions below.
 Their structure is described in the README.md file in src.
 '''
-from threading import enumerate
+import threading
 # pylint: disable=invalid-name, global-statement
 
 global_users = {}
@@ -69,11 +69,11 @@ def get_standups():
 
 def cancel_all_timers():
     '''
-    Cancels threads that are not the main thread
+    Cancels threads that of type threading.timer
     '''
-    threading_lst = enumerate()[1:]
-    for Timer in threading_lst:
-        Timer.cancel()
+    for thread in threading.enumerate():
+        if isinstance(thread, threading.Timer):
+            thread.cancel()
 
 def workspace_reset():
     '''
