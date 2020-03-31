@@ -40,7 +40,6 @@ def test_standup_start_active_standup(new_channel_and_user):
         standup_start(token, channel_id, 2)
     sleep(1)
     standup_start(token, channel_id, 1)
-    sleep(1)
 
 def test_standup_start_return_type(new_channel_and_user):
     token = new_channel_and_user['token']
@@ -49,4 +48,3 @@ def test_standup_start_return_type(new_channel_and_user):
     assert isinstance(standup, dict)
     assert 'time_finish' in standup.keys()
     assert isinstance(standup['time_finish'], int)
-*

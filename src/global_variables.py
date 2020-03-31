@@ -3,6 +3,7 @@ File containing all global variables.
 These can be access by importing and using the get_ functions below.
 Their structure is described in the README.md file in src.
 '''
+from threading import enumerate
 # pylint: disable=invalid-name, global-statement
 
 global_users = {}
@@ -66,6 +67,13 @@ def get_standups():
     global global_standups
     return global_standups
 
+def cancel_all_timers():
+    '''
+    Cancels threads that are not the main thread
+    '''
+    threading_lst = enumerate()[1:]
+    for Timer in threading_lst:
+        Timer.cancel()
 
 def workspace_reset():
     '''
@@ -74,14 +82,13 @@ def workspace_reset():
     global global_users
     global global_channels
     global global_valid_tokens
-    global global_slackr_owner
     global global_num_messages
 
     global_users.clear()
     global_channels.clear()
     global_valid_tokens.clear()
+    cancel_all_timers()
     global_standups.clear()
     global_num_messages = 0
-
 
 # pylint: enable=invalid-name, global-statement
