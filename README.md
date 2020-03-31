@@ -160,8 +160,6 @@ When you demonstrate this iteration in your week 4 lab (week 5 for monday tutes)
 
 ### profile_img_url & image uploads
 
-(Not relevant until iteration 3)
-
 For outputs with data pertaining to a user, a profile_img_url is present. When images are uploaded for a user profile, after processing them you should store them on the server such that your server now locally has a copy of the cropped image of the original file linked. Then, the profile_img_url should be a URL to the server, such as http://localhost:5001/imgurl/adfnajnerkn23k4234.jpg (a unique url you generate).
 
 Note: This is most likely the most challenging part of the project. Don't get lost in this, we would strongly recommend most teams complete this capability *last*.
