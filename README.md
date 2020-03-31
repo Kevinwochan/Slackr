@@ -73,74 +73,57 @@ During your lab class, in weeks without demonstrations (see below), you and your
 
 ## Iteration 2: Design and Implementation
 
+**Completed**
+
+## Iteration 3: Maintenance and Extensions
+
 ### Task
 
-In this iteration, more features were added to the specification, and the focus has been changed to HTTP endpoints. Many of the theory surrounding iteration 2 will be covered in week 4-6 lectures. Note that there will still be 1 or 2 features of the frontend that will not work because the routes will not appear until iteration 3.
+In this iteration, you will be demonstrating the long-term viability of your system by ensuring that it is maintainable and that it can be usefully extended if needed.
 
-In this iteration, you are expected to:
+1. Fix any outstanding bugs and complete any components that were not full implemented for the iteration 2 deadline. In doing this, you should ensure that your code is of sufficiently high quality for it to be maintained. Consider principles like DRY, KISS, top-down thinking and encapsulation. Furthermore, ensure all your functions are documented with Pydoc using a consistent style. Also, you should ensure that your backend implements the interface in this document exactly. Note that, in this iteration, Sally and Bob fixed some minor issues they considered bugs in the interface specification.
 
-1. Complete (if not completed) your integration tests from iteration 1, and complete full system tests at the HTTP level using python urllib (and pytest). Your HTTP/system level tests should ensure they have the entire application and have as high a code coverage as possible.
+2. Implement the `/passwordreset/request` and `/passwordreset/reset` routes that have been added to the table below. By doing this, the "Forgot your password" feature of the frontend should now work.
 
-    Part of this section may be automarked.
+3. Modify your backend such that it is able to persist and reload its data store. The persistance should happen at regular intervals so that in the event of unexpected program termination (e.g. sudden power outage) a minimal amount of data is lost. You may implement this using whatever method of serialisation you prefer (e.g. pickle, JSON).
 
-    You can structure your tests however you choose, as long as they are appended with `_test.py` and are within the `src` folder or any subdirectories. It's important you consider how to separate (or combine) your integration tests from iteration 1 with your system tets (HTTP with urllib) in iteration 2. You will be marked on both tests being present/used in this iteration.
+4. Implement the `/user/profile/uploadphoto` route as described in table below. If you do this correctly, you should be able to set a profile image when using the frontend. Note that you may need to do your own research into flask features not covered in this course, and python packages for manipulating images. Any additional packages you use need to be added to `requirements.txt`.
 
-2. Implement the web server to satisfy the specification. This should result in a fully functioning web server that reflects the interface.
+5. Add support for slackr owners to remove users from slackr. This requires modifying both the backend and frontend. You should modify the backend by implementing `/admin/user/remove` in the table below. For the frontend, add an additional entry to the admin menu that provides an interface for removing users.
 
-    Part of this section may be automarked.
+6. Allow users to relax and play a game of [Hangman](https://en.wikipedia.org/wiki/Hangman_(game)) in slackr. If the command `/hangman` is typed into a channel, it should start a game where the users of the channel cooperatively try to guess a word or phrase letter by letter. See more details below.
 
-    You can structure your files however you choose, as long as the `server.py` file in the `src` folder remains where it is. That file is the one we will always use to start your web server. Please do not remove anything from this file except the stub route.
+### Hangman
 
-3. Continue demonstrating effective project management and effective git usage
+After a game of Hangman has been started any user in the channel can type `/guess X` where `X` is an individual letter. If that letter is contained in the word or phrase they're trying to guess, the app should indicate *where* it occurs. If it does not occur, more of the hangman is drawn. There is a *lot* of flexibility in how you achieve this. It can be done only by modifying the backend and relying on messages to communicate the state of the game (e.g. after making a guess, the "Hangman" posts a message with a drawing of the hangman in ASCII/emoji art). Alternatively you can modify the frontend, if you want to experiment with fancier graphics.
 
-    Part of this section may be automarked.
+The app should use words and phrases from an external source, not just a small handful hardcoded into the app. One suitable source is `/usr/share/dict/words` available on Unix-based systems. Alternatively, the python [wikiquote](https://github.com/federicotdn/wikiquote) module is available via pip and can be used to retrieve quotes and phrases from [Wikiquote](https://www.wikiquote.org/).
 
-    You will be heavily marked for your use of thoughtful project management and use of git effectively. The degree to which your team works effectively will also be assessed.
-
-### Using pip3
-
-pip3 will be covered in more detail in week 5, but in the meantime you are able to install the relevant packages you need to run the flask server by navigating to your project directory and running:
-
-```bash
-pip3 install -r requirements.txt
-```
-
-### Running the server
-
-To run the server you should always use the command
-
-```bash
-python3 src/server.py [PORT]
-```
-
-For example
-
-```bash
-python3 src/server.py 5000
-```
-
-On a particular CSE server, a port can only be used once. When you run the server, you must pick a port > 3000 to run it on. When using a CSE lab machine you will not run into many conflicts since each machine has its full list of ports. If you are using VLAB then you will be sharing resources with many other students, so you may have to use more trial and error to find a port you like.
+Note that this part of the specification is deliberately open-ended. You're free to make your own creative choices in exactly how the game should work, as long as the end result is something that could be fairly described as Hangman.
 
 ### Submission
 
-This iteration is due to be submitted at 8pm Sunday 29th March (**week 6**). You will then be demonstrating this in your week 7 lab. All team members **must** attend this lab session, or they will not receive a mark.
+This iteration is due to be submitted at 8pm Sunday 19th April (**week 9**). You will then be demonstrating this in your week 10. All team members **must** attend the online demonstration, or they will not receive a mark.
 
 To submit, one team member must run this command in the CSE environment:
 
 ```sh
-1531 submit iteration2
+1531 submit iteration3
 ```
 
-This will submit the contents of your repo on GitLab and perform a check to make sure that the files above are present. **Make sure that everything you intend to submit is included in your repo on the master branch**.
+This will submit the contents of your repo on GitLab. **Make sure that everything you intend to submit is included in your repo on the master branch**.
 
 ### Marking Criteria
 
 |Section|Weighting|Criteria|
 |---|---|---|
-|Testing|30%|<ul><li>Distinct use of unit, integration, and system tests</li><li>Tests provide excellent test **coverage**</li><li>Demonstrated an understanding of the importance of **clarity** on the communication of test purposes</li><li>Demonstrated an understanding of thoughtful test **design**</li><li>Performance against an automatic marking syste<m/li><li>Compliance with standard pylint requirements</li></ul>|
-|Implementation|40%|<ul><li>Correctly implemented backend server that satisfies requirements</li><li>Pythonic programming approach (where possible)</li><li>Thought out code design</li><li>Compliance with standard pylint requirements</li></ul>|
-|Git practices & Project Management|20%|<ul><li>Meaningful and informative git commit names being used</li><li>Effective use of merge requests (from branches being made) across the team (minimum 12 MRs)</li><li>Effective use of course-provided slack, demonstrating an ability to communicate and manage effectivelly digitally</li><li>Use of task board on Gitlab to track and manage tasks</li><li>Effective use of agile methods such as standups</li></ul>|
-|Teamwork|10%|<ul><li>A generally equal contribution between team members</li><li>Clear evidence of reflection on group's performance and state of the team, with initiative to improve in future iterations</li></ul>|
+|Maintenance|20%|<ul><li>Code contains minimal repetition or complexity</li><li>Code is generally understandable for an average python programmer</li><li>Functions are documented with Pydoc</li><li>Code is pylint compliant without unecessary warning suppression</li></ul>|
+|Password reset|5%|<ul><li>Reset emails are sent</li><li>Emails contain valid reset codes</li></ul>|
+|Persistence|15%|<ul><li>Data is persisted at regular intervals</li><li>Persisted data is reloaded on server start</li></ul>|
+|Profile photo upload|10%|<ul><li>Appropriate use of external library to resize images</li><li>Images are stored such that they are reachable via an automatically generated URL</li></ul>|
+|User removal|20%|<ul><li>Users can be removed via API call</li><li>Frontend modified to provide an interface for removal</li><li>Javascript code is consistent with the rest of the frontend in terms of style</li><li>Added UI components are simple, clear and consistent with the rest of the UI</li></ul>|
+|Hangman|20%|<ul><li>A game of hangman can be played in the channel</li><li>Words/phrases taken from an appropriate source</li><li>The state of the game (incomplete word/phrase, hangman, previous guesses, etc.) are communicated effectively</li><li>Any changes to the frontend are consistent.</li></ul>|
+|Teamwork and Git|10%|<ul><li>A generally equal contribution between team members</li><li>Effective use of merge requests (from branches being made) across the team (minimum 12 MRs)</li><li>Effective use of course-provided slack, demonstrating an ability to communicate and manage effectively digitally</li><li>Use of task board on Gitlab to track and manage tasks</li><li>Effective use of agile methods such as standups</li></ul>|
 
 ### Demonstration
 
@@ -176,8 +159,6 @@ When you demonstrate this iteration in your week 4 lab (week 5 for monday tutes)
 
 
 ### profile_img_url & image uploads
-
-(Not relevant until iteration 3)
 
 For outputs with data pertaining to a user, a profile_img_url is present. When images are uploaded for a user profile, after processing them you should store them on the server such that your server now locally has a copy of the cropped image of the original file linked. Then, the profile_img_url should be a URL to the server, such as http://localhost:5001/imgurl/adfnajnerkn23k4234.jpg (a unique url you generate).
 
@@ -272,9 +253,11 @@ For example, if we imagine a user with token "12345" is trying to read messages 
 |auth/login|POST|(email, password)|{ u_id, token }|**InputError** when any of:<ul><li>Email entered is not a valid email using the method provided [here](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) (unless you feel you have a better method)</li><li>Email entered does not belong to a user</li><li>Password is not correct</li></ul> | Given a registered users' email and password and generates a valid token for the user to remain authenticated |
 |auth/logout|POST|(token)|{ is_success }|N/A|Given an active token, invalidates the taken to log the user out. If a valid token is given, and the user is successfully logged out, it returns true, otherwise false. |
 |auth/register|POST|(email, password, name_first, name_last)|{ u_id, token }|**InputError** when any of:<ul><li>Email entered is not a valid email using the method provided [here](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) (unless you feel you have a better method).</li><li>Email address is already being used by another user</li><li>Password entered is less than 6 characters long</li><li>name_first not is between 1 and 50 characters inclusive in length</li><li>name_last is not between 1 and 50 characters inclusive in length</ul>|Given a user's first and last name, email address, and password, create a new account for them and return a new token for authentication in their session. A handle is generated that is the concatentation of a lowercase-only first name and last name. If the concatenation is longer than 20 characters, it is cutoff at 20 characters. If the handle is already taken, you may modify the handle in any way you see fit to make it unique. |
+|auth/passwordreset/request|POST|(email)|{}|N/A|Given an email address, if the user is a registered user, send's them a an email containing a specific secret code, that when entered in auth_passwordreset_reset, shows that the user trying to reset the password is the one who got sent this email.|
+|auth/passwordreset/reset|POST|(reset_code, new_password)|{}|**InputError** when any of:<ul><li>reset_code is not a valid reset code</li><li>Password entered is not a valid password</li>|Given a reset code for a user, set that user's new password to the password provided|
 |channel/invite|POST|(token, channel_id, u_id)|{}|**InputError** when any of:<ul><li>channel_id does not refer to a valid channel that the authorised user is part of.</li><li>u_id does not refer to a valid user</li></ul>**AccessError** when<ul><li>the authorised user is not already a member of the channel</li>|Invites a user (with user id u_id) to join a channel with ID channel_id. Once invited the user is added to the channel immediately|
 |channel/details|GET|(token, channel_id)|{ name, owner_members, all_members }|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li></ul>**AccessError** when<ul><li>Authorised user is not a member of channel with channel_id</li></ul>|Given a Channel with ID channel_id that the authorised user is part of, provide basic details about the channel|
-|channel/messages|GET|(token, channel_id, start)|{ messages, start, end }|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li><li>start is greater than or equal to the total number of messages in the channel</li></ul>**AccessError** when<ul><li>Authorised user is not a member of channel with channel_id</li></ul>|Given a Channel with ID channel_id that the authorised user is part of, return up to 50 messages between index "start" and "start + 50" exclusive. Message with index 0 is the most recent message in the channel. This function returns a new index "end" which is the value of "start + 50", or, if this function has returned the least recent messages in the channel, returns -1 in "end" to indicate there are no more messages to load after this return.|
+|channel/messages|GET|(token, channel_id, start)|{ messages, start, end }|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li><li>start is greater than the total number of messages in the channel</li></ul>**AccessError** when<ul><li>Authorised user is not a member of channel with channel_id</li></ul>|Given a Channel with ID channel_id that the authorised user is part of, return up to 50 messages between index "start" and "start + 50" exclusive. Message with index 0 is the most recent message in the channel. This function returns a new index "end" which is the value of "start + 50", or, if this function has returned the least recent messages in the channel, returns -1 in "end" to indicate there are no more messages to load after this return.|
 |channel/leave|POST|(token, channel_id)|{}|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li></ul>**AccessError** when<ul><li>Authorised user is not a member of channel with channel_id</li></ul>|Given a channel ID, the user removed as a member of this channel|
 |channel/join|POST|(token, channel_id)|{}|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li></ul>**AccessError** when<ul><li>channel_id refers to a channel that is private (when the authorised user is not an owner)</li></ul>|Given a channel_id of a channel that the authorised user can join, adds them to that channel|
 |channel/addowner|POST|(token, channel_id, u_id)|{}|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li><li>When user with user id u_id is already an owner of the channel</li></ul>**AccessError** when the authorised user is not an owner of the slackr, or an owner of this channel</li></ul>|Make user with user id u_id an owner of this channel|
@@ -284,22 +267,24 @@ For example, if we imagine a user with token "12345" is trying to read messages 
 |channels/create|POST|(token, name, is_public)|{ channel_id }|**InputError** when any of:<ul><li>Name is more than 20 characters long</li></ul>|Creates a new channel with that name that is either a public or private channel|
 |message/send|POST|(token, channel_id, message)|{ message_id }|**InputError** when any of:<ul><li>Message is more than 1000 characters</li></ul>**AccessError** when: <li> the authorised user has not joined the channel they are trying to post to</li></ul>|Send a message from authorised_user to the channel specified by channel_id|
 |message/sendlater|POST|(token, channel_id, message, time_sent)|{ message_id }|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li><li>Message is more than 1000 characters</li><li>Time sent is a time in the past</li></ul>**AccessError** when: <li> the authorised user has not joined the channel they are trying to post to</li></ul>|Send a message from authorised_user to the channel specified by channel_id automatically at a specified time in the future|
-|message/react|POST|(token, message_id, react_id)|{}|**InputError** when any of:<ul><li>message_id is not a valid message within a channel that the authorised user has joined</li><li>react_id is not a valid React ID. The only valid react ID the frontend has is 1</li><li>Message with ID message_id already contains an active React with ID react_id</li></ul>|Given a message within a channel the authorised user is part of, add a "react" to that particular message|
+|message/react|POST|(token, message_id, react_id)|{}|**InputError** when any of:<ul><li>message_id is not a valid message within a channel that the authorised user has joined</li><li>react_id is not a valid React ID. The only valid react ID the frontend has is 1</li><li>Message with ID message_id already contains an active React with ID react_id from the authorised user</li></ul>|Given a message within a channel the authorised user is part of, add a "react" to that particular message|
 |message/unreact|POST|(token, message_id, react_id)|{}|**InputError** 	<ul><li>message_id is not a valid message within a channel that the authorised user has joined</li><li>react_id is not a valid React ID</li><li>Message with ID message_id does not contain an active React with ID react_id</li></ul>|Given a message within a channel the authorised user is part of, remove a "react" to that particular message|
-|message/pin|POST|(token, message_id)|{}|**InputError** when any of:<ul><li>message_id is not a valid message</li><li>The authorised user is not an owner</li><li>Message with ID message_id is already pinned</li></ul>**AccessError** when<ul><li>The authorised user is not a member of the channel that the message is within</li></ul>|Given a message within a channel, mark it as "pinned" to be given special display treatment by the frontend|
-|message/unpin|POST|(token, message_id)|{}|**InputError** when any of:<ul><li>message_id is not a valid message</li><li>The authorised user is not an owner</li><li>Message with ID message_id is already unpinned</li></ul>**AccessError** when<ul><li>The authorised user is not a member of the channel that the message is within</li></ul>|Given a message within a channel, remove it's mark as unpinned|
+|message/pin|POST|(token, message_id)|{}|**InputError** when any of:<ul><li>message_id is not a valid message</li><li>Message with ID message_id is already pinned</li></ul>**AccessError** when any of:<ul><li>The authorised user is not a member of the channel that the message is within</li><li>The authorised user is not an owner</li></ul>|Given a message within a channel, mark it as "pinned" to be given special display treatment by the frontend|
+|message/unpin|POST|(token, message_id)|{}|**InputError** when any of:<ul><li>message_id is not a valid message</li><li>Message with ID message_id is already unpinned</li></ul>**AccessError** when any of:<ul><li>The authorised user is not a member of the channel that the message is within</li><li>The authorised user is not an owner</li></ul>|Given a message within a channel, remove it's mark as unpinned|
 |message/remove|DELETE|(token, message_id)|{}|**InputError** when any of:<ul><li>Message (based on ID) no longer exists</li></ul>**AccessError** when none of the following are true:<ul><li>Message with message_id was sent by the authorised user making this request</li><li>The authorised user is an owner of this channel or the slackr</li></ul>|Given a message_id for a message, this message is removed from the channel|
 |message/edit|PUT|(token, message_id, message)|{}|**AccessError** when none of the following are true:<ul><li>Message with message_id was sent by the authorised user making this request</li><li>The authorised user is an owner of this channel or the slackr</li></ul>|Given a message, update it's text with new text. If the new message is an empty string, the message is deleted.|
 |user/profile|GET|(token, u_id)|{ user }|**InputError** when any of:<ul><li>User with u_id is not a valid user</li></ul>|For a valid user, returns information about their user id, email, first name, last name, and handle|
 |user/profile/setname|PUT|(token, name_first, name_last)|{}|**InputError** when any of:<ul><li>name_first is not between 1 and 50 characters inclusive in length</li><li>name_last is not between 1 and 50 characters inclusive in length</ul></ul>|Update the authorised user's first and last name|
 |/user/profile/setemail|PUT|(token, email)|{}|**InputError** when any of:<ul><li>Email entered is not a valid email using the method provided [here](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) (unless you feel you have a better method).</li><li>Email address is already being used by another user</li>|Update the authorised user's email address|
 |/user/profile/sethandle|PUT|(token, handle_str)|{}|**InputError** when any of:<ul><li>handle_str must be between 2 and 20 characters inclusive</li><li>handle is already used by another user</li></ul>|Update the authorised user's handle (i.e. display name)|
+|/user/profile/uploadphoto|POST|(token, img_url, x_start, y_start, x_end, y_end)|{}|**InputError** when any of:<ul><li>img_url returns an HTTP status other than 200.</li><li>any of x_start, y_start, x_end, y_end are not within the dimensions of the image at the URL.</li><li>Image uploaded is not a JPG</li></ul>|Given a URL of an image on the internet, crops the image within bounds (x_start, y_start) and (x_end, y_end). Position (0,0) is the top left.|
 |users/all|GET|(token)|{ users}|N/A|Returns a list of all users and their associated details|
 |/search|GET|(token, query_str)|{ messages }|N/A|Given a query string, return a collection of messages in all of the channels that the user has joined that match the query. Results are sorted from most recent message to least recent message|
 |standup/start|POST|(token, channel_id, length)|{ time_finish }|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li><li>An active standup is currently running in this channel</li></ul>|For a given channel, start the standup period whereby for the next "length" seconds if someone calls "standup_send" with a message, it is buffered during the X second window then at the end of the X second window a message will be added to the message queue in the channel from the user who started the standup. X is an integer that denotes the number of seconds that the standup occurs for|
 |standup/active|GET|(token, channel_id)|{ is_active, time_finish }|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li></ul>|For a given channel, return whether a standup is active in it, and what time the standup finishes. If no standup is active, then time_finish returns None|
 |standup/send|POST|(token, channel_id, message)|{}|**InputError** when any of:<ul><li>Channel ID is not a valid channel</li><li>Message is more than 1000 characters</li><li>An active standup is not currently running in this channel</li></ul>**AccessError** when<ul><li>The authorised user is not a member of the channel that the message is within</li></ul>|Sending a message to get buffered in the standup queue, assuming a standup is currently active|
 |admin/userpermission/change|POST|(token, u_id, permission_id)|{}|**InputError** when any of:<ul><li>u_id does not refer to a valid user<li>permission_id does not refer to a value permission</li></ul>**AccessError** when<ul><li>The authorised user is not an owner</li></ul>|Given a User by their user ID, set their permissions to new permissions described by permission_id|
+|admin/user/remove|DELETE|(token, u_id)|{}|**InputError** when:<ul><li>u_id does not refer to a valid user</li></ul>**AccessError** when<ul><li>The authorised user is not an owner of the slackr</li></ul>|Given a User by their user ID, remove the user from the slackr. |
 |workspace/reset|POST|()|{}||Resets the workspace state|
 
 ## Due Dates and Weightings
