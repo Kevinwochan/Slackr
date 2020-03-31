@@ -1,12 +1,18 @@
-#!/usr/bin/python3.7
+'''
+tests slackr message functionality
+'''
 
+#!/usr/bin/python3.7
+from time import sleep
 import pytest
+from src.utils import get_current_timestamp
 from src.error import AccessError, InputError
-from src.channel import channel_invite
+from src.channel import channel_invite, channel_messages
 from src.auth import auth_register
 from src.message import (message_edit, message_remove, message_send,
                          message_pin, message_unpin, message_react,
-                         message_unreact, get_message_by_msg_id)
+                         message_unreact, get_message_by_msg_id,
+                         message_sendlater)
 
 
 # Sending
@@ -23,7 +29,13 @@ def test_sending_long_message(new_channel_and_user):
     assert isinstance(message['message_id'], int)
     assert message['message_id'] == 0
 
-
+def test_sending_to_invalid_channel(new_channel_and_user):
+    '''
+    Tests that an error is thrown when messsage_send is given an invalid channel id
+    '''
+    with pytest.raises(InputError):
+        assert message_send(new_channel_and_user['token'],
+                            -1, 'a')
 def test_sending_too_long_message(new_channel_and_user):
     """Tests that an error is thrown when a message over the size limit is sent"""
     with pytest.raises(InputError):
@@ -411,3 +423,47 @@ def test_message_unpin_not_owner(new_channel_and_user, new_channel_and_user_2):
 
     with pytest.raises(InputError):
         message_unpin(new_channel_and_user_2['token'], message['message_id'])
+
+def test_sendlater_invalid_token(inv_token, new_channel_and_user):
+    '''
+    test function. checks that an access error is raised when sendlater is
+    given an invalid token
+    '''
+    channel_id = new_channel_and_user['channel_id']
+    time_sent = get_current_timestamp() + 2
+    with pytest.raises(AccessError):
+        message_sendlater(inv_token, channel_id, 'message', time_sent)
+
+def test_sendlater_invalid_inputs(new_channel_and_user, user_chas):
+    '''
+    test function.
+    checks that errors are raised when sendlater is given invalid inputs
+    '''
+    token = new_channel_and_user['token']
+    channel_id = new_channel_and_user['channel_id']
+    time_sent = get_current_timestamp() + 2
+    time_sent_invalid = get_current_timestamp() - 2
+    with pytest.raises(InputError):
+        message_sendlater(token, -1, 'message', time_sent)
+    with pytest.raises(InputError):
+        message_sendlater(token, channel_id, '1'*1001, time_sent)
+    with pytest.raises(InputError):
+        message_sendlater(token, channel_id, '', time_sent)
+    with pytest.raises(AccessError):
+        message_sendlater(user_chas['token'], channel_id, 'sdd', time_sent)
+    with pytest.raises(AccessError):
+        message_sendlater(user_chas['token'], channel_id, 'sdd', time_sent_invalid)
+
+
+def test_sendlater_valid_inputs(new_channel_and_user):
+    '''
+    checks that message is added to channels message after a delay
+    '''
+    token = new_channel_and_user['token']
+    channel_id = new_channel_and_user['channel_id']
+    time_sent = get_current_timestamp() + 2
+    test_message = message_sendlater(token, channel_id, 'hi', time_sent)
+    assert isinstance(test_message, dict)
+    assert len(channel_messages(token, channel_id, 0)['messages']) == 0
+    sleep(2.5)
+    assert len(channel_messages(token, channel_id, 0)['messages']) == 1

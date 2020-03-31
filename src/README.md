@@ -38,17 +38,22 @@ global_channels is a dictionary
 ```
 
 ## Messages
-is a dictionary
+is a list.
 ```
-    each message in CHANNELS[channel_id]['messges'] a dictionary with a unix timestamp
+    each message in CHANNELS[channel_id]['messages'] a dictionary with a unix timestamp
     {
-        'message_id': 1
-        'timestamp': 1584538791 ,
+        'u_id': 1,
+        'message_id': 1,
+        'time_created': 1584538791 ,
         'message' : 'this is the message content',
         'reacts' : [ 
-                    'user_id': user_id1,
-                     'emoji' : U+1F600  # this is a s mily face in unicode
-                   ]
+            {
+                'react_id': react_id,
+                'u_ids': [], #a list of u_id's of people who have reacted
+                'is_this_user_reacted': True
+            },
+        ]
+        'is_pinned': False
     }
 
 ```
@@ -113,7 +118,6 @@ $ python3 src/server.py
 You can now open firefox/google chrome at http://127.0.0.1:8080/ to view the api
 
 
-## Testing TODO
 
 # Frontend TODO
 
