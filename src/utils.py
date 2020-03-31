@@ -28,7 +28,7 @@ def check_token(token):
     and then returns that users id. raises AccessError if token does not match logged in user.
     '''
     curr_users = get_valid_tokens()
-
+    print(token)
     if not token in curr_users:
         raise AccessError(description="You do not have a valid token")
     return decode(token.encode('utf-8'), SECRET, algorithms=['HS256'])['id']
@@ -51,8 +51,7 @@ def invalidate_token(token):
 
 def get_current_timestamp():
     '''
-    uses datetime to generate and return a unix timestamp for the current time in UTC
-    TODO: check that this is the timezone we want
+    uses datetime to generate and return a unix timestamp for the current time.
     '''
     curr_time = datetime.now()
-    return  int(curr_time.replace(tzinfo=timezone.utc).timestamp())
+    return  int(curr_time.timestamp())

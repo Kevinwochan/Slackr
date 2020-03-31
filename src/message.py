@@ -114,6 +114,8 @@ def message_send(token, channel_id, message):
             description=
             'Your message should be less than 1000 characters and at least 1 character'
         )
+    if not is_valid_channel(channel_id):
+        raise InputError
     if not is_user_a_member(channel_id, user_id):
         raise AccessError
     message_id = get_num_messages()
