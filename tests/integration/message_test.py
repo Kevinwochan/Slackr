@@ -1,14 +1,17 @@
-#!/usr/bin/python3.7
+'''
+tests slackr message functionality
+'''
 
-import pytest
+#!/usr/bin/python3.7
 from time import sleep
+import pytest
 from src.utils import get_current_timestamp
 from src.error import AccessError, InputError
 from src.channel import channel_invite, channel_messages
 from src.auth import auth_register
 from src.message import (message_edit, message_remove, message_send,
                          message_pin, message_unpin, message_react,
-                         message_unreact, get_message_by_msg_id, 
+                         message_unreact, get_message_by_msg_id,
                          message_sendlater)
 
 
