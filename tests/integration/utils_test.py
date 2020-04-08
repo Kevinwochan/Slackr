@@ -1,6 +1,7 @@
 '''
     Tests for utility functions
 '''
+import os
 import pytest
 from src.auth import auth_register
 from src.channels import channels_create
@@ -38,7 +39,6 @@ def test_application_clean():
     '''
     Tests that all global variables have been emptied by the reset
     '''
-    # TODO: once global variables are stable
     for new_user in range(100):
         user = auth_register("z55555" + str(new_user) + "@unsw.edu.au",
                              "f for hayden rip", "hydaen", "smith")
@@ -49,3 +49,7 @@ def test_application_clean():
     assert len(get_users()) == 0
     assert len(get_slackr_owners()) == 0
     assert len(get_valid_tokens()) == 0
+    original_image_folder = os.path.join(os.getcwd(), 'images/original')
+    assert len(os.listdir(original_image_folder)) == 0
+    cropped_image_folder = os.path.join(os.getcwd(), 'images/cropped')
+    assert len(os.listdir(cropped_image_folder)) == 1

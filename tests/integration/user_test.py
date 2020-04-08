@@ -1,5 +1,5 @@
 import pytest
-from src.user import user_profile, user_profile_setname, user_profile_setemail, user_profile_sethandle
+from src.user import user_profile, user_profile_setname, user_profile_setemail, user_profile_sethandle, user_profile_setimage
 from src.auth import auth_register
 from src.error import InputError, AccessError
 
@@ -265,3 +265,14 @@ def test_set_same(user1):
     assert new_user1_profile['name_first'] == user1_profile['name_first']
     assert new_user1_profile['name_last'] == user1_profile['name_last']
     assert new_user1_profile['handle_str'] == user1_profile['handle_str']
+
+def test_user_setimage_valid(user1):
+    user_profile_setimage(user1['token'], 'https://i.imgur.com/MJcwL1W.jpg', 0, 0, 200, 200)
+
+def test_user_setimage_invalid_img_url(user1):
+    with pytest.raises(InputError):
+        user_profile_setimage(user1['token'], 'https://i.imgur.com/MJcwL1W', 0, 0, 200, 200)
+
+def test_user_setimage_invalid_dimensions(user1):
+    with pytest.raises(InputError):
+        user_profile_setimage(user1['token'], 'https://i.imgur.com/MJcwL1W', -4, 34, 34200, -200)

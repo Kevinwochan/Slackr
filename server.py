@@ -1,12 +1,13 @@
 ''' Flask API for Slackr '''
 import sys
-from flask import Flask, request, jsonify
+import os
+from flask import Flask, request, jsonify, send_from_directory, send_file
 from flask_cors import CORS
 from json import dumps
 from src.auth import auth_register, auth_login, auth_logout, auth_permission_change
 from src.channel import channel_addowner, channel_details, channel_invite, channel_join, channel_leave, channel_messages, channel_removeowner
 from src.channels import channels_create, channels_list, channels_listall
-from src.user import user_profile, user_profile_setemail, user_profile_sethandle, user_profile_setname
+from src.user import user_profile, user_profile_setemail, user_profile_sethandle, user_profile_setname, user_profile_setimage
 from src.message import message_edit, message_remove, message_send, message_sendlater, message_pin, message_react, message_unpin, message_unreact
 from src.global_variables import workspace_reset
 from src.other import search, users_all
@@ -31,7 +32,7 @@ CORS(APP)
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 APP.register_error_handler(Exception, defaultHandler)
 
-
+# pylint: disable=missing-function-docstring
 @APP.route('/auth/register', methods=['POST'])
 def auth_register_wsgi():
     json = request.get_json()
@@ -57,7 +58,8 @@ def auth_logout_wsgi():
 def channel_invite_wsgi():
     json = request.get_json()
     return jsonify(
-        channel_invite(json['token'], int(json['channel_id']), int(json['u_id'])))
+        channel_invite(json['token'], int(json['channel_id']),
+                       int(json['u_id'])))
 
 
 @APP.route('/channel/details', methods=['GET'])
@@ -70,7 +72,8 @@ def channel_details_wsgi():
 def channel_messages_wsgi():
     json = request.args
     return jsonify(
-        channel_messages(json['token'], int(json['channel_id']), int(json['start'])))
+        channel_messages(json['token'], int(json['channel_id']),
+                         int(json['start'])))
 
 
 @APP.route('/channel/leave', methods=['POST'])
@@ -89,14 +92,16 @@ def channel_join_wsgi():
 def channel_addowner_wsgi():
     json = request.get_json()
     return jsonify(
-        channel_addowner(json['token'], int(json['channel_id']), int(json['u_id'])))
+        channel_addowner(json['token'], int(json['channel_id']),
+                         int(json['u_id'])))
 
 
 @APP.route('/channel/removeowner', methods=['POST'])
 def channel_removeowner_wsgi():
     json = request.get_json()
     return jsonify(
-        channel_removeowner(json['token'], int(json['channel_id']), int(json['u_id'])))
+        channel_removeowner(json['token'], int(json['channel_id']),
+                            int(json['u_id'])))
 
 
 @APP.route('/channels/list', methods=['GET'])
@@ -122,29 +127,32 @@ def channels_create_wsgi():
 def message_send_wsgi():
     json = request.get_json()
     return jsonify(
-        message_send(json['token'], int(int(json['channel_id'])), json['message']))
+        message_send(json['token'], int(int(json['channel_id'])),
+                     json['message']))
 
 
 @APP.route('/message/sendlater', methods=['POST'])
 def message_sendlater_wsgi():
     json = request.get_json()
     return jsonify(
-        message_sendlater(json['token'], int(json['channel_id']), json['message'],
-                          json['time_sent']))
+        message_sendlater(json['token'], int(json['channel_id']),
+                          json['message'], json['time_sent']))
 
 
 @APP.route('/message/react', methods=['POST'])
 def message_react_wsgi():
     json = request.get_json()
     return jsonify(
-        message_react(json['token'], int(json['message_id']), json['react_id']))
+        message_react(json['token'], int(json['message_id']),
+                      json['react_id']))
 
 
 @APP.route('/message/unreact', methods=['POST'])
 def message_unreact_wsgi():
     json = request.get_json()
     return jsonify(
-        message_unreact(json['token'], int(json['message_id']), json['react_id']))
+        message_unreact(json['token'], int(json['message_id']),
+                        json['react_id']))
 
 
 @APP.route('/message/pin', methods=['POST'])
@@ -198,6 +206,21 @@ def user_profile_sethandle_wsgi():
     return jsonify(user_profile_sethandle(json['token'], json['handle_str']))
 
 
+@APP.route('/user/profile/uploadphoto', methods=['POST'])
+def user_profile_setimage_wsgi():
+    json = request.get_json()
+    return jsonify(
+        user_profile_setimage(json['token'], json['img_url'], int(json['x_start']),
+                              int(json['y_start']), int(json['x_end']), int(json['y_end'])))
+
+
+@APP.route('/imgurl/<string:filename>', methods=['GET'])
+def image_wsgi(filename):
+    image_folder = os.path.join(os.getcwd(), '/image/cropped')
+    if os.path.isfile(os.path.join(image_folder, filename)):
+        return send_from_directory(image_folder, filename)
+    return send_file(os.path.join(image_folder, 'default.png'))
+
 @APP.route('/users/all', methods=['GET'])
 def users_all_wsgi():
     json = request.args
@@ -242,6 +265,7 @@ def admin_userpermission_change_wsgi():
 def workspace_reset_wsgi():
     return jsonify(workspace_reset())
 
+# pylint: enable=missing-function-docstring
 
 if __name__ == "__main__":
     APP.debug = True  #TODO: remove this for production
