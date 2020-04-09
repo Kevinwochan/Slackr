@@ -25,7 +25,7 @@ def backup_data():
 def load_data():
     try:
         data = load(open("slackr_data.p", "rb"))
-        date = datetime.utcfromtimestamp(data['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
+        date = datetime.fromtimestamp(data['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
         print(f'Slackr backup found: Loading data from {date} UTC.')
         replace_data(data['global_users'],
                      data['global_channels'],
