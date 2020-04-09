@@ -91,4 +91,12 @@ def workspace_reset():
     global_standups.clear()
     global_num_messages = 0
 
+def replace_data(users, channels, num_messages):
+    global global_users
+    global global_channels
+    global global_num_messages
+    global_users = users
+    global_channels = channels
+    global_num_messages = num_messages
+
 # pylint: enable=invalid-name, global-statement
