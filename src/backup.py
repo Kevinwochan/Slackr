@@ -13,13 +13,7 @@ from src.utils import get_current_timestamp
 
 
 def backup_data():
-    '''Pickles slackr data with a timestamp
-
-    :param N/A
-    :type N/A
-    :rtype N/A
-    :return N/A
-    '''
+    '''Pickles slackr data with a timestamp.'''
     slackr_data = {
         'timestamp': get_current_timestamp(),
         'global_users': get_users(),
@@ -30,13 +24,7 @@ def backup_data():
         dump(slackr_data, FILE)
 
 def load_data():
-    '''If slackr backup exists, unpickles slackr backup and stores it in global variables.
-
-    :param N/A
-    :type N/A
-    :rtype N/A
-    :return N/A
-    '''
+    '''If slackr backup exists, unpickles slackr backup and stores it in global variables.'''
     try:
         data = load(open("slackr_data.p", "rb"))
         date = datetime.fromtimestamp(data['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
@@ -51,10 +39,8 @@ def load_data():
 def start_auto_backup(interval):
     '''Creates and starts a daemon thread which runs backup_data() repeatedly.
 
-    :param interval: seconds between backups.
-    :type interval: int.
-    :rtype N/A
-    :return N/A
+    :param interval: seconds between backups
+    :type interval: int
     '''
     print(f'Starting automatic data backup at {interval}s intervals.')
     def auto_backup(interval):
