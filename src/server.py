@@ -34,6 +34,13 @@ APP.register_error_handler(Exception, defaultHandler)
 
 @APP.before_first_request
 def init_data():
+    '''Runs functions at slackr launch before first request.
+
+    :param N/A
+    :type N/A
+    :rtype N/A
+    :return N/A
+    '''
     load_data()
     start_auto_backup(5)
 
