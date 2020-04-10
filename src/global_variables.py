@@ -4,6 +4,7 @@ These can be access by importing and using the get_ functions below.
 Their structure is described in the README.md file in src.
 '''
 import threading
+import os
 # pylint: disable=invalid-name, global-statement
 
 global_users = {}
@@ -76,9 +77,7 @@ def cancel_all_timers():
             thread.cancel()
 
 def workspace_reset():
-    '''
-    Deletes all Slackr information as if the website was just launched
-    '''
+    '''Deletes all Slackr information and backups'''
     global global_users
     global global_channels
     global global_valid_tokens
@@ -90,6 +89,8 @@ def workspace_reset():
     cancel_all_timers()
     global_standups.clear()
     global_num_messages = 0
+    if os.path.exists("slackr_data.p"):
+        os.remove("slackr_data.p")
 
 def replace_data(users, channels, num_messages):
     '''Replaces global data with new data.
