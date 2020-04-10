@@ -92,18 +92,14 @@ def workspace_reset():
     global_num_messages = 0
 
 def replace_data(users, channels, num_messages):
-    '''Replaces global data with new data
+    '''Replaces global data with new data.
 
-    :param
-        users: contains details of registered users
-        channels: contains details of existing channels and messages,
-        num_messages: next valid message id.
-    :type
-        users: dictionary,
-        channels: dictionary,
-        num_messages: int.
-    :rtype N/A
-    :return N/A
+    :param users: contains details of registered users
+    :type users: dictionary
+    :param channels: contains details of existing channels and messages
+    :type channels: dictionary,
+    :param num_messages: next valid message id
+    :type num_messages: int
     '''
     global global_users
     global global_channels
