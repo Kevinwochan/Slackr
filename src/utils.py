@@ -2,7 +2,7 @@
 Contains miscellaneous helper functions.
 '''
 # Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
-from datetime import datetime, timezone
+from datetime import datetime
 from jwt import encode, decode
 from src.error import AccessError
 from src.global_variables import get_valid_tokens
@@ -49,9 +49,20 @@ def invalidate_token(token):
     return True
 
 
-def get_current_timestamp():
-    '''
-    uses datetime to generate and return a unix timestamp for the current time.
+def get_current_timestamp(delay=0):
+    '''Returns current time + delay as a unix timestamp
+
+    :param delay: Seconds to add to current time, defaults to 0
+    :type delay: int, optional
+    :return: Unix timestamp
+    :rtype: int
     '''
     curr_time = datetime.now()
-    return  int(curr_time.timestamp())
+    return int(curr_time.timestamp() + delay)
+
+def generate_reset_code(email):
+    return encode({'email': email}, SECRET, algorithm='HS256').decode('utf-8')
+
+    
+def check_reset_code(reset_code):
+    pass
