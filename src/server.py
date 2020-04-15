@@ -3,7 +3,8 @@ import sys
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from json import dumps
-from src.auth import auth_register, auth_login, auth_logout, auth_permission_change, auth_password_request, auth_password_reset
+from src.auth import auth_register, auth_login, auth_logout, auth_permission_change
+from src.auth_passwordreset import auth_passwordreset_request, auth_passwordreset_reset
 from src.channel import channel_addowner, channel_details, channel_invite, channel_join, channel_leave, channel_messages, channel_removeowner
 from src.channels import channels_create, channels_list, channels_listall
 from src.user import user_profile, user_profile_setemail, user_profile_sethandle, user_profile_setname
@@ -36,7 +37,7 @@ APP.register_error_handler(Exception, defaultHandler)
 def auth_register_wsgi():
     json = request.get_json()
     return jsonify(
-        auth_register(json['email'], json['password'], json['name_first'],
+        auth_register(json['email'], str(json['password']), json['name_first'],
                       json['name_last']))
 
 
@@ -55,12 +56,12 @@ def auth_logout_wsgi():
 @APP.route('/auth/passwordreset/request', methods=['POST'])
 def auth_passwordreset_request_wsgi():
     json = request.get_json()
-    return jsonify(auth_password_request(json['email']))
+    return jsonify(auth_passwordreset_request(str(json['email'])))
 
 @APP.route('/auth/passwordreset/reset', methods=['POST'])
 def auth_passwordreset_reset_wsgi():
     json = request.get_json()
-    return jsonify(auth_password_reset(json['reset_code'], json['new_password']))
+    return jsonify(auth_passwordreset_reset(str(json['reset_code']), str(json['new_password'])))
 
 @APP.route('/channel/invite', methods=['POST'])
 def channel_invite_wsgi():
