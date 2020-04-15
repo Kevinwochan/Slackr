@@ -3,8 +3,8 @@ Contains miscellaneous helper functions.
 '''
 # Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
 from datetime import datetime
-from jwt import encode, decode
-from src.error import AccessError
+from jwt import encode, decode, InvalidTokenError
+from src.error import AccessError, InputError
 from src.global_variables import get_valid_tokens
 SECRET = 'F FOR HAYDEN'
 
@@ -60,9 +60,29 @@ def get_current_timestamp(delay=0):
     curr_time = datetime.now()
     return int(curr_time.timestamp() + delay)
 
-def generate_reset_code(email):
-    return encode({'email': email}, SECRET, algorithm='HS256').decode('utf-8')
+def generate_reset_code(email, exp):
+    '''Generates an email reset code that can be used to identify a user
 
-    
+    :param email: Valid email address
+    :type email: str
+    :param exp: Seconds to code expiration
+    :type exp: int
+    :return: jwt token
+    :rtype: str
+    '''
+    return encode({'exp': get_current_timestamp(exp), 'email': email},
+                  SECRET, algorithm='HS256').decode('utf-8')
+
 def check_reset_code(reset_code):
-    pass
+    '''Validates reset_code and returns users email
+
+    :param reset_code: jwt token to be validated
+    :type reset_code: str
+    :raises InputError: If reset_code is invalid or expired
+    :return: email
+    :rtype: str
+    '''
+    try:
+        return decode(reset_code.encode('utf-8'), SECRET, algorithms=['HS256'])['email']
+    except InvalidTokenError:
+        raise InputError(description='Reset code invalid or expired') from None
