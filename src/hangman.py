@@ -1,3 +1,6 @@
+import requests
+import random
+
 STATES = {
     'PROGRESS_1' : 1,
     'PROGRESS_2' : 2,
@@ -64,9 +67,19 @@ ART = ['''
 'YOU SAVED HIM!',
 ]
 
-ANSWER = 'badger'
+
+ANSWER = ''
 STATE = STATES['PROGRESS_1']
 GUESSES = []
+
+def generate_random_answer():
+    ''' generates a random answer to guess each new game of hangman '''
+    global ANSWER
+    words_bank = "http://svnweb.freebsd.org/csrg/share/dict/words?view=co&content-type=text/plain"
+    response = requests.get(word_site)
+    words_list = response.content.splitlines()
+    ANSWER = random.choice(words_list)
+    return ANSWER
 
 def format_guess():
     ''' converts data into text '''
