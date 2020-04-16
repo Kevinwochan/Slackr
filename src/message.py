@@ -150,7 +150,7 @@ def message_react(token, message_id, react_id):
         message['reacts'].append({
             'react_id': react_id,
             'u_ids': [],
-            'is_this_user_reacted': True
+            'is_this_user_reacted': False
         })
     for react in message['reacts']:
         if react['react_id'] == react_id:

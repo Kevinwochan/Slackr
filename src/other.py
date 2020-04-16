@@ -39,5 +39,5 @@ def search(token, query_str):
     sorted(search_results,
            key=lambda message: message['time_created'],
            reverse=True)
-    #set_reacted_messages(user_id, search_results)
+    set_reacted_messages(user_id, search_results)
     return {'messages': search_results}

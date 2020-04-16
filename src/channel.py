@@ -2,7 +2,7 @@
 A module for creating channels to group messages and slackr users
 '''
 from src.error import InputError, AccessError
-from src.utils import check_token
+from src.utils import check_token, set_reacted_messages
 from src.global_variables import get_channels, get_users, get_slackr_owners
 
 
@@ -124,7 +124,7 @@ def channel_messages(token, channel_id, start):
     end = start + 50
     if end > len(channel['messages']):
         end = -1
-
+    set_reacted_messages(user_id, channel['messages'][start:start + 50])
     return {
         'messages': channel['messages'][start:start + 50],
         'start': start,
