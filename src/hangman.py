@@ -140,6 +140,7 @@ def guess(letter):
     return get_text()
 
 if __name__ == '__main__':
+    generate_random_answer()
     print(get_text())
     while STATE != STATES['WIN'] and STATE != STATES['LOSE']:
         letter = input('guess a letter: ')
