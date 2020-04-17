@@ -147,6 +147,10 @@ def guess(letter):
     :rtype str
     '''
     global GUESSES
+
+    if len(letter) != 1:
+        return 'invalid guess, guess a single letter'
+
     if letter in GUESSES:
         return 'you have already guessed this'
 
