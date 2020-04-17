@@ -1,5 +1,6 @@
 import requests
 import random
+import string
 
 STATES = {
     'PROGRESS_1' : 1,
@@ -148,7 +149,7 @@ def guess(letter):
     '''
     global GUESSES
 
-    if len(letter) != 1:
+    if len(letter) != 1 or letter in string.punctuation or letter == ' ' or letter.isdigit():
         return 'invalid guess, guess a single letter'
 
     if letter in GUESSES:
