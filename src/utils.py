@@ -2,10 +2,13 @@
 Contains miscellaneous helper functions.
 '''
 # Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
-from datetime import datetime, timezone
+import random
+import string
+from datetime import datetime
 from jwt import encode, decode
 from src.error import AccessError
 from src.global_variables import get_valid_tokens
+
 SECRET = 'F FOR HAYDEN'
 
 
@@ -28,7 +31,6 @@ def check_token(token):
     and then returns that users id. raises AccessError if token does not match logged in user.
     '''
     curr_users = get_valid_tokens()
-    print(token)
     if not token in curr_users:
         raise AccessError(description="You do not have a valid token")
     return decode(token.encode('utf-8'), SECRET, algorithms=['HS256'])['id']
@@ -71,3 +73,13 @@ def set_reacted_messages(u_id, messages):
                     react['is_this_user_reacted'] = True
                 else:
                     react['is_this_user_reacted'] = False
+
+def generate_random_string(size):
+    '''
+    :param size: int
+    :return a random string of length size
+    :rtype str
+    https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits
+    '''
+    return ''.join(
+        random.choices(string.ascii_uppercase + string.digits, k=size))

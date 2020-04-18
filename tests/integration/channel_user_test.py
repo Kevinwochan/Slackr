@@ -114,6 +114,7 @@ def test_channel_invite_valid_inputs(user_dav, user_jas, channel_dav):
     member_jas['u_id'] = user_jas['u_id']
     member_jas['name_first'] = "jas"
     member_jas['name_last'] = "zhu"
+    member_jas['profile_img_url'] = "http://localhost:8080/imgurl/default.png"
 
     channel_dav_detail = channel_details(user_dav['token'],
                                          channel_dav['channel_id'])
@@ -151,6 +152,7 @@ def test_channel_invite_already_member(user_dav, user_jas, channel_dav):
     member_jas['u_id'] = user_jas['u_id']
     member_jas['name_first'] = "jas"
     member_jas['name_last'] = "zhu"
+    member_jas['profile_img_url'] = "http://localhost:8080/imgurl/default.png"
 
     # set up channel details
     channel_dav_detail = channel_details(user_dav['token'],
@@ -175,6 +177,7 @@ def test_channel_invite_self_invite(user_dav, channel_dav, user_jas):
     member_jas['u_id'] = user_jas['u_id']
     member_jas['name_first'] = "jas"
     member_jas['name_last'] = "zhu"
+    member_jas['profile_img_url'] = "http://localhost:8080/imgurl/default.png"
 
     # set up channel details
     channel_dav_detail = channel_details(user_dav['token'],
@@ -270,16 +273,19 @@ def test_channel_details(user_chas, user_dav, user_jas, channel_dav):
     member_dav['u_id'] = user_dav['u_id']
     member_dav['name_first'] = "dav"
     member_dav['name_last'] = "zhu"
+    member_dav['profile_img_url'] = "http://localhost:8080/imgurl/default.png"
 
     member_jas = {}
     member_jas['u_id'] = user_jas['u_id']
     member_jas['name_first'] = "jas"
     member_jas['name_last'] = "zhu"
+    member_jas['profile_img_url'] = "http://localhost:8080/imgurl/default.png"
 
     member_chas = {}
     member_chas['u_id'] = user_chas['u_id']
     member_chas['name_first'] = "chas"
     member_chas['name_last'] = "zhu"
+    member_chas['profile_img_url'] = "http://localhost:8080/imgurl/default.png"
 
     assert channel_dav_detail['name'] == "channel_dav"
     assert channel_dav_detail['owner_members'][0] == member_dav
