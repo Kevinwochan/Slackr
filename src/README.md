@@ -1,3 +1,87 @@
+# Backend Documentation
+## Installation
+In order for everything to run you need to have the following installed:
+```
+pip install -r requirements.txt # for pip users
+pipenv install --dev # ONLY for pipenv users, don't know what this means? dw dont run this.
+```
+## Running
+run the command below
+```
+sh .env
+python3.7 -m flask run
+```
+e.g
+
+```
+$ sh .env
+$ python3 -m flask run
+ * Serving Flask app "server" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 358-897-093
+```
+
+You can now open firefox/google chrome at http://127.0.0.1:8080/ to view the api
+
+## Common Errors
+### Dependency missing
+```
+Module not found
+```
+**Solution**:
+dependencies need to be instaled, see the src/README.md for installing dependences
+
+### Incorrect working directory
+```
+ModuleNotFoundError: No module named 'src'
+```
+**Solution**:
+run everything for the root project directory, ie the folder the contains these files
+```
+➜  backend git:(iteration-3) ✗ ls -l
+total 144
+-rw-r--r--  1 kwoc kwoc  3159 Mar 23 18:43 assumptions.md
+drwxr-xr-x  2 kwoc kwoc  4096 Mar 26 04:34 htmlcov
+drwxr-xr-x  4 kwoc kwoc  4096 Apr 18 23:22 images
+drwxr-xr-x 98 kwoc kwoc  4096 Mar 24 00:55 node_modules
+-rw-r--r--  1 kwoc kwoc   249 Apr  9 21:35 package.json
+-rw-r--r--  1 kwoc kwoc 34884 Mar 24 00:55 package-lock.json
+-rwxr-xr-x  1 kwoc kwoc   279 Apr 18 23:22 Pipfile
+-rw-r--r--  1 kwoc kwoc 21534 Apr 11 05:26 Pipfile.lock
+-rw-r--r--  1 kwoc kwoc 36301 Apr 18 16:45 README.md
+-rw-r--r--  1 kwoc kwoc   662 Apr 18 23:22 requirements.txt
+-rwxr-xr-x  1 kwoc kwoc   273 Apr 18 23:22 settings.py
+-rw-r--r--  1 kwoc kwoc  4275 Apr 18 21:22 slackr_data.p
+drwxr-xr-x  3 kwoc kwoc  4096 Apr 18 23:24 src
+drwxr-xr-x  5 kwoc kwoc  4096 Apr 18 23:24 tests
+➜  backend git:(iteration-3) ✗ python3 -m flask run
+```
+
+### Environment variables havent been set
+```
+"No such file or directory"
+user['profile_img_url'] == 'None/imgurl/adfasdfawdf.png'
+```
+or 
+```
+No module named src
+```
+or 
+```
+Error: Could not locate a Flask application. You did not provide the "FLASK_APP" environment variable, and a "wsgi.py" or "app.py" module was not found in the current directory.
+k
+```
+**Solution**: 
+run the below command
+```
+sh .env
+```
 # Type Defintions
 - global_channels
     - accessed using the function get_channels()
@@ -84,41 +168,5 @@ Access this by using the function get_valid_tokens.
 NOTE: If youre accessing this variable to check if a token is valid, USE THE FUNCTIONS IN utils.py. i.e. check_token()
 Generally, you should not need to access this variable.
 
-
-# Backend
-## Installation
-In order for everything to run you need to have the following installed:
-```
-pip install -r requirements.txt
-```
-Or if youre comfortable with pipenv run
-```
-pipenv install --dev
-```
-## Running
-run the command below
-```
-python3.7 src/server.py
-```
-e.g
-
-```
-$ python3 src/server.py 
- * Serving Flask app "server" (lazy loading)
- * Environment: production
-   WARNING: This is a development server. Do not use it in a production deployment.
-   Use a production WSGI server instead.
- * Debug mode: on
- * Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 358-897-093
-```
-
-You can now open firefox/google chrome at http://127.0.0.1:8080/ to view the api
-
-
-
-# Frontend TODO
 
 
