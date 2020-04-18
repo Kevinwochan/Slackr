@@ -19,7 +19,8 @@ def users_all(token):
             'email': users[user_id]['email'],
             'name_first': users[user_id]['name_first'],
             'name_last': users[user_id]['name_last'],
-            'handle_str': users[user_id]['handle_str']
+            'handle_str': users[user_id]['handle_str'],
+            'profile_img_url': users[user_id]['profile_img_url']
         } for user_id in users],
     }
 
