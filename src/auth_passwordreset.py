@@ -1,10 +1,9 @@
 '''Provides password reset functionality to slackr.
 all generated reset tokens expire after approximately 20min
 '''
-from hashlib import sha256
 import smtplib
 import ssl
-from src.auth_helper import is_password_valid, id_from_email
+from src.auth_helper import is_password_valid, id_from_email, hash_string
 from src.utils import generate_reset_code, check_reset_code
 from src.error import InputError
 from src.global_variables import get_users
@@ -89,7 +88,7 @@ def auth_passwordreset_reset(reset_code, new_password):
         return {}
     if not is_password_valid(new_password):
         raise InputError(description="Password not strong enough")
-    password_hash = sha256(new_password.encode()).hexdigest()
+    password_hash = hash_string(new_password)
     glob_users = get_users()
     glob_users[u_id]['password_hash'] = password_hash
 
