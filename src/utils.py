@@ -58,7 +58,6 @@ def get_current_timestamp():
     curr_time = datetime.now()
     return int(curr_time.timestamp())
 
-
 def generate_random_string(size):
     '''
     :param size: int
@@ -68,3 +67,4 @@ def generate_random_string(size):
     '''
     return ''.join(
         random.choices(string.ascii_uppercase + string.digits, k=size))
+

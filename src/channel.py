@@ -1,6 +1,7 @@
 '''
 A module for creating channels to group messages and slackr users
 '''
+import os
 from src.error import InputError, AccessError
 from src.utils import check_token
 from src.global_variables import get_channels, get_users, get_slackr_owners
@@ -69,11 +70,11 @@ def channel_details(token, channel_id):
     '''
     user_id = check_token(token)
     if not is_valid_channel(channel_id):
-        print (get_channels().keys())
         raise InputError(description="Invalid channel id")
 
     if not is_user_a_member(channel_id, user_id):
-        raise AccessError(description="User does not have access to this channel")
+        raise AccessError(
+            description="User does not have access to this channel")
 
     users = get_users()
     owner_members = []
@@ -83,13 +84,13 @@ def channel_details(token, channel_id):
             'u_id': user_id,
             'name_first': users[user_id]['name_first'],
             'name_last': users[user_id]['name_last'],
-            'profile_img_url': users[user_id]['profile_img_url']
+            'profile_img_url': f'{os.getenv("URL")}{users[user_id]["profile_img_url"]}'
         })
         all_members.append({
             'u_id': user_id,
             'name_first': users[user_id]['name_first'],
             'name_last': users[user_id]['name_last'],
-            'profile_img_url': users[user_id]['profile_img_url']
+            'profile_img_url': f'{os.getenv("URL")}{users[user_id]["profile_img_url"]}'
         })
 
     for user_id in get_channel_members(channel_id):
@@ -97,7 +98,7 @@ def channel_details(token, channel_id):
             'u_id': user_id,
             'name_first': users[user_id]['name_first'],
             'name_last': users[user_id]['name_last'],
-            'profile_img_url': users[user_id]['profile_img_url']
+            'profile_img_url': f'{os.getenv("URL")}{users[user_id]["profile_img_url"]}'
         })
     return {
         'name': get_channels()[channel_id]['name'],
