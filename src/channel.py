@@ -35,7 +35,7 @@ def get_channel_members(channel_id):
 
 def is_valid_user(user_id):
     ''' returns true if user_id refers to an existing user '''
-    return user_id in get_users()  # TODO move this somewhere else
+    return user_id in get_users()
 
 
 def is_channel_public(channel_id):
@@ -148,10 +148,6 @@ def channel_leave(token, channel_id):
 
     if is_user_a_owner(channel_id, user_id):
         get_channel_owners(channel_id).remove(user_id)
-        if len(
-                get_channels()
-        ) == 0:  # TODO: discuss if the last owner deletes the channel when leaving
-            del get_channels()[channel_id]
     elif is_user_a_member(channel_id, user_id):
         get_channel_members(channel_id).remove(user_id)
     else:

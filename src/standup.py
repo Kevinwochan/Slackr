@@ -88,7 +88,7 @@ def standup_start(token, channel_id, length):
             description='A standup is already active in this channel')
 
     glob_standups = get_standups()
-    time_finish = get_current_timestamp() + int(length)
+    time_finish = get_current_timestamp(length)
 
     message_template = create_message(u_id, -1, time_finish, [])
     glob_standups[channel_id] = message_template
