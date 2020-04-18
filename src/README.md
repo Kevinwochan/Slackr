@@ -32,10 +32,13 @@ You can now open firefox/google chrome at http://127.0.0.1:8080/ to view the api
 ## Common Errors
 ### Dependency missing
 ```
-Module not found
+Module xyz not found
 ```
 **Solution**:
-dependencies need to be instaled, see the src/README.md for installing dependences
+dependency was not in requirements.txt, run the below command replacing "xyz" for the missing module. And post on general chat the dependency that needed to be installed so we can add it.
+```
+pip install xyz
+```
 
 ### Incorrect working directory
 ```
@@ -82,6 +85,8 @@ run the below command
 ```
 sh .env
 ```
+
+
 # Type Defintions
 - global_channels
     - accessed using the function get_channels()
