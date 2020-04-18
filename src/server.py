@@ -225,7 +225,7 @@ def user_profile_setimage_wsgi():
 
 @APP.route('/imgurl/<string:filename>', methods=['GET'])
 def image_wsgi(filename):
-    image_folder = os.path.join(os.getcwd(), '../images/cropped')
+    image_folder = os.path.join(os.getcwd(), './images/cropped')
     if os.path.isfile(os.path.join(image_folder, filename)):
         return send_from_directory(image_folder, filename)
     return send_file(os.path.join(image_folder, 'default.png'))
