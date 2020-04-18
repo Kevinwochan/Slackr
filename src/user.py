@@ -52,13 +52,15 @@ def user_profile(token, user_id):
         raise InputError
     user = users[user_id]
     return {
-        'u_id': user_id,
-        'email': user['email'],
-        'name_first': user['name_first'],
-        'name_last': user['name_last'],
-        'handle_str': user['handle_str'],
-        'profile_img_url': user['profile_img_url']
-    }
+        'user': {
+            'u_id': user_id,
+            'email': user['email'],
+            'name_first': user['name_first'],
+            'name_last': user['name_last'],
+            'handle_str': user['handle_str'],
+            'profile_img_url': user['profile_img_url']
+        }
+   }
 
 
 def user_profile_setname(token, name_first, name_last):

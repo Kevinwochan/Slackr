@@ -89,6 +89,21 @@ def check_reset_code(reset_code):
     except InvalidTokenError:
         raise InputError(description='Reset code invalid or expired') from None
 
+def set_reacted_messages(u_id, messages):
+    '''set field is_this_user_reacted to true if the u_id is in list of u_ids in the react
+
+    :param u_id: user id
+    :type u_id: int
+    :param messages: dictionary data structure - contains reacts field, which contains list
+    :type messages: dict
+    '''
+    for message in messages:
+        for react in message['reacts']:
+            if u_id in react['u_ids']:
+                react['is_this_user_reacted'] = True
+            else:
+                react['is_this_user_reacted'] = False
+
 def generate_random_string(size):
     '''
     :param size: int
