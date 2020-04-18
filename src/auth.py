@@ -64,6 +64,3 @@ def auth_register(email, password, name_first, name_last):
         'u_id': u_id,
         'token': token,
     }
-
-def auth_permission_change(token, user_id, permssion_id):
-    return {}

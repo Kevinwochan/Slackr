@@ -1,9 +1,10 @@
 ''' Flask API for Slackr '''
 import sys
+from json import dumps
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from json import dumps
-from src.auth import auth_register, auth_login, auth_logout, auth_permission_change
+from src.auth import auth_register, auth_login, auth_logout
+from src.admin import permission_change
 from src.channel import channel_addowner, channel_details, channel_invite, channel_join, channel_leave, channel_messages, channel_removeowner
 from src.channels import channels_create, channels_list, channels_listall
 from src.user import user_profile, user_profile_setemail, user_profile_sethandle, user_profile_setname
@@ -11,6 +12,7 @@ from src.message import message_edit, message_remove, message_send, message_send
 from src.global_variables import workspace_reset
 from src.other import search, users_all
 from src.standup import standup_active, standup_send, standup_start
+from src.backup import load_data, start_auto_backup
 
 
 def defaultHandler(err):
@@ -30,6 +32,13 @@ CORS(APP)
 
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 APP.register_error_handler(Exception, defaultHandler)
+
+
+@APP.before_first_request
+def init_data():
+    '''Runs functions at slackr launch before first request.'''
+    load_data()
+    start_auto_backup(5)
 
 
 @APP.route('/auth/register', methods=['POST'])
@@ -57,7 +66,8 @@ def auth_logout_wsgi():
 def channel_invite_wsgi():
     json = request.get_json()
     return jsonify(
-        channel_invite(json['token'], int(json['channel_id']), int(json['u_id'])))
+        channel_invite(json['token'], int(json['channel_id']),
+                       int(json['u_id'])))
 
 
 @APP.route('/channel/details', methods=['GET'])
@@ -70,7 +80,8 @@ def channel_details_wsgi():
 def channel_messages_wsgi():
     json = request.args
     return jsonify(
-        channel_messages(json['token'], int(json['channel_id']), int(json['start'])))
+        channel_messages(json['token'], int(json['channel_id']),
+                         int(json['start'])))
 
 
 @APP.route('/channel/leave', methods=['POST'])
@@ -89,14 +100,16 @@ def channel_join_wsgi():
 def channel_addowner_wsgi():
     json = request.get_json()
     return jsonify(
-        channel_addowner(json['token'], int(json['channel_id']), int(json['u_id'])))
+        channel_addowner(json['token'], int(json['channel_id']),
+                         int(json['u_id'])))
 
 
 @APP.route('/channel/removeowner', methods=['POST'])
 def channel_removeowner_wsgi():
     json = request.get_json()
     return jsonify(
-        channel_removeowner(json['token'], int(json['channel_id']), int(json['u_id'])))
+        channel_removeowner(json['token'], int(json['channel_id']),
+                            int(json['u_id'])))
 
 
 @APP.route('/channels/list', methods=['GET'])
@@ -122,29 +135,32 @@ def channels_create_wsgi():
 def message_send_wsgi():
     json = request.get_json()
     return jsonify(
-        message_send(json['token'], int(int(json['channel_id'])), json['message']))
+        message_send(json['token'], int(int(json['channel_id'])),
+                     json['message']))
 
 
 @APP.route('/message/sendlater', methods=['POST'])
 def message_sendlater_wsgi():
     json = request.get_json()
     return jsonify(
-        message_sendlater(json['token'], int(json['channel_id']), json['message'],
-                          json['time_sent']))
+        message_sendlater(json['token'], int(json['channel_id']),
+                          json['message'], json['time_sent']))
 
 
 @APP.route('/message/react', methods=['POST'])
 def message_react_wsgi():
     json = request.get_json()
     return jsonify(
-        message_react(json['token'], int(json['message_id']), json['react_id']))
+        message_react(json['token'], int(json['message_id']),
+                      json['react_id']))
 
 
 @APP.route('/message/unreact', methods=['POST'])
 def message_unreact_wsgi():
     json = request.get_json()
     return jsonify(
-        message_unreact(json['token'], int(json['message_id']), json['react_id']))
+        message_unreact(json['token'], int(json['message_id']),
+                        json['react_id']))
 
 
 @APP.route('/message/pin', methods=['POST'])
@@ -234,7 +250,7 @@ def standup_send_wsgi():
 def admin_userpermission_change_wsgi():
     json = request.get_json()
     return jsonify(
-        auth_permission_change(json['token'], int(json['u_id']),
+        permission_change(json['token'], int(json['u_id']),
                                json['permission_id']))
 
 
