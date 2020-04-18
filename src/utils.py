@@ -67,12 +67,11 @@ def set_reacted_messages(u_id, messages):
     :type messages: dict
     '''
     for message in messages:
-        if message['reacts']:
-            for react in message['reacts']:
-                if u_id in react['u_ids']:
-                    react['is_this_user_reacted'] = True
-                else:
-                    react['is_this_user_reacted'] = False
+        for react in message['reacts']:
+            if u_id in react['u_ids']:
+                react['is_this_user_reacted'] = True
+            else:
+                react['is_this_user_reacted'] = False
 
 def generate_random_string(size):
     '''
