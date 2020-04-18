@@ -22,7 +22,6 @@ def permission_change(token, u_id, permission_id):
     :return: empty dictionary
     :rtype: dict
     '''
-
     user_id = check_token(token)
 
     if not is_valid_user(u_id):
