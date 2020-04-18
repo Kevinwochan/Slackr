@@ -60,7 +60,6 @@ def get_current_timestamp(delay=0):
     :rtype: int
     '''
     curr_time = datetime.now()
-<<<<<<< HEAD
     return int(curr_time.timestamp() + delay)
 
 def generate_reset_code(email, exp):
@@ -89,8 +88,6 @@ def check_reset_code(reset_code):
         return decode(reset_code.encode('utf-8'), SECRET, algorithms=['HS256'])['email']
     except InvalidTokenError:
         raise InputError(description='Reset code invalid or expired') from None
-=======
-    return int(curr_time.timestamp())
 
 def generate_random_string(size):
     '''
@@ -101,5 +98,3 @@ def generate_random_string(size):
     '''
     return ''.join(
         random.choices(string.ascii_uppercase + string.digits, k=size))
-
->>>>>>> iteration-3
