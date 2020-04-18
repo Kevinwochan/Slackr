@@ -1,8 +1,8 @@
 ''' Flask API for Slackr '''
 import sys
+from json import dumps
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from json import dumps
 from src.auth import auth_register, auth_login, auth_logout, auth_permission_change
 from src.channel import channel_addowner, channel_details, channel_invite, channel_join, channel_leave, channel_messages, channel_removeowner
 from src.channels import channels_create, channels_list, channels_listall
@@ -11,6 +11,7 @@ from src.message import message_edit, message_remove, message_send, message_send
 from src.global_variables import workspace_reset
 from src.other import search, users_all
 from src.standup import standup_active, standup_send, standup_start
+from src.backup import load_data, start_auto_backup
 
 
 def defaultHandler(err):
@@ -31,6 +32,13 @@ CORS(APP)
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 APP.register_error_handler(Exception, defaultHandler)
 
+@APP.before_first_request
+def init_data():
+    '''Runs functions at slackr launch before first request.'''
+    load_data()
+    start_auto_backup(5)
+
+
 
 @APP.route('/auth/register', methods=['POST'])
 def auth_register_wsgi():
@@ -38,7 +46,6 @@ def auth_register_wsgi():
     return jsonify(
         auth_register(json['email'], json['password'], json['name_first'],
                       json['name_last']))
-
 
 @APP.route('/auth/login', methods=['POST'])
 def auth_login_wsgi():
