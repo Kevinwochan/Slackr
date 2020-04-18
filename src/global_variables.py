@@ -68,6 +68,7 @@ def get_standups():
     global global_standups
     return global_standups
 
+
 def cancel_all_timers():
     '''
     Cancels threads that of type threading.timer
@@ -75,6 +76,7 @@ def cancel_all_timers():
     for thread in threading.enumerate():
         if isinstance(thread, threading.Timer):
             thread.cancel()
+
 
 def workspace_reset():
     '''Deletes all Slackr information and backups'''
@@ -92,6 +94,7 @@ def workspace_reset():
     if os.path.exists("slackr_data.p"):
         os.remove("slackr_data.p")
 
+
 def replace_data(users, channels, num_messages):
     '''Replaces global data with new data.
 
@@ -108,5 +111,6 @@ def replace_data(users, channels, num_messages):
     global_users = users
     global_channels = channels
     global_num_messages = num_messages
+
 
 # pylint: enable=invalid-name, global-statement

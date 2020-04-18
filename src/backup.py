@@ -20,21 +20,23 @@ def backup_data():
         'global_channels': get_channels(),
         'global_num_messages': get_num_messages()
     }
-    with open('slackr_data.p', 'wb') as FILE: #pylint: disable=invalid-name
+    with open('slackr_data.p', 'wb') as FILE:  #pylint: disable=invalid-name
         dump(slackr_data, FILE)
+
 
 def load_data():
     '''If slackr backup exists, unpickles slackr backup and stores it in global variables.'''
     try:
         data = load(open("slackr_data.p", "rb"))
-        date = datetime.fromtimestamp(data['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
+        date = datetime.fromtimestamp(
+            data['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
         print(f'Slackr backup found: Loading data from {date} UTC.')
-        replace_data(data['global_users'],
-                     data['global_channels'],
+        replace_data(data['global_users'], data['global_channels'],
                      data['global_num_messages'])
 
     except FileNotFoundError:
         print('No Slackr backup found: Launching clean.')
+
 
 def start_auto_backup(interval):
     '''Creates and starts a daemon thread which runs backup_data() repeatedly.
@@ -43,9 +45,11 @@ def start_auto_backup(interval):
     :type interval: int
     '''
     print(f'Starting automatic data backup at {interval}s intervals.')
+
     def auto_backup(interval):
         while True:
             sleep(interval)
             backup_data()
+
     thread = Thread(target=auto_backup, args=[interval], daemon=True)
     thread.start()
