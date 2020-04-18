@@ -48,7 +48,6 @@ def init_data():
     load_data()
     start_auto_backup(5)
 
-
 @APP.route('/auth/register', methods=['POST'])
 def auth_register_wsgi():
     json = request.get_json()
@@ -281,6 +280,7 @@ def admin_userpermission_change_wsgi():
 def workspace_reset_wsgi():
     return jsonify(workspace_reset())
 
+<<<<<<< HEAD
 @APP.route('/admin/user/remove', methods=['DELETE'])
 def admin_user_remove():
 	json = request.get_json()
@@ -288,6 +288,8 @@ def admin_user_remove():
 		user_remove(json['tokem'], int(json['u_id']))
 	)
 
+=======
+>>>>>>> iteration-3
 # pylint: enable=missing-function-docstring
 
 if __name__ == "__main__":

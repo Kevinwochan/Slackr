@@ -2,7 +2,7 @@
 Contains miscellaneous functions
 '''
 from src.global_variables import get_users, get_channels
-from src.utils import check_token
+from src.utils import check_token, set_reacted_messages
 from src.channel import is_user_a_member
 
 
@@ -35,13 +35,9 @@ def search(token, query_str):
             continue
         for message in channels[channel_id]['messages']:
             if query_str in message['message']:
-                search_results.append({
-                    'message_id': message['message_id'],
-                    'u_id': message['u_id'],
-                    'message': message['message'],
-                    'time_created': message['time_created']
-                })
+                search_results.append(message)
     sorted(search_results,
            key=lambda message: message['time_created'],
            reverse=True)
+    set_reacted_messages(user_id, search_results)
     return {'messages': search_results}
