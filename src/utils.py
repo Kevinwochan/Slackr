@@ -1,11 +1,14 @@
 '''
 Contains miscellaneous helper functions.
 '''
-# Assumption: Users are logged out after a server restart (presuming they are not also unregistered)
+# Assumption: Users are logged out after a server restart
+import random
+import string
 from datetime import datetime
 from jwt import encode, decode, InvalidTokenError
 from src.error import AccessError, InputError
 from src.global_variables import get_valid_tokens
+
 SECRET = 'F FOR HAYDEN'
 
 
@@ -28,7 +31,6 @@ def check_token(token):
     and then returns that users id. raises AccessError if token does not match logged in user.
     '''
     curr_users = get_valid_tokens()
-    print(token)
     if not token in curr_users:
         raise AccessError(description="You do not have a valid token")
     return decode(token.encode('utf-8'), SECRET, algorithms=['HS256'])['id']
@@ -58,6 +60,7 @@ def get_current_timestamp(delay=0):
     :rtype: int
     '''
     curr_time = datetime.now()
+<<<<<<< HEAD
     return int(curr_time.timestamp() + delay)
 
 def generate_reset_code(email, exp):
@@ -86,3 +89,17 @@ def check_reset_code(reset_code):
         return decode(reset_code.encode('utf-8'), SECRET, algorithms=['HS256'])['email']
     except InvalidTokenError:
         raise InputError(description='Reset code invalid or expired') from None
+=======
+    return int(curr_time.timestamp())
+
+def generate_random_string(size):
+    '''
+    :param size: int
+    :return a random string of length size
+    :rtype str
+    https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits
+    '''
+    return ''.join(
+        random.choices(string.ascii_uppercase + string.digits, k=size))
+
+>>>>>>> iteration-3
