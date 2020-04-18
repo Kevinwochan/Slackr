@@ -1,13 +1,14 @@
 ''' Flask API for Slackr '''
 import sys
+import os
+from flask import Flask, request, jsonify, send_from_directory, send_file
 from json import dumps
-from flask import Flask, request, jsonify
 from flask_cors import CORS
 from src.auth import auth_register, auth_login, auth_logout
 from src.admin import permission_change
 from src.channel import channel_addowner, channel_details, channel_invite, channel_join, channel_leave, channel_messages, channel_removeowner
 from src.channels import channels_create, channels_list, channels_listall
-from src.user import user_profile, user_profile_setemail, user_profile_sethandle, user_profile_setname
+from src.user import user_profile, user_profile_setemail, user_profile_sethandle, user_profile_setname, user_profile_setimage
 from src.message import message_edit, message_remove, message_send, message_sendlater, message_pin, message_react, message_unpin, message_unreact
 from src.global_variables import workspace_reset
 from src.other import search, users_all
@@ -33,13 +34,13 @@ CORS(APP)
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 APP.register_error_handler(Exception, defaultHandler)
 
+# pylint: disable=missing-function-docstring
 
 @APP.before_first_request
 def init_data():
     '''Runs functions at slackr launch before first request.'''
     load_data()
     start_auto_backup(5)
-
 
 @APP.route('/auth/register', methods=['POST'])
 def auth_register_wsgi():
@@ -214,6 +215,21 @@ def user_profile_sethandle_wsgi():
     return jsonify(user_profile_sethandle(json['token'], json['handle_str']))
 
 
+@APP.route('/user/profile/uploadphoto', methods=['POST'])
+def user_profile_setimage_wsgi():
+    json = request.get_json()
+    return jsonify(
+        user_profile_setimage(json['token'], json['img_url'], int(json['x_start']),
+                              int(json['y_start']), int(json['x_end']), int(json['y_end'])))
+
+
+@APP.route('/imgurl/<string:filename>', methods=['GET'])
+def image_wsgi(filename):
+    image_folder = os.path.join(os.getcwd(), './images/cropped')
+    if os.path.isfile(os.path.join(image_folder, filename)):
+        return send_from_directory(image_folder, filename)
+    return send_file(os.path.join(image_folder, 'default.png'))
+
 @APP.route('/users/all', methods=['GET'])
 def users_all_wsgi():
     json = request.args
@@ -258,6 +274,7 @@ def admin_userpermission_change_wsgi():
 def workspace_reset_wsgi():
     return jsonify(workspace_reset())
 
+# pylint: enable=missing-function-docstring
 
 if __name__ == "__main__":
     APP.debug = True  #TODO: remove this for production

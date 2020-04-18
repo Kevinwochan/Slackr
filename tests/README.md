@@ -64,3 +64,30 @@ TOTAL                       492     96    80%
 
 ```
 
+### Common Errors
+#### Error
+```
+Module not found
+```
+#### Solution
+dependencies need to be instaled, see the src/README.md for installing dependences
+
+
+#### Error
+```
+ModuleNotFoundError: No module named 'src'
+```
+#### Solution
+execute tests using `python3 -m pytest` instead of directly calling pytests, this is to preserve your current working directory as the project root directory 
+
+#### Error
+```
+user['profile_img_url'] == 'None/imgurl/adfasdfawdf.png'
+```
+the profile image code relies on an environment variables to construct a valid image URL.
+#### Solution
+```
+export URL=8080
+```
+or whichever port youre using for the backend
+
