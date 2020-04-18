@@ -50,11 +50,13 @@ def user_profile(token, user_id):
 
     user = get_users()[user_id]
     return {
-        'u_id': user_id,
-        'email': user['email'],
-        'name_first': user['name_first'],
-        'name_last': user['name_last'],
-        'handle_str': user['handle_str']
+        'user': {
+            'u_id': user_id,
+            'email': user['email'],
+            'name_first': user['name_first'],
+            'name_last': user['name_last'],
+            'handle_str': user['handle_str']
+        }
     }
 
 
