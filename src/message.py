@@ -289,7 +289,6 @@ def sendlater_end(channel_id, message):
     glob_channels[channel_id]['messages'].insert(0, message)
 
 
-
 def message_sendlater(token, channel_id, message, time_sent):
     '''
     sends a message at a given time_sent, where time_sent is a unix timestamp
@@ -314,6 +313,4 @@ def message_sendlater(token, channel_id, message, time_sent):
     message_template = create_message(u_id, message_id, time_sent, message)
     timer = Timer(delay, sendlater_end, args=[channel_id, message_template])
     timer.start()
-    return{
-        'message_id' : message_id
-    }
+    return {'message_id': message_id}
