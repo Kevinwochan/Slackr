@@ -54,4 +54,4 @@ def get_current_timestamp():
     uses datetime to generate and return a unix timestamp for the current time.
     '''
     curr_time = datetime.now()
-    return  int(curr_time.timestamp())
+    return int(curr_time.timestamp())
