@@ -35,12 +35,7 @@ def search(token, query_str):
             continue
         for message in channels[channel_id]['messages']:
             if query_str in message['message']:
-                search_results.append({
-                    'message_id': message['message_id'],
-                    'u_id': message['u_id'],
-                    'message': message['message'],
-                    'time_created': message['time_created']
-                })
+                search_results.append(message)
     sorted(search_results,
            key=lambda message: message['time_created'],
            reverse=True)
