@@ -1,5 +1,7 @@
+import string
 import requests
 import random
+from src.global_variables import get_channels
 
 STATES = {
     'PROGRESS_1' : 1,
@@ -70,6 +72,22 @@ ART = ['''
 ANSWER = ''
 STATE = STATES['PROGRESS_1']
 GUESSES = []
+
+def start_hangman(channel_id, user_id, time_created, message_id):
+    global STATE
+    STATE = STATES['PROGRESS_1']
+    channel = get_channels()[channel_id]
+    new_message = {
+        'u_id': user_id,
+        'message_id': message_id,
+        'time_created': time_created,
+        'message': 'HANGMAN STARTED',
+        'reacts': [],
+        'is_pinned': False
+    }
+    generate_random_answer()
+    channel['messages'].insert(0, new_message)
+    return
 
 def generate_random_answer():
     ''' generates a random answer to guess each new game of hangman '''
@@ -147,6 +165,8 @@ def guess(letter):
     :rtype str
     '''
     global GUESSES
+    if len(letter) != 1 or letter in string.punctuation or letter == ' ' or letter.isdigit():
+        return 'invalid guess, guess a single letter'
     if letter in GUESSES:
         return 'you have already guessed this'
 
