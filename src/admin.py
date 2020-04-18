@@ -7,6 +7,7 @@ from src.global_variables import get_slackr_owners, get_users
 from src.channel import is_valid_user, channel_leave
 from src.channels import channels_list
 
+
 def permission_change(token, u_id, permission_id):
     '''change a user's permissions on the server'''
     user_id = check_token(token)

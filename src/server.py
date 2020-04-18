@@ -42,6 +42,13 @@ def init_data():
     load_data()
     start_auto_backup(5)
 
+@APP.before_first_request
+def init_data():
+    '''Runs functions at slackr launch before first request.'''
+    load_data()
+    start_auto_backup(5)
+
+
 @APP.route('/auth/register', methods=['POST'])
 def auth_register_wsgi():
     json = request.get_json()
