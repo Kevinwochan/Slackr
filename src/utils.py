@@ -56,7 +56,22 @@ def get_current_timestamp():
     uses datetime to generate and return a unix timestamp for the current time.
     '''
     curr_time = datetime.now()
-    return int(curr_time.timestamp())
+    return  int(curr_time.timestamp())
+
+def set_reacted_messages(u_id, messages):
+    '''set field is_this_user_reacted to true if the u_id is in list of u_ids in the react
+
+    :param u_id: user id
+    :type u_id: int
+    :param messages: dictionary data structure - contains reacts field, which contains list
+    :type messages: dict
+    '''
+    for message in messages:
+        for react in message['reacts']:
+            if u_id in react['u_ids']:
+                react['is_this_user_reacted'] = True
+            else:
+                react['is_this_user_reacted'] = False
 
 def generate_random_string(size):
     '''
@@ -67,4 +82,3 @@ def generate_random_string(size):
     '''
     return ''.join(
         random.choices(string.ascii_uppercase + string.digits, k=size))
-
