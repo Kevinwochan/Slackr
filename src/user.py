@@ -130,7 +130,10 @@ def user_profile_setimage(token, img_url, x_start, y_start, x_end, y_end):
     if not y_start < y_end:
         raise InputError(description="y_start must be larger than y_end")
 
-    image = requests.get(img_url, allow_redirects=True).content
+    try:
+        image = requests.get(img_url, allow_redirects=True).content
+    except:
+        raise InputError(description="could not download image")
 
     new_file_name = f'{generate_random_string(20)}.{file_extension}'
     new_image = open(f'images/original/{new_file_name}', 'wb')
@@ -143,3 +146,4 @@ def user_profile_setimage(token, img_url, x_start, y_start, x_end, y_end):
 
     user['profile_img_url'] = f'/imgurl/{new_file_name}'
     return {}
+
