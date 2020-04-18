@@ -3,7 +3,8 @@ import sys
 from json import dumps
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from src.auth import auth_register, auth_login, auth_logout, auth_permission_change
+from src.auth import auth_register, auth_login, auth_logout
+from src.admin import permission_change
 from src.channel import channel_addowner, channel_details, channel_invite, channel_join, channel_leave, channel_messages, channel_removeowner
 from src.channels import channels_create, channels_list, channels_listall
 from src.user import user_profile, user_profile_setemail, user_profile_sethandle, user_profile_setname
@@ -249,7 +250,7 @@ def standup_send_wsgi():
 def admin_userpermission_change_wsgi():
     json = request.get_json()
     return jsonify(
-        auth_permission_change(json['token'], int(json['u_id']),
+        permission_change(json['token'], int(json['u_id']),
                                json['permission_id']))
 
 
