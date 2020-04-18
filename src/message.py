@@ -85,7 +85,7 @@ def create_message(user_id, message_id, time_created, message):
         'reacts': [{
             'react_id': 1,
             'u_ids': [],
-            'is_this_user_reacted': False
+            'is_this_user_reacted': True
         }],
         'is_pinned': False
     }
