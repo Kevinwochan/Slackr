@@ -280,7 +280,6 @@ def admin_userpermission_change_wsgi():
 def workspace_reset_wsgi():
     return jsonify(workspace_reset())
 
-<<<<<<< HEAD
 @APP.route('/admin/user/remove', methods=['DELETE'])
 def admin_user_remove():
 	json = request.get_json()
@@ -288,8 +287,6 @@ def admin_user_remove():
 		user_remove(json['tokem'], int(json['u_id']))
 	)
 
-=======
->>>>>>> iteration-3
 # pylint: enable=missing-function-docstring
 
 if __name__ == "__main__":
