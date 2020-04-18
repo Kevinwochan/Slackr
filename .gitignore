@@ -1,4 +1,8 @@
+#Vscode workspace settings
 .vscode
+
+# ignore application data pickle
+slackr_data.p
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
