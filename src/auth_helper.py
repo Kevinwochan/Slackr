@@ -46,16 +46,20 @@ def is_name_valid(name):
     return bool(condition_1 and condition_2)
 
 
-def is_email_unique(email):
-    '''
-    Checks if an email is already associated with a user in glob_users
+def id_from_email(email):
+    '''Returns the user id corresponding to an email
+
+    :param email: email to be verified
+    :type email: str
+    :return: if user is found, returns u_id, otherise None
+    :rtype: int/NoneType
     '''
     glob_users = get_users()
 
-    for user in glob_users.values():
-        if email == user['email']:
-            return False
-    return True
+    for u_id in glob_users:
+        if email == glob_users[u_id]['email']:
+            return u_id
+    return None
 
 
 def is_handle_unique(handle_str):
@@ -69,32 +73,14 @@ def is_handle_unique(handle_str):
             return False
     return True
 
-
-def find_id(email):
-    '''
-    Finds the user id associated with an email and returns it
-    returns false if no user is found
-    TODO: find better solution - discuss in next standup
-    '''
-    glob_users = get_users()
-
-    for u_id in glob_users:
-        if email == glob_users[u_id]['email']:
-            return u_id
-    # if no user is found with this email
-    raise Exception('No user found')
-
-
 def check_registration_inputs(email, password, name_first, name_last):
     '''
     Checks all inputs for registration raises the appropriate errors
     '''
     if not is_email_valid(email):
         raise InputError(description="Invalid Email")
-    if not is_email_unique(email):
-        raise InputError(
-            description="An account with this email has already been registered"
-        )
+    if id_from_email(email) is not None:
+        raise InputError(description="An account with this email has already been registered")
     if not is_password_valid(password):
         raise InputError(description="Password not strong enough")
     if not is_name_valid(name_first):
@@ -104,6 +90,15 @@ def check_registration_inputs(email, password, name_first, name_last):
         raise InputError(
             description="Last name must be between 1 and 50 characters long")
 
+def hash_string(string):
+    '''returns the sha256 hash of a string
+
+    :param string: String to be hashed
+    :type string: str
+    :return: string hash
+    :rtype: str
+    '''
+    return sha256(string.encode()).hexdigest()
 
 def check_login_inputs(email, password):
     '''
@@ -114,12 +109,12 @@ def check_login_inputs(email, password):
     '''
     if not is_email_valid(email):
         raise InputError(description="Invalid Email")
-    if is_email_unique(email):
+    u_id = id_from_email(email)
+    if u_id is None:
         raise InputError(description="This email has not been registered")
 
-    u_id = find_id(email)
     glob_users = get_users()
-    password_hash = sha256(password.encode()).hexdigest()
+    password_hash = hash_string(password)
 
     # checking user password
     if glob_users[u_id]['password_hash'] != password_hash:
