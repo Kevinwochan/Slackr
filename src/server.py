@@ -2,9 +2,10 @@
 import sys
 import os
 from flask import Flask, request, jsonify, send_from_directory, send_file
-from flask_cors import CORS
 from json import dumps
-from src.auth import auth_register, auth_login, auth_logout, auth_permission_change
+from flask_cors import CORS
+from src.auth import auth_register, auth_login, auth_logout
+from src.admin import permission_change
 from src.channel import channel_addowner, channel_details, channel_invite, channel_join, channel_leave, channel_messages, channel_removeowner
 from src.channels import channels_create, channels_list, channels_listall
 from src.user import user_profile, user_profile_setemail, user_profile_sethandle, user_profile_setname, user_profile_setimage
@@ -12,6 +13,7 @@ from src.message import message_edit, message_remove, message_send, message_send
 from src.global_variables import workspace_reset
 from src.other import search, users_all
 from src.standup import standup_active, standup_send, standup_start
+from src.backup import load_data, start_auto_backup
 
 
 def defaultHandler(err):
@@ -33,6 +35,13 @@ APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 APP.register_error_handler(Exception, defaultHandler)
 
 # pylint: disable=missing-function-docstring
+
+@APP.before_first_request
+def init_data():
+    '''Runs functions at slackr launch before first request.'''
+    load_data()
+    start_auto_backup(5)
+
 @APP.route('/auth/register', methods=['POST'])
 def auth_register_wsgi():
     json = request.get_json()
@@ -257,7 +266,7 @@ def standup_send_wsgi():
 def admin_userpermission_change_wsgi():
     json = request.get_json()
     return jsonify(
-        auth_permission_change(json['token'], int(json['u_id']),
+        permission_change(json['token'], int(json['u_id']),
                                json['permission_id']))
 
 

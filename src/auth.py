@@ -58,14 +58,10 @@ def auth_register(email, password, name_first, name_last):
         'handle_str': handle_str,
         'password_hash': password_hash,
         'is_owner': is_owner,
-        'profile_img_url': f'{os.getenv("URL")}/imgurl/default.png'
+        'profile_img_url': '/imgurl/default.png'
     }
-    print(glob_users[u_id])
     token = generate_token(u_id)
     return {
         'u_id': u_id,
         'token': token,
     }
-
-def auth_permission_change(token, user_id, permssion_id):
-    return {}

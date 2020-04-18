@@ -50,6 +50,6 @@ def test_application_clean():
     assert len(get_slackr_owners()) == 0
     assert len(get_valid_tokens()) == 0
     original_image_folder = os.path.join(os.getcwd(), 'images/original')
-    assert len(os.listdir(original_image_folder)) == 0
+    assert len(os.listdir(original_image_folder)) == 1
     cropped_image_folder = os.path.join(os.getcwd(), 'images/cropped')
     assert len(os.listdir(cropped_image_folder)) == 1

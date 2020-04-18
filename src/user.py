@@ -1,7 +1,6 @@
 '''
 Allows users to edit and set their profile information
 '''
-import os
 import re
 import requests
 from PIL import Image
@@ -142,5 +141,5 @@ def user_profile_setimage(token, img_url, x_start, y_start, x_end, y_end):
     cropped_image = open(f'images/cropped/{new_file_name}', 'wb')
     original_image.save(cropped_image)
 
-    user['profile_img_url'] = f'{os.getenv("URL")}/imgurl/{new_file_name}'
+    user['profile_img_url'] = f'/imgurl/{new_file_name}'
     return {}
