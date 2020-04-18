@@ -74,7 +74,6 @@ def standup_end(channel_id):
         glob_standups.pop(channel_id)
 
 
-
 # Functions
 def standup_start(token, channel_id, length):
     '''
