@@ -2,9 +2,12 @@
 A module for creating channels to group messages and slackr users
 '''
 from src.error import InputError, AccessError
-from src.utils import check_token
+from src.utils import check_token, set_reacted_messages, get_member_information
 from src.global_variables import get_channels, get_users, get_slackr_owners
 
+def is_user_a_slackr_owner(user_id):
+    ''' returns true is user is a slackr owner '''
+    return user_id in get_slackr_owners()
 
 def is_valid_channel(channel_id):
     ''' returns true if the channel id is valid'''
@@ -34,7 +37,7 @@ def get_channel_members(channel_id):
 
 def is_valid_user(user_id):
     ''' returns true if user_id refers to an existing user '''
-    return user_id in get_users()  # TODO move this somewhere else
+    return user_id in get_users()
 
 
 def is_channel_public(channel_id):
@@ -69,32 +72,21 @@ def channel_details(token, channel_id):
     '''
     user_id = check_token(token)
     if not is_valid_channel(channel_id):
-        print (get_channels().keys())
         raise InputError(description="Invalid channel id")
 
     if not is_user_a_member(channel_id, user_id):
-        raise AccessError(description="User does not have access to this channel")
-
+        raise AccessError(
+            description="User does not have access to this channel")
     owner_members = []
     all_members = []
     for user_id in get_channel_owners(channel_id):
-        owner_members.append({
-            'u_id': user_id,
-            'name_first': get_users()[user_id]['name_first'],
-            'name_last': get_users()[user_id]['name_last']
-        })
-        all_members.append({
-            'u_id': user_id,
-            'name_first': get_users()[user_id]['name_first'],
-            'name_last': get_users()[user_id]['name_last']
-        })
+        member_info = get_member_information(user_id)
+        owner_members.append(member_info)
+        all_members.append(member_info)
 
     for user_id in get_channel_members(channel_id):
-        all_members.append({
-            'u_id': user_id,
-            'name_first': get_users()[user_id]['name_first'],
-            'name_last': get_users()[user_id]['name_last']
-        })
+        member_info = get_member_information(user_id)
+        all_members.append(member_info)
     return {
         'name': get_channels()[channel_id]['name'],
         'owner_members': owner_members,
@@ -124,7 +116,7 @@ def channel_messages(token, channel_id, start):
     end = start + 50
     if end > len(channel['messages']):
         end = -1
-
+    set_reacted_messages(user_id, channel['messages'][start:start + 50])
     return {
         'messages': channel['messages'][start:start + 50],
         'start': start,
@@ -143,10 +135,6 @@ def channel_leave(token, channel_id):
 
     if is_user_a_owner(channel_id, user_id):
         get_channel_owners(channel_id).remove(user_id)
-        if len(
-                get_channels()
-        ) == 0:  # TODO: discuss if the last owner deletes the channel when leaving
-            del get_channels()[channel_id]
     elif is_user_a_member(channel_id, user_id):
         get_channel_members(channel_id).remove(user_id)
     else:
@@ -162,12 +150,11 @@ def channel_join(token, channel_id):
     user_id = check_token(token)
 
     if not is_valid_channel(channel_id):
-        raise InputError
+        raise InputError(description="No channel found with that ID")
 
     if not is_channel_public(
             channel_id) and not user_id in get_slackr_owners():
-        raise AccessError
-
+        raise AccessError(description="This channel is private")
     get_channel_members(channel_id).append(user_id)
 
     return {}
