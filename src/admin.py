@@ -45,4 +45,7 @@ def user_remove(token, u_id):
             get_channel_owners(channel_id).remove(u_id)
         elif is_user_a_member(channel_id, u_id):
             get_channel_members(channel_id).remove(u_id)
+        
+    glob_users = get_users()
+    glob_users[u_id]['disables'] = True
     return {}
