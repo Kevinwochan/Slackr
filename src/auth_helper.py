@@ -118,6 +118,8 @@ def check_login_inputs(email, password):
 
     u_id = find_id(email)
     glob_users = get_users()
+    if glob_users[u_id]['disabled'] == True:
+        raise InputError(description='This accout has already removed from the slack')
     password_hash = sha256(password.encode()).hexdigest()
 
     # checking user password
