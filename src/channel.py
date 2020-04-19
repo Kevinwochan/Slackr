@@ -1,9 +1,8 @@
 '''
 A module for creating channels to group messages and slackr users
 '''
-import os
 from src.error import InputError, AccessError
-from src.utils import check_token, set_reacted_messages
+from src.utils import check_token, set_reacted_messages, get_member_information
 from src.global_variables import get_channels, get_users, get_slackr_owners
 
 
@@ -75,31 +74,16 @@ def channel_details(token, channel_id):
     if not is_user_a_member(channel_id, user_id):
         raise AccessError(
             description="User does not have access to this channel")
-
-    users = get_users()
     owner_members = []
     all_members = []
     for user_id in get_channel_owners(channel_id):
-        owner_members.append({
-            'u_id': user_id,
-            'name_first': users[user_id]['name_first'],
-            'name_last': users[user_id]['name_last'],
-            'profile_img_url': f'{os.getenv("URL")}{users[user_id]["profile_img_url"]}'
-        })
-        all_members.append({
-            'u_id': user_id,
-            'name_first': users[user_id]['name_first'],
-            'name_last': users[user_id]['name_last'],
-            'profile_img_url': f'{os.getenv("URL")}{users[user_id]["profile_img_url"]}'
-        })
+        member_info = get_member_information(user_id)
+        owner_members.append(member_info)
+        all_members.append(member_info)
 
     for user_id in get_channel_members(channel_id):
-        all_members.append({
-            'u_id': user_id,
-            'name_first': users[user_id]['name_first'],
-            'name_last': users[user_id]['name_last'],
-            'profile_img_url': f'{os.getenv("URL")}{users[user_id]["profile_img_url"]}'
-        })
+        member_info = get_member_information(user_id)
+        all_members.append(member_info)
     return {
         'name': get_channels()[channel_id]['name'],
         'owner_members': owner_members,
@@ -163,11 +147,11 @@ def channel_join(token, channel_id):
     user_id = check_token(token)
 
     if not is_valid_channel(channel_id):
-        raise InputError
+        raise InputError(description="No channel found with that ID")
 
     if not is_channel_public(
             channel_id) and not user_id in get_slackr_owners():
-        raise AccessError
+        raise AccessError(description="This channel is private")
 
     get_channel_members(channel_id).append(user_id)
 
