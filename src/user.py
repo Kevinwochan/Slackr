@@ -54,10 +54,17 @@ def user_profile(token, user_id):
 
 
 def user_profile_setname(token, name_first, name_last):
-    '''
-    Sets the name of the profile using given strings
-    name_first and name_last have size limits
-    and only the user owner can change this
+    '''Given a valid token, name_first, name_last, updates a users name_first, name_last
+
+    :param token: jwt token
+    :type token: str
+    :param name_first: new first name
+    :type name_first: str
+    :param name_last: new last name
+    :type name_last: str
+    :raises InputError: if either name_first or name_last is invalid
+    :return: empty dictionary
+    :rtype: dict
     '''
     user_id = check_token(token)
     if not (is_name_valid(name_first) and is_name_valid(name_last)):
@@ -71,8 +78,15 @@ def user_profile_setname(token, name_first, name_last):
 
 
 def user_profile_setemail(token, email):
-    '''
-    Update the authorised user's email address
+    '''Given a valid token and new email, updates a user's email address
+
+    :param token: jwt token
+    :type token: str
+    :param email: new email
+    :type email: str
+    :raises InputError: If email is invalid according to is_new_email()
+    :return: empty dictionary
+    :rtype: dict
     '''
     user_id = check_token(token)
     if not is_new_email(user_id, email):
@@ -84,9 +98,15 @@ def user_profile_setemail(token, email):
 
 
 def user_profile_sethandle(token, handle_str):
-    '''
-    Update the authorised user's handle (i.e. display name)
-    handle has a size limit
+    '''Given a valid new handle_str and token, updates a user's handle_str
+
+    :param token: jwt token
+    :type token: str
+    :param handle_str: new handle
+    :type handle_str: str
+    :raises InputError: If handle_str is invalid according to is_valid_handle()
+    :return: empty dictionary
+    :rtype: dict
     '''
     user_id = check_token(token)
     if not is_valid_handle(user_id, handle_str):
