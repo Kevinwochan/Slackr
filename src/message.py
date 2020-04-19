@@ -7,6 +7,8 @@ from src.utils import check_token, get_current_timestamp
 from src.global_variables import (get_slackr_owners, get_channels,
                                   get_num_messages, set_num_messages)
 from src.channel import is_user_a_member, is_valid_channel
+from src.hangman import start_hangman, guess
+
 VALID_REACTS = [1]
 
 
@@ -116,8 +118,13 @@ def message_send(token, channel_id, message):
     channel = glob_channels[channel_id]
     time_created = get_current_timestamp()
 
-    channel['messages'].insert(
-        0, create_message(user_id, message_id, time_created, message))
+    if message.startswith('/hangman'):
+        start_hangman(channel_id, user_id, time_created, message_id)
+    elif message.startswith('/guess'):
+        guess(message, channel_id, user_id, time_created, message_id)
+    else:
+        channel['messages'].insert(
+            0, create_message(user_id, message_id, time_created, message))
     set_num_messages(message_id + 1)
     return {'message_id': message_id}
 
