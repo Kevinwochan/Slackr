@@ -155,7 +155,6 @@ def channel_join(token, channel_id):
     if not is_channel_public(
             channel_id) and not user_id in get_slackr_owners():
         raise AccessError(description="This channel is private")
-
     get_channel_members(channel_id).append(user_id)
 
     return {}

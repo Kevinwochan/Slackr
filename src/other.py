@@ -5,7 +5,6 @@ from src.global_variables import get_users, get_channels
 from src.utils import check_token, set_reacted_messages, get_user_information
 from src.channel import is_user_a_member
 
-
 def users_all(token):
     '''Returns a list of all users
 

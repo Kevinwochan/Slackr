@@ -67,6 +67,7 @@ def auth_register(email, password, name_first, name_last):
         is_owner = True
 
     glob_users[u_id] = {
+        'disabled': False,
         'email': email,
         'name_first': name_first,
         'name_last': name_last,

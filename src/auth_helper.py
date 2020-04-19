@@ -73,6 +73,18 @@ def is_handle_unique(handle_str):
             return False
     return True
 
+
+def is_user_disabled(u_id):
+    '''Finds if a user has been deleted
+
+    :param u_id: target user_id
+    :type u_id: int
+    :return: True if the user has been deleted, otherwise False
+    :rtype: bool
+    '''
+    return get_users()[u_id]['disabled']
+
+
 def check_registration_inputs(email, password, name_first, name_last):
     '''
     Checks all inputs for registration raises the appropriate errors
@@ -114,6 +126,8 @@ def check_login_inputs(email, password):
         raise InputError(description="This email has not been registered")
 
     glob_users = get_users()
+    if is_user_disabled(u_id):
+        raise InputError(description='This account has been removed from Slackr')
     password_hash = hash_string(password)
 
     # checking user password
