@@ -7,9 +7,12 @@ from src.channel import is_user_a_member
 
 
 def users_all(token):
-    '''
-    Returns a list of all users
-        each user is a dictionary contains types u_id, email, name_first, name_last, handle_str
+    '''Returns a list of all users
+
+    :param token: jwt token
+    :type token: str
+    :return: contains u_id, email, name_first, name_last, handle_str for each user
+    :rtype: dict
     '''
     check_token(token)
     users = get_users()
