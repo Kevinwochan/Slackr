@@ -74,6 +74,7 @@ STATE = STATES['PROGRESS_1']
 GUESSES = []
 
 def start_hangman(channel_id, user_id, time_created, message_id):
+    hangman_reset() # resets any existing data for new game
     global STATE
     STATE = STATES['PROGRESS_1']
     channel = get_channels()[channel_id]
@@ -176,6 +177,19 @@ def guess(letter):
     else:
         wrong_guess()
     return get_text()
+
+def hangman_reset():
+    '''resets global variables used in hangman game for the next time the game is run'''
+    global ANSWER
+    global GUESSES
+    ANSWER = ''
+    GUESSES = []
+
+def has_hangman_started():
+    '''check that hangman has started before user can use /guess'''
+    if ANSWER == '':
+        return 0
+    return 1
 
 if __name__ == '__main__':
     generate_random_answer()
