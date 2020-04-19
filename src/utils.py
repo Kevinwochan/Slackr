@@ -122,7 +122,10 @@ def get_user_information(u_id):
     :return: dictionary containing all user information
     :rtype: dict
     '''
-    user = get_users()[u_id]
+    try:
+        user = get_users()[u_id]
+    except KeyError:
+        raise InputError(description='No user exists with that id')
     return {
         'u_id': u_id,
         'email': user['email'],
