@@ -7,7 +7,7 @@ from src.utils import check_token, get_current_timestamp
 from src.global_variables import (get_slackr_owners, get_channels,
                                   get_num_messages, set_num_messages)
 from src.channel import is_user_a_member, is_valid_channel
-from src.hangman import start_hangman, guess, has_hangman_started
+from src.hangman import start_hangman, guess, has_hangman_started, hangman_same_channel
 
 VALID_REACTS = [1]
 
@@ -127,9 +127,11 @@ def message_send(token, channel_id, message):
 
     if message.startswith('/hangman'):
         start_hangman(channel_id, user_id, time_created, message_id)
-    elif message.startswith('/guess'):
-        # /guess a
-        # /guess 
+    elif message.startswith('/guess'): # /guess a
+        if hangman_same_channel(channel_id) == 0: # guess is not in same channel as where hangman was started
+            message = 'guess in the same channel where hangman was started'
+            channel['messages'].insert( 0, create_message(user_id, message_id, time_created, message))
+            return {'message_id': message_id}
         if has_hangman_started() == 0: # game of hangman hasn't been started
             message = 'start hangman game first'
             channel['messages'].insert( 0, create_message(user_id, message_id, time_created, message))
