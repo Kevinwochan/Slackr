@@ -159,7 +159,7 @@ def get_text(channel_id):
     if state == STATES['WIN']:
         return f'\n{ART[state]}'
     if state == STATES['LOSE']:
-        return f'\n{ART[state]}\nANSWER WAS {data[channel_id["answer"]]}'
+        return f'\n{ART[state]}\nANSWER WAS {data[channel_id]["answer"]}'
     return '\n'.join([
         '\n', ART[state],
         format_answer(channel_id),
