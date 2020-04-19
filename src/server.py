@@ -15,6 +15,7 @@ from src.global_variables import workspace_reset
 from src.other import search, users_all
 from src.standup import standup_active, standup_send, standup_start
 from src.backup import load_data, start_auto_backup
+from src.admin import user_remove
 
 
 def defaultHandler(err):
@@ -36,6 +37,12 @@ APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 APP.register_error_handler(Exception, defaultHandler)
 
 # pylint: disable=missing-function-docstring
+
+@APP.before_first_request
+def init_data():
+    '''Runs functions at slackr launch before first request.'''
+    load_data()
+    start_auto_backup(5)
 
 @APP.before_first_request
 def init_data():
@@ -283,6 +290,13 @@ def admin_userpermission_change_wsgi():
 @APP.route('/workspace/reset', methods=['POST'])
 def workspace_reset_wsgi():
     return jsonify(workspace_reset())
+
+@APP.route('/admin/user/remove', methods=['DELETE'])
+def admin_user_remove():
+    json = request.get_json()
+    return jsonify(
+            user_remove(json['token'], int(json['u_id']))
+            )
 
 # pylint: enable=missing-function-docstring
 
