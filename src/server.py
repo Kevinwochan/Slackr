@@ -1,10 +1,11 @@
 ''' Flask API for Slackr '''
 import sys
 import os
-from flask import Flask, request, jsonify, send_from_directory, send_file
 from json import dumps
+from flask import Flask, request, jsonify, send_from_directory, send_file
 from flask_cors import CORS
 from src.auth import auth_register, auth_login, auth_logout
+from src.auth_passwordreset import auth_passwordreset_request, auth_passwordreset_reset
 from src.admin import permission_change
 from src.channel import channel_addowner, channel_details, channel_invite, channel_join, channel_leave, channel_messages, channel_removeowner
 from src.channels import channels_create, channels_list, channels_listall
@@ -14,6 +15,7 @@ from src.global_variables import workspace_reset
 from src.other import search, users_all
 from src.standup import standup_active, standup_send, standup_start
 from src.backup import load_data, start_auto_backup
+from src.admin import user_remove
 
 
 def defaultHandler(err):
@@ -52,7 +54,7 @@ def init_data():
 def auth_register_wsgi():
     json = request.get_json()
     return jsonify(
-        auth_register(json['email'], json['password'], json['name_first'],
+        auth_register(json['email'], str(json['password']), json['name_first'],
                       json['name_last']))
 
 
@@ -68,6 +70,15 @@ def auth_logout_wsgi():
     #token = request.cookies.get('token') TODO
     return jsonify(auth_logout(json['token']))
 
+@APP.route('/auth/passwordreset/request', methods=['POST'])
+def auth_passwordreset_request_wsgi():
+    json = request.get_json()
+    return jsonify(auth_passwordreset_request(str(json['email'])))
+
+@APP.route('/auth/passwordreset/reset', methods=['POST'])
+def auth_passwordreset_reset_wsgi():
+    json = request.get_json()
+    return jsonify(auth_passwordreset_reset(str(json['reset_code']), str(json['new_password'])))
 
 @APP.route('/channel/invite', methods=['POST'])
 def channel_invite_wsgi():
@@ -280,18 +291,12 @@ def admin_userpermission_change_wsgi():
 def workspace_reset_wsgi():
     return jsonify(workspace_reset())
 
-# @APP.route('/admin/user/remove', methods=['DELETE'])
-# def admin_user_remove():
-# 	json = request.get_json()
-# 	return jsonify(
-# 		user_remove(json['tokem'], int(json['u_id']))
-# 	)
-@APP.route('/admin/user/remove', method=['DELETE'])
+@APP.route('/admin/user/remove', methods=['DELETE'])
 def admin_user_remove():
-	json = request.get_json()
-	return jsonify(
-		user_remove(json['token'], int(json['u_id']))
-	)
+    json = request.get_json()
+    return jsonify(
+            user_remove(json['token'], int(json['u_id']))
+            )
 
 # pylint: enable=missing-function-docstring
 
