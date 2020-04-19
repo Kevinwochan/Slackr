@@ -75,7 +75,7 @@ def is_slackr_owner(token):
 
 def create_message(user_id, message_id, time_created, message):
     '''
-    returns a default message with reacts = [] and is_pinned = False
+    returns a default message with is_pinned = False
     '''
     return {
         'u_id': user_id,
