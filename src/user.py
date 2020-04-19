@@ -7,8 +7,8 @@ from src.utils import check_token, generate_random_string, get_user_information
 from src.auth_helper import is_handle_unique, is_email_valid, id_from_email, is_name_valid
 from src.error import InputError
 from src.global_variables import get_users
-
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
 
 def is_valid_handle(host_user_id, handle_str):
     '''Checks that handle_str is valid and not being used by any other user
