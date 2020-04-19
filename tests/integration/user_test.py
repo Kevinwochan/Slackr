@@ -1,5 +1,5 @@
 import pytest
-from src.user import user_profile, user_profile_setname, user_profile_setemail, user_profile_sethandle
+from src.user import user_profile, user_profile_setname, user_profile_setemail, user_profile_sethandle, user_profile_setimage
 from src.auth import auth_register
 from src.error import InputError, AccessError
 
@@ -27,7 +27,7 @@ def test_profile_invalid_id(user1):
 
 # Checking all returned data is of the right type
 def test_profile_return_types(user1):
-    user1_profile = user_profile(user1['token'], user1['u_id'])
+    user1_profile = user_profile(user1['token'], user1['u_id'])['user']
     assert isinstance(user1_profile, dict)
 
     assert 'u_id' in user1_profile
@@ -48,7 +48,7 @@ def test_profile_return_types(user1):
 
 # Checking that test_profile returns data matching the user
 def test_profile_return_data(user1):
-    user1_profile = user_profile(user1['token'], user1['u_id'])
+    user1_profile = user_profile(user1['token'], user1['u_id'])['user']
 
     assert user1_profile['u_id'] == user1['u_id']
     assert user1_profile['email'] == user1['email']
@@ -61,7 +61,7 @@ def test_profile_return_data(user1):
 # NOT the token.
 def test_profile_return_diff_user(user1, user2):
     # Calling user profile with user1's token and user2's u_id
-    user2_prof = user_profile(user1['token'], user2['u_id'])
+    user2_prof = user_profile(user1['token'], user2['u_id'])['user']
     assert user2_prof['u_id'] == user2['u_id']
     assert user2_prof['email'] == user2['email']
     assert user2_prof['name_first'] == user2['name_first']
@@ -95,7 +95,7 @@ def test_setname_invalid_name(user1):
 
     # Checking that user1's names have not been altered
     #Assumption: functions that result in errors perform no actions
-    user1_profile = user_profile(user1['token'], user1['u_id'])
+    user1_profile = user_profile(user1['token'], user1['u_id'])['user']
     assert user1_profile['name_first'] == user1['name_first']
     assert user1_profile['name_last'] == user1['name_last']
 
@@ -111,12 +111,12 @@ def test_setname_edge_cases(user1):
 
 
 def test_setname_valid(user1):
-    user1_profile = user_profile(user1['token'], user1['u_id'])
+    user1_profile = user_profile(user1['token'], user1['u_id'])['user']
     new_name_first = 'Different'
     new_name_last = 'Name'
 
     user_profile_setname(user1['token'], new_name_first, new_name_last)
-    new_user1_profile = user_profile(user1['token'], user1['u_id'])
+    new_user1_profile = user_profile(user1['token'], user1['u_id'])['user']
     assert new_user1_profile['name_first'] == new_name_first
     assert new_user1_profile['name_last'] == new_name_last
     # Check that no other field has been changed
@@ -144,7 +144,7 @@ def test_setemail_invalid(user1):
         user_profile_setemail(user1['token'], '')
 
     # Checking that user1's email has not been altered
-    user1_profile = user_profile(user1['token'], user1['u_id'])
+    user1_profile = user_profile(user1['token'], user1['u_id'])['user']
     assert user1_profile['email'] == user1['email']
 
 
@@ -158,18 +158,18 @@ def test_setemail_taken(user1, user2):
     with pytest.raises(InputError):
         user_profile_setemail(user2['token'], user1['email'])
     # Checking that user's emails have not been altered
-    user1_profile = user_profile(user1['token'], user1['u_id'])
-    user2_prof = user_profile(user2['token'], user2['u_id'])
+    user1_profile = user_profile(user1['token'], user1['u_id'])['user']
+    user2_prof = user_profile(user2['token'], user2['u_id'])['user']
     assert user1_profile['email'] == user1['email']
     assert user2_prof['email'] == user2['email']
 
 
 def test_setemail_valid(user1):
-    user1_profile = user_profile(user1['token'], user1['u_id'])
+    user1_profile = user_profile(user1['token'], user1['u_id'])['user']
     new_email = 'newemail@gmail.com'
     user_profile_setemail(user1['token'], new_email)
 
-    new_user1_profile = user_profile(user1['token'], user1['u_id'])
+    new_user1_profile = user_profile(user1['token'], user1['u_id'])['user']
     assert new_user1_profile['email'] == new_email
 
     # Check that no other field has been changed
@@ -188,20 +188,20 @@ def test_sethandle_invalid_token(inv_token):
 
 
 def test_sethandle_invalid(user1):
-    user1_profile_before = user_profile(user1['token'], user1['u_id'])
+    user1_profile_before = user_profile(user1['token'], user1['u_id'])['user']
     with pytest.raises(InputError):
         user_profile_sethandle(user1['token'], 'a' * 2)
     with pytest.raises(InputError):
         user_profile_sethandle(user1['token'], 'a' * 21)
 
     # Checking that user1's handle has not been altered
-    user1_profile_after = user_profile(user1['token'], user1['u_id'])
+    user1_profile_after = user_profile(user1['token'], user1['u_id'])['user']
     assert user1_profile_after == user1_profile_before
 
 
 def test_sethandle_taken(user1, user2):
-    user1_profile = user_profile(user1['token'], user1['u_id'])
-    user2_prof = user_profile(user2['token'], user2['u_id'])
+    user1_profile = user_profile(user1['token'], user1['u_id'])['user']
+    user2_prof = user_profile(user2['token'], user2['u_id'])['user']
 
     with pytest.raises(InputError):
         user_profile_sethandle(user1['token'], user2_prof['handle_str'])
@@ -209,18 +209,18 @@ def test_sethandle_taken(user1, user2):
         user_profile_sethandle(user2['token'], user1_profile['handle_str'])
 
     # Checking that user's handles have not been altered
-    new_user1_profile = user_profile(user1['token'], user1['u_id'])
-    new_user2_prof = user_profile(user2['token'], user2['u_id'])
+    new_user1_profile = user_profile(user1['token'], user1['u_id'])['user']
+    new_user2_prof = user_profile(user2['token'], user2['u_id'])['user']
     assert user1_profile['handle_str'] == new_user1_profile['handle_str']
     assert user2_prof['handle_str'] == new_user2_prof['handle_str']
 
 
 def test_sethandle_valid(user1):
-    user1_profile = user_profile(user1['token'], user1['u_id'])
+    user1_profile = user_profile(user1['token'], user1['u_id'])['user']
     new_handle = 'newhandle'
     user_profile_sethandle(user1['token'], new_handle)
 
-    new_user1_profile = user_profile(user1['token'], user1['u_id'])
+    new_user1_profile = user_profile(user1['token'], user1['u_id'])['user']
     assert new_user1_profile['handle_str'] == new_handle
 
     # Check that no other field has been changed
@@ -252,16 +252,27 @@ def test_set_return_type(user1):
 # Checking that entering existing details raises no errors and changes no user
 # details.
 def test_set_same(user1):
-    user1_profile = user_profile(user1['token'], user1['u_id'])
+    user1_profile = user_profile(user1['token'], user1['u_id'])['user']
 
     user_profile_setname(user1['token'], user1['name_first'],
                          user1['name_last'])
     user_profile_setemail(user1['token'], user1['email'])
     user_profile_sethandle(user1['token'], user1_profile['handle_str'])
 
-    new_user1_profile = user_profile(user1['token'], user1['u_id'])
+    new_user1_profile = user_profile(user1['token'], user1['u_id'])['user']
 
     assert new_user1_profile['email'] == user1_profile['email']
     assert new_user1_profile['name_first'] == user1_profile['name_first']
     assert new_user1_profile['name_last'] == user1_profile['name_last']
     assert new_user1_profile['handle_str'] == user1_profile['handle_str']
+
+def test_user_setimage_valid(user1):
+    user_profile_setimage(user1['token'], 'https://i.imgur.com/MJcwL1W.jpg', 0, 0, 200, 200)
+
+def test_user_setimage_invalid_img_url(user1):
+    with pytest.raises(InputError):
+        user_profile_setimage(user1['token'], 'https://i.imgur.com/MJcwL1W', 0, 0, 200, 200)
+
+def test_user_setimage_invalid_dimensions(user1):
+    with pytest.raises(InputError):
+        user_profile_setimage(user1['token'], 'https://i.imgur.com/MJcwL1W', -4, 34, 34200, -200)

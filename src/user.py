@@ -2,7 +2,9 @@
 Allows users to edit and set their profile information
 '''
 import re
-from src.utils import check_token
+import requests
+from PIL import Image
+from src.utils import check_token, generate_random_string
 from src.error import InputError
 from src.global_variables import get_users
 
@@ -45,17 +47,20 @@ def user_profile(token, user_id):
     fetches a user profile, any valid user is able to do this
     '''
     check_token(token)
-    if not user_id in get_users():
+    users = get_users()
+    if not user_id in users:
         raise InputError
-
-    user = get_users()[user_id]
+    user = users[user_id]
     return {
-        'u_id': user_id,
-        'email': user['email'],
-        'name_first': user['name_first'],
-        'name_last': user['name_last'],
-        'handle_str': user['handle_str']
-    }
+        'user': {
+            'u_id': user_id,
+            'email': user['email'],
+            'name_first': user['name_first'],
+            'name_last': user['name_last'],
+            'handle_str': user['handle_str'],
+            'profile_img_url': user['profile_img_url']
+        }
+   }
 
 
 def user_profile_setname(token, name_first, name_last):
@@ -65,9 +70,6 @@ def user_profile_setname(token, name_first, name_last):
     and only the user owner can change this
     '''
     user_id = check_token(token)
-    if not user_id in get_users():
-        raise InputError
-
     if len(name_first) < 1 or len(name_first) > 50:
         raise InputError
     if len(name_last) < 1 or len(name_last) > 50:
@@ -85,8 +87,6 @@ def user_profile_setemail(token, email):
     Update the authorised user's email address
     '''
     user_id = check_token(token)
-    if not user_id in get_users():
-        raise InputError
     if not is_valid_email(user_id, email):
         raise InputError
 
@@ -101,8 +101,6 @@ def user_profile_sethandle(token, handle_str):
     handle has a size limit
     '''
     user_id = check_token(token)
-    if not user_id in get_users():
-        raise InputError
     if len(handle_str) < 1 or len(handle_str) > 50:
         raise InputError
     if not is_valid_handle(user_id, handle_str):
@@ -111,3 +109,43 @@ def user_profile_sethandle(token, handle_str):
     user = get_users()[user_id]
     user['handle_str'] = handle_str
     return {}
+
+
+def user_profile_setimage(token, img_url, x_start, y_start, x_end, y_end):
+    '''
+    Update the authorised user's display photo
+    Downloads the given img_url into the server folder 'images'
+    Crops images if they do not fit the size
+    :param token:
+    :type token: string
+    '''
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+    user_id = check_token(token)
+    user = get_users()[user_id]
+
+    file_extension = img_url.rsplit('.', 1)[1].lower()
+    if not file_extension in ALLOWED_EXTENSIONS:
+        raise InputError(description="file not allowed")
+
+    if not x_start < x_end:
+        raise InputError(description="x_start must be larger than x_end")
+    if not y_start < y_end:
+        raise InputError(description="y_start must be larger than y_end")
+
+    try:
+        image = requests.get(img_url, allow_redirects=True).content
+    except:
+        raise InputError(description="could not download image")
+
+    new_file_name = f'{generate_random_string(20)}.{file_extension}'
+    new_image = open(f'images/original/{new_file_name}', 'wb')
+    new_image.write(image)
+
+    original_image = Image.open(f'images/original/{new_file_name}')
+    original_image = original_image.crop((x_start, y_start, x_end, y_end))
+    cropped_image = open(f'images/cropped/{new_file_name}', 'wb')
+    original_image.save(cropped_image)
+
+    user['profile_img_url'] = f'/imgurl/{new_file_name}'
+    return {}
+
