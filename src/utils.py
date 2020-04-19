@@ -124,12 +124,10 @@ def get_user_information(u_id):
     '''
     user = get_users()[u_id]
     return {
-        'user': {
-            'u_id': u_id,
-            'email': user['email'],
-            'name_first': user['name_first'],
-            'name_last': user['name_last'],
-            'handle_str': user['handle_str'],
-            'profile_img_url': user['profile_img_url']
-                }
+        'u_id': u_id,
+        'email': user['email'],
+        'name_first': user['name_first'],
+        'name_last': user['name_last'],
+        'handle_str': user['handle_str'],
+        'profile_img_url': user['profile_img_url']
         }
