@@ -7,7 +7,7 @@ import string
 from datetime import datetime
 from jwt import encode, decode, InvalidTokenError
 from src.error import AccessError, InputError
-from src.global_variables import get_valid_tokens
+from src.global_variables import get_valid_tokens, get_users
 
 SECRET = 'F FOR HAYDEN'
 
@@ -113,3 +113,23 @@ def generate_random_string(size):
     '''
     return ''.join(
         random.choices(string.ascii_uppercase + string.digits, k=size))
+
+def get_user_information(u_id):
+    '''Returns user information in the correct format for the slackr frontend
+
+    :param u_id: User id, corresponding to an existing slackr user
+    :type u_id: int
+    :return: dictionary containing all user information
+    :rtype: dict
+    '''
+    user = get_users()[u_id]
+    return {
+        'user': {
+            'u_id': u_id,
+            'email': user['email'],
+            'name_first': user['name_first'],
+            'name_last': user['name_last'],
+            'handle_str': user['handle_str'],
+            'profile_img_url': user['profile_img_url']
+                }
+        }
