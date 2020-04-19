@@ -4,6 +4,7 @@ Contains miscellaneous functions
 from src.global_variables import get_users, get_channels
 from src.utils import check_token, set_reacted_messages, get_user_information
 from src.channel import is_user_a_member
+from src.auth_helper import is_user_disabled
 
 def users_all(token):
     '''Returns a list of all users
@@ -16,7 +17,7 @@ def users_all(token):
     check_token(token)
     users = get_users()
     return {
-        'users': [get_user_information(user_id) for user_id in users],
+        'users': [get_user_information(user_id) for user_id in users if not is_user_disabled(user_id)],
     }
 
 
