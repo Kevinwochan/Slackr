@@ -2,10 +2,9 @@
 Auth functions. Allows users to be registered, logged in and logged out of slackr
 This file uses helper functions which are located in the file auth_py
 """
-import os
-from hashlib import sha256
 from src.utils import generate_token, invalidate_token
-from src.auth_helper import check_login_inputs, check_registration_inputs, create_handle
+from src.auth_helper import (check_login_inputs, check_registration_inputs,
+                             create_handle, hash_string)
 from src.global_variables import get_users
 
 
@@ -60,7 +59,7 @@ def auth_register(email, password, name_first, name_last):
     check_registration_inputs(email, password, name_first, name_last)
     glob_users = get_users()
     u_id = len(glob_users)
-    password_hash = sha256(password.encode()).hexdigest()
+    password_hash = hash_string(password)
     handle_str = create_handle(name_first, name_last)
 
     is_owner = False
