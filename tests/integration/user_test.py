@@ -190,7 +190,7 @@ def test_sethandle_invalid_token(inv_token):
 def test_sethandle_invalid(user1):
     user1_profile_before = user_profile(user1['token'], user1['u_id'])['user']
     with pytest.raises(InputError):
-        user_profile_sethandle(user1['token'], 'a' * 2)
+        user_profile_sethandle(user1['token'], 'a')
     with pytest.raises(InputError):
         user_profile_sethandle(user1['token'], 'a' * 21)
 
