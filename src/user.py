@@ -78,7 +78,7 @@ def user_profile_setemail(token, email):
     '''
     user_id = check_token(token)
     if not is_new_email(user_id, email):
-        raise InputError
+        raise InputError(description='Email invalid or already being used')
 
     user = get_users()[user_id]
     user['email'] = email
@@ -91,10 +91,8 @@ def user_profile_sethandle(token, handle_str):
     handle has a size limit
     '''
     user_id = check_token(token)
-    if len(handle_str) < 1 or len(handle_str) > 50:
-        raise InputError
     if not is_valid_handle(user_id, handle_str):
-        raise InputError
+        raise InputError(description='Handle invalid or already being used')
 
     user = get_users()[user_id]
     user['handle_str'] = handle_str
