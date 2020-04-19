@@ -11,18 +11,6 @@ from src.global_variables import (workspace_reset, get_channels,
                                   get_slackr_owners)
 from src.utils import check_token, generate_token, invalidate_token
 
-
-def test_symmetric():
-    '''
-    A JWT that is encrypted should decrypt to the same integer
-    '''
-    for user_id in range(100):
-        new_token = generate_token(user_id)
-        decrypted_token = check_token(new_token)
-        assert isinstance(decrypted_token, int)
-        assert decrypted_token == user_id
-
-
 def test_invalidation():
     '''
     A token that has been invalidated should raise an error
