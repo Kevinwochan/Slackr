@@ -284,7 +284,7 @@ def test_message_unreact_norm(new_channel_and_user):
     message_unreact(new_channel_and_user['token'], message['message_id'], 1)
     message_specific = get_message_by_msg_id(message['message_id'])
 
-    assert message_specific['reacts'] == []
+    assert message_specific['reacts'] == [{'is_this_user_reacted': True, 'react_id': 1, 'u_ids': []}]
 
 
 def test_message_unreact_invalid_react_id(new_channel_and_user):

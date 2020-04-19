@@ -7,6 +7,8 @@ from src.utils import check_token, get_current_timestamp
 from src.global_variables import (get_slackr_owners, get_channels,
                                   get_num_messages, set_num_messages)
 from src.channel import is_user_a_member, is_valid_channel
+from src.hangman import start_hangman, guess
+
 VALID_REACTS = [1]
 
 
@@ -73,27 +75,20 @@ def is_slackr_owner(token):
     return u_id in owners
 
 
-def is_message_reacted(message, react_id):
-    '''
-    loops through all reactions in a message, and returns true if react_id is one of them
-    otherwise, returns false
-    '''
-    for react in message['reacts']:
-        if react['react_id'] == react_id:
-            return True
-    return False
-
-
 def create_message(user_id, message_id, time_created, message):
     '''
-    returns a default message with reacts = [] and is_pinned = False
+    returns a default message with is_pinned = False
     '''
     return {
         'u_id': user_id,
         'message_id': message_id,
         'time_created': time_created,
         'message': message,
-        'reacts': [],
+        'reacts': [{
+            'react_id': 1,
+            'u_ids': [],
+            'is_this_user_reacted': True
+        }],
         'is_pinned': False
     }
 
@@ -123,8 +118,13 @@ def message_send(token, channel_id, message):
     channel = glob_channels[channel_id]
     time_created = get_current_timestamp()
 
-    channel['messages'].insert(
-        0, create_message(user_id, message_id, time_created, message))
+    if message.startswith('/hangman'):
+        start_hangman(channel_id, user_id, time_created, message_id)
+    elif message.startswith('/guess'):
+        guess(message, channel_id, user_id, time_created, message_id)
+    else:
+        channel['messages'].insert(
+            0, create_message(user_id, message_id, time_created, message))
     set_num_messages(message_id + 1)
     return {'message_id': message_id}
 
@@ -145,13 +145,6 @@ def message_react(token, message_id, react_id):
         raise InputError(description='Invalid react id')
     if not user_in_channel_by_msg_id(message_id, token):
         raise InputError(description='User is not in channel')
-    # adding reaction to reacts if it does not exist already
-    if not is_message_reacted(message, react_id):
-        message['reacts'].append({
-            'react_id': react_id,
-            'u_ids': [],
-            'is_this_user_reacted': True
-        })
     for react in message['reacts']:
         if react['react_id'] == react_id:
             if u_id in react['u_ids']:
@@ -163,8 +156,6 @@ def message_react(token, message_id, react_id):
 def message_unreact(token, message_id, react_id):
     '''
     removes a reaction from a messages list of reactions
-    Also removes a reaction from the list of reactions if all
-    users have unreacted
     expects parameter types:
         token: str
         message_id: int
@@ -178,18 +169,12 @@ def message_unreact(token, message_id, react_id):
         raise InputError(description='Invalid react id')
     if not user_in_channel_by_msg_id(message_id, token):
         raise InputError(description='User is not in channel')
-    if not is_message_reacted(message, react_id):
-        raise InputError(
-            description='This message contains no reaction with that ID')
-
     for react in message['reacts']:
-        if react['react_id'] == react_id and u_id in react['u_ids']:
-            react['u_ids'].remove(u_id)
-            # remove a reaction if everyone has unreacted
-            if len(react['u_ids']) == 0:
-                message['reacts'].remove(react)
-        elif react['react_id'] == react_id:
-            raise InputError(description='You have not made this reaction')
+        if react['react_id'] == react_id:
+            if u_id in react['u_ids']:
+                react['u_ids'].remove(u_id)
+            else:
+                raise InputError(description='You have not made this reaction')
     return {}
 
 
@@ -289,7 +274,6 @@ def sendlater_end(channel_id, message):
     glob_channels[channel_id]['messages'].insert(0, message)
 
 
-
 def message_sendlater(token, channel_id, message, time_sent):
     '''
     sends a message at a given time_sent, where time_sent is a unix timestamp
@@ -314,6 +298,4 @@ def message_sendlater(token, channel_id, message, time_sent):
     message_template = create_message(u_id, message_id, time_sent, message)
     timer = Timer(delay, sendlater_end, args=[channel_id, message_template])
     timer.start()
-    return{
-        'message_id' : message_id
-    }
+    return {'message_id': message_id}
