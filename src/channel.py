@@ -6,6 +6,9 @@ from src.error import InputError, AccessError
 from src.utils import check_token, set_reacted_messages
 from src.global_variables import get_channels, get_users, get_slackr_owners
 
+def is_user_a_slackr_owner(user_id):
+    ''' returns true is user is a slackr owner '''
+    return user_id in get_slackr_owners()
 
 def is_valid_channel(channel_id):
     ''' returns true if the channel id is valid'''
@@ -148,10 +151,6 @@ def channel_leave(token, channel_id):
 
     if is_user_a_owner(channel_id, user_id):
         get_channel_owners(channel_id).remove(user_id)
-        if len(
-                get_channels()
-        ) == 0:  # TODO: discuss if the last owner deletes the channel when leaving
-            del get_channels()[channel_id]
     elif is_user_a_member(channel_id, user_id):
         get_channel_members(channel_id).remove(user_id)
     else:
