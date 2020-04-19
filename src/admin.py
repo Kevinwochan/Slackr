@@ -3,8 +3,8 @@ Function to change user permissions between user and admin/owner.
 '''
 from src.error import InputError, AccessError
 from src.utils import check_token
-from src.global_variables import get_slackr_owners, get_users
-from src.channel import is_valid_user, channel_leave
+from src.global_variables import get_slackr_owners, get_users, get_channels
+from src.channel import is_valid_user, is_user_a_owner, is_user_a_member, get_channel_owners, get_channel_members
 from src.channels import channels_list
 
 
@@ -18,7 +18,7 @@ def permission_change(token, u_id, permission_id):
     if permission_id not in (1, 2):
         raise InputError
 
-    if not user_id in get_slackr_owners():
+    if not u_id in get_slackr_owners():
         raise AccessError
     # all possible errors raised.
     if permission_id == 1:
@@ -29,18 +29,20 @@ def permission_change(token, u_id, permission_id):
     return {}
     
 def user_remove(token, u_id):
+    '''
+    Removes a user from a channel, only a slackr user can use this function
+    '''
+    host_user_id = check_token(token)
+
     if not is_valid_user(u_id):
         raise InputError
 
-    if not user_id in get_slackr_owners():
+    if not host_user_id in get_slackr_owners():
         raise AccessError
 
-    # Get all the channels where the user is a member of it
-    user_channel_list = channels_list(token)
-
-    # Remove the user from the channels
-    for id in user_channel_list['channels']:
-        channel_leave(token, user_channel_list['channels'][id]['channel_id'])
-    
-    
-    
+    for channel_id in get_channels():
+        if is_user_a_owner(channel_id, u_id):
+            get_channel_owners(channel_id).remove(u_id)
+        elif is_user_a_member(channel_id, u_id):
+            get_channel_members(channel_id).remove(u_id)
+    return {}

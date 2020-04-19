@@ -14,6 +14,7 @@ from src.global_variables import workspace_reset
 from src.other import search, users_all
 from src.standup import standup_active, standup_send, standup_start
 from src.backup import load_data, start_auto_backup
+from src.admin import user_remove
 
 
 def defaultHandler(err):
@@ -282,10 +283,10 @@ def workspace_reset_wsgi():
 
 @APP.route('/admin/user/remove', methods=['DELETE'])
 def admin_user_remove():
-	json = request.get_json()
-	return jsonify(
-		user_remove(json['tokem'], int(json['u_id']))
-	)
+    json = request.get_json()
+    return jsonify(
+            user_remove(json['token'], int(json['u_id']))
+            )
 
 # pylint: enable=missing-function-docstring
 
