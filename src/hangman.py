@@ -166,6 +166,9 @@ def guess(letter):
     :rtype str
     '''
     global GUESSES
+    if STATE == STATES['WIN'] or STATE == STATES['LOSE']: # previous game was finished
+        return 'start hangman game first'
+
     if len(letter) != 1 or letter in string.punctuation or letter == ' ' or letter.isdigit():
         return 'invalid guess, guess a single letter'
     if letter in GUESSES:
