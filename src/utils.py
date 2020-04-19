@@ -2,6 +2,7 @@
 Contains miscellaneous helper functions.
 '''
 # Assumption: Users are logged out after a server restart
+import os
 import random
 import string
 from datetime import datetime
@@ -115,7 +116,7 @@ def generate_random_string(size):
         random.choices(string.ascii_uppercase + string.digits, k=size))
 
 def get_user_information(u_id):
-    '''Returns user information in the correct format for the slackr frontend
+    '''Returns user information in the correct format for the slackr frontend.
 
     :param u_id: User id, corresponding to an existing slackr user
     :type u_id: int
@@ -132,5 +133,21 @@ def get_user_information(u_id):
         'name_first': user['name_first'],
         'name_last': user['name_last'],
         'handle_str': user['handle_str'],
+        'profile_img_url': f'{os.getenv("URL")}{user["profile_img_url"]}'
+        }
+
+def get_member_information(u_id):
+    '''Returns member information in the correct format for the slackr frontend.
+
+    :param u_id: User id, corresponding to an existing slackr user
+    :type u_id: int
+    :return: dictionary containing all member information
+    :rtype: dict
+    '''
+    user = get_user_information(u_id)
+    return {
+        'u_id': u_id,
+        'name_first': user['name_first'],
+        'name_last': user['name_last'],
         'profile_img_url': user['profile_img_url']
         }
