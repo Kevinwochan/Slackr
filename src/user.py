@@ -4,7 +4,7 @@ Allows users to edit and set their profile information
 import requests
 from PIL import Image
 from src.utils import check_token, generate_random_string, get_user_information
-from src.auth_helper import is_handle_unique, is_email_valid, id_from_email
+from src.auth_helper import is_handle_unique, is_email_valid, id_from_email, is_name_valid
 from src.error import InputError
 from src.global_variables import get_users
 
@@ -60,10 +60,8 @@ def user_profile_setname(token, name_first, name_last):
     and only the user owner can change this
     '''
     user_id = check_token(token)
-    if len(name_first) < 1 or len(name_first) > 50:
-        raise InputError
-    if len(name_last) < 1 or len(name_last) > 50:
-        raise InputError
+    if not (is_name_valid(name_first) or is_name_valid(name_last)):
+        raise InputError(description='Names must be between 1 and 50 characters')
 
     user = get_users()[user_id]
     user['name_first'] = name_first
