@@ -4,10 +4,11 @@ Allows users to edit and set their profile information
 import re
 import requests
 from PIL import Image
-from src.utils import check_token, generate_random_string
+from src.utils import check_token, generate_random_string, get_user_information
 from src.error import InputError
 from src.global_variables import get_users
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 def is_valid_handle(host_user_id, handle_str):
     '''
@@ -47,20 +48,7 @@ def user_profile(token, user_id):
     fetches a user profile, any valid user is able to do this
     '''
     check_token(token)
-    users = get_users()
-    if not user_id in users:
-        raise InputError
-    user = users[user_id]
-    return {
-        'user': {
-            'u_id': user_id,
-            'email': user['email'],
-            'name_first': user['name_first'],
-            'name_last': user['name_last'],
-            'handle_str': user['handle_str'],
-            'profile_img_url': user['profile_img_url']
-        }
-   }
+    return {'user': get_user_information(user_id)}
 
 
 def user_profile_setname(token, name_first, name_last):
@@ -111,7 +99,7 @@ def user_profile_sethandle(token, handle_str):
     return {}
 
 
-def user_profile_setimage(token, img_url, x_start, y_start, x_end, y_end):
+def user_profile_setimage(token, img_url, x_start, y_start, x_end, y_end): #pylint: disable=too-many-arguments
     '''
     Update the authorised user's display photo
     Downloads the given img_url into the server folder 'images'
@@ -119,7 +107,6 @@ def user_profile_setimage(token, img_url, x_start, y_start, x_end, y_end):
     :param token:
     :type token: string
     '''
-    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
     user_id = check_token(token)
     user = get_users()[user_id]
 
@@ -148,4 +135,3 @@ def user_profile_setimage(token, img_url, x_start, y_start, x_end, y_end):
 
     user['profile_img_url'] = f'/imgurl/{new_file_name}'
     return {}
-
