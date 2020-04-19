@@ -280,18 +280,12 @@ def admin_userpermission_change_wsgi():
 def workspace_reset_wsgi():
     return jsonify(workspace_reset())
 
-# @APP.route('/admin/user/remove', methods=['DELETE'])
-# def admin_user_remove():
-# 	json = request.get_json()
-# 	return jsonify(
-# 		user_remove(json['tokem'], int(json['u_id']))
-# 	)
-@APP.route('/admin/user/remove', method=['DELETE'])
+@APP.route('/admin/user/remove', methods=['DELETE'])
 def admin_user_remove():
-	json = request.get_json()
-	return jsonify(
-		user_remove(json['token'], int(json['u_id']))
-	)
+    json = request.get_json()
+    return jsonify(
+            user_remove(json['token'], int(json['u_id']))
+            )
 
 # pylint: enable=missing-function-docstring
 
