@@ -15,6 +15,7 @@ yapf = "*"
 python-dotenv = "*"
 requests = "*"
 coverage = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"
