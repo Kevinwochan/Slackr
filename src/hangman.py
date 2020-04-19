@@ -193,7 +193,8 @@ def hangman_reset():
 
 def has_hangman_started():
     '''check that hangman has started before user can use /guess'''
-    if ANSWER == '':
+    global STATE
+    if ANSWER == '' or STATE == STATES['WIN'] or STATE == STATES['LOSE']:
         return 0
     return 1
 
