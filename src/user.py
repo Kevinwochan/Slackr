@@ -4,29 +4,29 @@ Allows users to edit and set their profile information
 import requests
 from PIL import Image
 from src.utils import check_token, generate_random_string, get_user_information
-from src.auth_helper import is_email_valid, id_from_email
+from src.auth_helper import is_handle_unique, is_email_valid, id_from_email
 from src.error import InputError
 from src.global_variables import get_users
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 def is_valid_handle(host_user_id, handle_str):
+    '''Checks that handle_str is valid and not being used by any other user
+
+    :param host_user_id: Id of the user changing their handle
+    :type host_user_id: int
+    :param handle_str: User's new handle
+    :type handle_str: str
+    :return: True if the new handle_str is the same as the old, or if it is both valid AND unique.
+    :rtype: bool
     '''
-    checks that no existing user has this handle_str
-    '''
-    if len(handle_str) < 3 or len(handle_str) > 20:
-        return False
     users = get_users()
     if users[host_user_id]['handle_str'] == handle_str:
         return True
-    for user_id in users:
-        if users[user_id]['handle_str'] == handle_str:
-            return False
-    return True
+    return is_handle_unique(handle_str) and len(handle_str) >= 2 and len(handle_str) <= 20
 
 def is_new_email(host_user_id, email):
-    '''Checks that the valid is in a valid format that this email is not already in use.
-    Also returns true if a user changes their email to their current email.
+    '''Checks that email is valid and not being used by any other user
 
     :param host_user_id: Id of the user changing their email
     :type host_user_id: int
