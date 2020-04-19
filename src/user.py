@@ -60,7 +60,7 @@ def user_profile_setname(token, name_first, name_last):
     and only the user owner can change this
     '''
     user_id = check_token(token)
-    if not (is_name_valid(name_first) or is_name_valid(name_last)):
+    if not (is_name_valid(name_first) and is_name_valid(name_last)):
         raise InputError(description='Names must be between 1 and 50 characters')
 
     user = get_users()[user_id]
