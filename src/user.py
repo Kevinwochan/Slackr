@@ -44,8 +44,14 @@ def is_valid_email(host_user_id, email):
 
 
 def user_profile(token, user_id):
-    '''
-    fetches a user profile, any valid user is able to do this
+    '''finds and returns a user profile
+
+    :param token: jwt token
+    :type token: str
+    :param user_id: id corresponding to the target user
+    :type user_id: int
+    :return: contains u_id, email, name_first, name_last, handle_str
+    :rtype: dict
     '''
     check_token(token)
     return {'user': get_user_information(user_id)}
