@@ -14,6 +14,7 @@ from src.global_variables import workspace_reset
 from src.other import search, users_all
 from src.standup import standup_active, standup_send, standup_start
 from src.backup import load_data, start_auto_backup
+from src.admin import user_remove
 
 
 def defaultHandler(err):
