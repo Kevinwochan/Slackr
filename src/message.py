@@ -126,14 +126,18 @@ def message_send(token, channel_id, message):
     time_created = get_current_timestamp()
 
     if message.startswith('/hangman'):
-        start_hangman(channel_id, user_id, time_created, message_id)
-    elif message.startswith('/guess'): # /guess a
-        if hangman_same_channel(channel_id) == 0: # guess is not in same channel as where hangman was started
-            message = 'guess in the same channel where hangman was started'
+        if has_hangman_started() == 1: # already a hangman game running
+            message = 'a hangman game is already running'
             channel['messages'].insert( 0, create_message(user_id, message_id, time_created, message))
             return {'message_id': message_id}
+        start_hangman(channel_id, user_id, time_created, message_id)
+    elif message.startswith('/guess'): # /guess a
         if has_hangman_started() == 0: # game of hangman hasn't been started
             message = 'start hangman game first'
+            channel['messages'].insert( 0, create_message(user_id, message_id, time_created, message))
+            return {'message_id': message_id}
+        if hangman_same_channel(channel_id) == 0: # guess is not in same channel as where hangman was started
+            message = 'guess in the same channel where hangman was started'
             channel['messages'].insert( 0, create_message(user_id, message_id, time_created, message))
             return {'message_id': message_id}
         message_split = message.split(' ')
