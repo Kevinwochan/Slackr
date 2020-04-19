@@ -27,10 +27,10 @@ def permission_change(token, u_id, permission_id):
         get_users()[u_id]['is_owner'] = False
 
     return {}
-    
+
 def user_remove(token, u_id):
     '''
-    Removes a user from a channel, only a slackr user can use this function
+    Removes a user from a channel, only a slackr Owner can use this function
     '''
     host_user_id = check_token(token)
 
@@ -45,7 +45,7 @@ def user_remove(token, u_id):
             get_channel_owners(channel_id).remove(u_id)
         elif is_user_a_member(channel_id, u_id):
             get_channel_members(channel_id).remove(u_id)
-        
+
     glob_users = get_users()
-    glob_users[u_id]['disables'] = True
+    glob_users[u_id]['disabled'] = True
     return {}
