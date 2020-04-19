@@ -74,7 +74,6 @@ def find_id(email):
     '''
     Finds the user id associated with an email and returns it
     returns false if no user is found
-    TODO: find better solution - discuss in next standup
     '''
     glob_users = get_users()
 
@@ -82,7 +81,7 @@ def find_id(email):
         if email == glob_users[u_id]['email']:
             return u_id
     # if no user is found with this email
-    raise Exception('No user found')
+    raise InputError(description='No user found')
 
 
 def check_registration_inputs(email, password, name_first, name_last):
