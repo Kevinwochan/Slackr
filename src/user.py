@@ -7,7 +7,7 @@ from PIL import Image
 from src.utils import check_token, generate_random_string
 from src.error import InputError
 from src.global_variables import get_users
-
+from src.auth_helper import is_user_disabled
 
 def is_valid_handle(host_user_id, handle_str):
     '''
@@ -48,7 +48,7 @@ def user_profile(token, user_id):
     '''
     check_token(token)
     users = get_users()
-    if not user_id in users:
+    if not user_id in users or is_user_disabled(user_id):
         raise InputError
     user = users[user_id]
     return {

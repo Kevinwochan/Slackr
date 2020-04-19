@@ -70,6 +70,17 @@ def is_handle_unique(handle_str):
     return True
 
 
+def is_user_disabled(u_id):
+    '''Finds if a user has been deleted
+
+    :param u_id: target user_id
+    :type u_id: int
+    :return: True if the user has been deleted, otherwise False
+    :rtype: bool
+    '''
+    return get_users()[u_id]['disabled']
+
+
 def find_id(email):
     '''
     Finds the user id associated with an email and returns it
@@ -103,7 +114,6 @@ def check_registration_inputs(email, password, name_first, name_last):
         raise InputError(
             description="Last name must be between 1 and 50 characters long")
 
-
 def check_login_inputs(email, password):
     '''
     Checks email is valid
@@ -118,8 +128,8 @@ def check_login_inputs(email, password):
 
     u_id = find_id(email)
     glob_users = get_users()
-    if glob_users[u_id]['disabled'] == True:
-        raise InputError(description='This accout has already removed from the slack')
+    if is_user_disabled(u_id):
+        raise InputError(description='This account has been removed from Slackr')
     password_hash = sha256(password.encode()).hexdigest()
 
     # checking user password

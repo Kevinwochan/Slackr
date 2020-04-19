@@ -4,7 +4,7 @@ Contains miscellaneous functions
 from src.global_variables import get_users, get_channels
 from src.utils import check_token, set_reacted_messages
 from src.channel import is_user_a_member
-
+from src.auth_helper import is_user_disabled
 
 def users_all(token):
     '''
@@ -20,7 +20,7 @@ def users_all(token):
             'name_first': users[user_id]['name_first'],
             'name_last': users[user_id]['name_last'],
             'handle_str': users[user_id]['handle_str']
-        } for user_id in users],
+        } for user_id in users if not is_user_disabled(user_id)],
     }
 
 
