@@ -124,6 +124,8 @@ def check_login_inputs(email, password):
     # checking user password
     if glob_users[u_id]['password_hash'] != password_hash:
         raise InputError(description='Incorrect password')
+    if glob_users[u_id]['disabled'] == True:
+        raise InputError(description='This accout has already removed from the slack')
 
     return u_id
 
