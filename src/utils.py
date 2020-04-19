@@ -6,6 +6,7 @@ import random
 import string
 from datetime import datetime
 from jwt import encode, decode, InvalidTokenError
+from src.auth_helper import is_user_disabled
 from src.error import AccessError, InputError
 from src.global_variables import get_valid_tokens
 
@@ -24,18 +25,6 @@ def generate_token(user_id):
         curr_users.append(token)
     return token
 
-
-def check_token(token):
-    '''
-    Checks if the token matches a logged in user (is containted in curr_users),
-    and then returns that users id. raises AccessError if token does not match logged in user.
-    '''
-    curr_users = get_valid_tokens()
-    if not token in curr_users:
-        raise AccessError(description="You do not have a valid token")
-    return decode(token.encode('utf-8'), SECRET, algorithms=['HS256'])['id']
-
-
 def invalidate_token(token):
     '''
     Invalidates token by removing it from curr_users. raises AccessError if token is not in
@@ -49,6 +38,29 @@ def invalidate_token(token):
     except ValueError:
         raise AccessError(description="Token is already invalid")
     return True
+
+def check_token(token):
+    '''Checks if a jwt token corresponds to a currently logged in user.
+    If the user's account has been deleted, invalidates that users token.
+
+    :param token: jwt token
+    :type token: str
+    :raises AccessError: If the token does not correspond to a logged in user
+    :raises AccessError: If the token corresponds to a deleted user
+    :return: User id corresponding to the the valid token
+    :rtype: int
+    '''
+
+    curr_users = get_valid_tokens()
+    if not token in curr_users:
+        raise AccessError(description="You do not have a valid token")
+    u_id = decode(token.encode('utf-8'), SECRET, algorithms=['HS256'])['id']
+
+    if is_user_disabled(u_id):
+        invalidate_token(token)
+        raise AccessError(description="Your account has been deleted")
+    return u_id
+
 
 
 def get_current_timestamp(delay=0):
