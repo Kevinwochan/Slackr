@@ -1,10 +1,10 @@
 '''
 Allows users to edit and set their profile information
 '''
-import re
 import requests
 from PIL import Image
 from src.utils import check_token, generate_random_string, get_user_information
+from src.auth_helper import is_email_valid, id_from_email
 from src.error import InputError
 from src.global_variables import get_users
 
@@ -24,24 +24,20 @@ def is_valid_handle(host_user_id, handle_str):
             return False
     return True
 
+def is_new_email(host_user_id, email):
+    '''Checks that the valid is in a valid format that this email is not already in use.
+    Also returns true if a user changes their email to their current email.
 
-def is_valid_email(host_user_id, email):
+    :param host_user_id: Id of the user changing their email
+    :type host_user_id: int
+    :param email: User's new email
+    :type email: str
+    :return: True if the new email is the same as the old, or if the email is both valid AND unique.
+    :return: False, Otherwise
+    :rtype: bool
     '''
-    code from https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
-    checks that the valid is in a valid format according to geeks for geeks
-    and checks that this email is not already in use
-    '''
-    regex = r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-    if not re.search(regex, email):
-        return False
-    users = get_users()
-    if users[host_user_id]['email'] == email:
-        return True
-    for user_id in users:
-        if users[user_id]['email'] == email:
-            return False
-    return True
-
+    email_id = id_from_email(email)
+    return email_id == host_user_id or (is_email_valid(email) and email_id is None)
 
 def user_profile(token, user_id):
     '''finds and returns a user profile
@@ -81,7 +77,7 @@ def user_profile_setemail(token, email):
     Update the authorised user's email address
     '''
     user_id = check_token(token)
-    if not is_valid_email(user_id, email):
+    if not is_new_email(user_id, email):
         raise InputError
 
     user = get_users()[user_id]
