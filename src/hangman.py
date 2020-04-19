@@ -15,54 +15,54 @@ STATES = {
 }
 
 ART = ['''
-  +---+
-  |   |
-      |
-      |
-      |
-      |
+##+---+
+##|###|
+######|
+######|
+######|
+######|
 =========''', '''
   +---+
-  |   |
-  O   |
-      |
-      |
-      |
+##|###|
+##O###|
+######|
+######|
+######|
 =========''', '''
   +---+
-  |   |
-  O   |
-  |   |
-      |
-      |
+##|###|
+##O###|
+##|###|
+######|
+######|
 =========''', '''
   +---+
-  |   |
-  O   |
- /|   |
-      |
-      |
+##|###|
+##O###|
+#/|###|
+######|
+######|
 =========''', '''
   +---+
-  |   |
-  O   |
- /|\  |
-      |
-      |
+##|###|
+##O###|
+ /|\##|
+######|
+######|
 =========''', '''
   +---+
-  |   |
-  O   |
- /|\  |
- /    |
-      |
+##|###|
+##O###|
+#/|\##|
+#/####|
+######|
 =========''', '''
   +---+
-  |   |
-  O   |
- /|\  |
- / \  |
-      |
+##|###|
+##O###|
+#/|\##|
+#/#\##|
+######|
 =========''',
 'GAME OVER',
 'YOU SAVED HIM!',
@@ -72,11 +72,14 @@ ART = ['''
 ANSWER = ''
 STATE = STATES['PROGRESS_1']
 GUESSES = []
+CHANNEL_ID = ''
 
 def start_hangman(channel_id, user_id, time_created, message_id):
     hangman_reset() # resets any existing data for new game
     global STATE
+    global CHANNEL_ID
     STATE = STATES['PROGRESS_1']
+    CHANNEL_ID = channel_id
     channel = get_channels()[channel_id]
     new_message = {
         'u_id': user_id,
@@ -191,6 +194,13 @@ def hangman_reset():
 def has_hangman_started():
     '''check that hangman has started before user can use /guess'''
     if ANSWER == '':
+        return 0
+    return 1
+
+def hangman_same_channel(channel_id):
+    '''checks that the guesses are in the same channel in where hangmna was created'''
+    global CHANNEL_ID
+    if CHANNEL_ID != channel_id:
         return 0
     return 1
 
