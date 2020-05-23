@@ -7,21 +7,9 @@
 <img alt="Codecov" src="https://img.shields.io/codecov/c/github/kevinwochan/Slackr">
 </p>
 
-
-## Overview
-
-Built in:
-- Python 3.7
-- Flask
-- Pipenv
-- PyTest
-- Coverage
-
-With
-
-- ReactJS
-- Material UI
-- Axios
+### Built in
+Backend: Python 3.7, Flask, Pipenv, PyTest, Coverage
+Frontend: ReactJS, Material UI, Axios
 
 ## Table of Contents
 - Features
