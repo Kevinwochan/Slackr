@@ -8,7 +8,9 @@
 </p>
 
 ### Built in
+
 Backend: Python 3.7, Flask, Pipenv, PyTest, Coverage
+
 Frontend: ReactJS, Material UI, Axios
 
 ## Table of Contents
