@@ -1,8 +1,12 @@
 <h1 align="center" style="margin:1em;">Slackr</h1>
 <h4 align="center">An instant messaging web application</h4>
 
-![GitHub contributors](https://img.shields.io/github/contributors/kevinwochan/Slackr)
-![Codecov](https://img.shields.io/codecov/c/github/kevinwochan/Slackr)
+<p align="center">
+<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/kevinwochan/Slackr">
+<img alt="GitHub language count" src="https://img.shields.io/github/languages/count/kevinwochan/Slackr">
+<img alt="Codecov" src="https://img.shields.io/codecov/c/github/kevinwochan/Slackr">
+</p>
+
 
 ## Overview
 
