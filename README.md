@@ -1,13 +1,13 @@
 # Slackr
-## Tech Stack
-### Backend
+Built in:
 - Python 3.7
 - Flask
 - Pipenv
 - PyTest
 - Coverage
 
-### Frontend
+With
+
 - ReactJS
 - Material UI
 - Axios
