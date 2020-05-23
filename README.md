@@ -1,4 +1,11 @@
-# Slackr
+<h1 align="center" style="margin:1em;">Slackr</h1>
+<h4 align="center">An instant messaging web application</h4>
+
+![GitHub contributors](https://img.shields.io/github/contributors/kevinwochan/Slackr)
+![Codecov](https://img.shields.io/codecov/c/github/kevinwochan/Slackr)
+
+## Overview
+
 Built in:
 - Python 3.7
 - Flask
