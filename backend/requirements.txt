@@ -23,7 +23,7 @@ Pillow==7.1.1
 pluggy==0.13.1
 py==1.8.1
 pycycle==0.0.8
-PyJWT==1.7.1
+PyJWT==2.4.0
 pylint==2.4.4
 pyparsing==2.4.7
 pytest==5.4.1
