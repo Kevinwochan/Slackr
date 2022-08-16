@@ -19,7 +19,7 @@ MarkupSafe==1.1.1
 mccabe==0.6.1
 more-itertools==8.2.0
 packaging==20.3
-Pillow==7.1.1
+Pillow==9.0.1
 pluggy==0.13.1
 py==1.8.1
 pycycle==0.0.8
